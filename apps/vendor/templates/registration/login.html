@@ -1,0 +1,104 @@
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="preload " href="{% static 'statics/css/5f1aff9ab4-register_login_css.css' %}" as="style">
+        <link rel="preload " href="{% static 'statics/js/4e28eca106-register.js' %}" as="script">
+
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" href="{% static 'statics/img/apple-touch-icon-76x76.png' %}">
+        <link rel="apple-touch-icon" sizes="76x76" href="{% static 'statics/img/apple-touch-icon-76x76.png' %}">
+        <link rel="apple-touch-icon" sizes="120x120" href="{% static 'statics/img/apple-touch-icon-120x120.png' %}">
+        <link rel="apple-touch-icon" sizes="152x152" href="{% static 'statics/img/apple-touch-icon-152x152.png' %}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'statics/img/apple-touch-icon-180x180.png' %}">
+        <link rel="icon" sizes="192x192" href="{% static 'statics/img/favicon.png' %}">
+        <link rel="shortcut icon" sizes="192x192" type="image/x-icon" href="{% static 'statics/img/favicon.png' %}">
+        <link rel="stylesheet" href="{% static 'statics/css/5f1aff9ab4-register_login_css.css' %}">
+
+    </head>
+    <body class="user-loggedin" data-step="login" data-token="NDllZGVlY2IxMjljMmYyOTBhZGI0NTRjOGM4MTIxNzViYzQ0Y2ZhZQ==">
+        <div class="overlay">
+            <div class="cv-spinner">
+                <span class="spinner"></span>
+            </div>
+        </div>
+        <div class="modal modal-register active">
+            <div class="modal-dialog modal-register-form">
+                <div class="modal-header">
+                    <h2 class="title-modal">Login to AnswerDone</h2>
+                    <p>Login using one of the following login methods:</p>
+                </div>
+                <div class="modal-content">
+                    <div id="connect-error" style='padding-top: 25px;'>
+                        Wrong Email or Password
+                    </div>
+                    {% comment %} <div class="group-button">
+                        <a href="" class="btn-fblogin fb-login-button">
+                        <i class="fab fa-facebook-square fb-login-icon"></i>
+                        Login with Facebook
+                        </a>
+                        <a href="#" class="btn-googlelogin" id="google-sign-in" data-redirect="">
+                        <img src="{% static "statics/img/google.png" %}"> Login with Google
+                        </a>
+                        <span id="googleButtonReplace"></span>
+                    </div> {% endcomment %}
+                    <span class="line-heading">e-mail</span>
+                    <form action="#" method="post" id="loginForm" class="form-register" validate="" novalidate="novalidate">
+                        <div class="input-field">
+                            <input type="email" placeholder="Email or username" name="username" id="username" autocomplete="username" required="" maxlength="50">
+                            <label class="valid-icon">
+                            <i class="far fa-check"></i>
+                            <i class="far fa-times"></i>
+                            </label>
+                        </div>
+                        <div class="input-field">
+                            <input type="password" placeholder="Password" name="password" id="password" minlength="6" maxlength="50" autocomplete="current-password" required="">
+                            <label class="valid-icon">
+                            <i class="far fa-check"></i>
+                            <i class="far fa-times"></i>
+                            </label>
+                        </div>
+                        {% csrf_token %}
+                        <div class="submit-field">
+                            <button type="submit" class="cta-submit btn-register-step">Login<i class="far fa-angle-right"></i></button>
+                            <p class="switch-login-register">No Profile yet? <a href="{% url "register" %}">Sign up Now, it's Free!</a></p>
+                            <p><a href="{% url "forgot_password" %}">Forgot your Name or Password ?</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}' 
+                }
+            })
+            .then(response => {
+                console.log(response);
+                if (response.redirected) {
+                    document.querySelector('.modal.modal-register.active').classList.remove('active');
+                    
+                    window.parent.location.reload();
+                } else {
+                    document.getElementById('connect-error').style.display = 'block'
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+</script>
+    </body>
+</html>

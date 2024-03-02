@@ -1,0 +1,255 @@
+
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'statics/css/74c8e7dfbc-wishlistpage_css.css' %}">
+
+{% comment %} <link rel="stylesheet" href="{% static 'statics/css/74c8e7dfbc-wishlistpage_css.css' %}"> {% endcomment %}
+{% comment %} <link rel="stylesheet" href="{% static 'statics/css/7067e5891a-upload_download_css.css' %}"> {% endcomment %}
+    <div id="page" class="wrapper uploaddownload-page ">
+        <article id="content" class="content-wrapper">
+            <div id="main-section" class="section-wrapper content-attention section-banner">
+                <section class="section-entry-header">
+                    <h1>Downloads</h1>
+                    {% if order_items is None %}
+                    <p>There are no documents in your Downloads yet. Go find the best study documents to pass your exams in Stuvia's extensive offering of over 500,000 study guides, notes, summaries.</p>
+                    {% endif %}
+                </section>
+                <section class="section-book-lists section-book-lists-wishlist section-item">
+                    <div id="user-wishlist-content" class="listing-grid">
+                        {% for item in order_items  %}                                
+                        <div class="listgrid-item row-wishlist row-wishlist-3236146-1">
+                            <div class="grid-list">
+                                <div class="icon-preview">
+                                    {% if item.product.image %}
+                                    <img loading="lazy" src="{{item.product.image.url}}" class="lozad image-boek item-image">
+                                    {% else %}
+                                    <img loading="lazy" src=" {% static 'statics/img/essentie_focus.png' %}" class="lozad image-boek item-image">
+                                    {% endif %}
+                                </div>
+                                <div class="desc-preview">
+                                    <h4 class="title-preview"><a href="{% url 'purchased_product' item.product.category.slug item.product.slug %}">{{item.product.title}} </a></h4>
+                                    <div class="excerpt-desc">
+                                        <p>{{item.product.description}}</p>
+                                        <div class="information-item">
+                                            <ul class="details">
+                                                <li class="info-author-img"><img class="user-image" src="{{item.product.image.url}}"></li>
+                                                <li class="info-author right">By </li>
+                                                <li class="info-author"><span class="author-name"> {{item.product.user}} </span></li>
+                                                <li class="bold-dot"> • </li>
+                                                <li class="info-author-institution">  </li>
+                                                <li class="bold-dot"> • </li>
+                                                <li class="info-category-objectType info-category"> {{item.product.category}} </li>
+                                                <li class="dot"> • </li>
+                                                <li class="count-pagina">{{item.product.num_pages}}
+                                                    pages
+                                                    •&nbsp;
+                                                </li>
+                                                <div class="ratings">
+                                                    <ul class="star-rates">
+                                                        {% for value in "12345" %}
+                                                        {% if value|add:"0" <= item.average_rating %}
+                                                            <span class="star1 selected" data-value="{{ value }}">★</span>
+                                                        {% else %}
+                                                            <span class="star1" data-value="{{ value }}">★</span>
+                                                        {% endif %}
+                                                    {% endfor %}                                                    
+                                                    </ul>
+                                                </div>
+                                                <li class="dot"> • </li>
+                                                <li class="info-category-amount-reviews"> ({{item.average_rating}}) </li>
+                                                <li class="dot"> • </li>
+                                                <li class="info-category-price-item"> $ {{item.product.price}}</li>
+                                                <li class="dot"> • </li>
+                                                {% if item.committed %}
+                                                <li class="info-category-price-item"><a><span style="color:#199be9" onclick='openModal({{item.product.id}},"{{item.product.title}}")'>Write Review</span></a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                <section class="section-item section-banner">
+                    <div class="img-search-block">
+                        <div class="search-form user-downloads-search-autocomplete-js">
+                            <form method="get" action="/search" id="search-index-new">
+                                <input type="text" name="s" class="search-input no-doc-no-bundle" autocomplete="off" placeholder="Search for courses, books, exams, or assignments" data-location="user-downloads">
+                                <input type="hidden" name="origin" value="user-downloads">
+                                <button type="submit" class="homepage-search-submit">
+                                <i class="homepage-search-icon fas fa-search"></i>
+                                </button>
+                                <span class="close-input"><i class="fas fa-times"></i></span>
+                                <div class="autocomplete-search">
+                                    <div class="ajax-suggestion-wrapper">
+                                        <div class="search-query">
+                                            <a class="suggestion-search" href="#">
+                                            <span class="all-results-text"></span>
+                                            (<span class="search-suggestion-total"></span>)&nbsp;
+                                            <i class="suggestion-search-arrow fas fa-long-arrow-right"></i>
+                                            </a>
+                                            <label>Studies, courses, subjects, and textbooks for your search:</label>
+                                        </div>
+                                        <div class="match-query"></div>
+                                        <span class="info-autocomplete">
+                                        Press Enter &nbsp;&nbsp;<i class="far fa-level-down fa-rotate-90"></i>&nbsp;&nbsp; to view all search results (<span class="search-suggestion-total"></span>)
+                                        </span>
+                                    </div>
+                                    <div class="spinner-wrapper">
+                                        <i class="fas fa-circle-notch fa-spin"></i>
+                                    </div>
+                                    <div class="empty-state">
+                                        <span class="no-results-text"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </article>
+    </div>
+    <div id="modalOverlay" class="modal-overlay">
+        <div id="modalContent" class="modal-content">
+            
+            <form method="POST" action='' id='product_id'>
+                {% csrf_token %}
+            <span class="close closebtnmodel" onclick="closeModal()">&times;</span>
+            <input type="hidden" name='user' id='modeluser' value='{{request.user}}'>
+            <h4 id="model_title"></h4>
+            <p>How much you want to give review to This ?</p>
+            <h6 style="text-align: center;">
+                <input type="hidden" name="rating" id="ratingInput" value="0">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+            </h6>
+            <textarea name='description' style=""></textarea>
+            <button class='ratingbtn' type='submit'>Submit</button>
+            </form>
+        </div>
+    </div>
+        
+      <style>
+        textarea{
+            font-size: large;
+            width: -webkit-fill-available;
+            height: 90;
+        }
+        .star {
+            font-size: 24px;
+            cursor: pointer;
+            }
+            .star.selected {
+            color: gold;
+            }
+            .star1 {
+            cursor: pointer;
+            }
+            .star1.selected {
+            color: gold;
+            }
+            .ratingbtn{
+            padding: 5px;
+            margin: 5px;
+            border-radius: 10px;
+            background: #199be9;
+            color: white;
+            float: inline-end;
+            }
+        #model_title{
+            padding-bottom: 1rem;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+            z-index: 1000; /* Ensure the overlay is above other content */
+          }
+          
+          .modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            z-index: 1001; /* Ensure the modal content is above the overlay */
+          }
+          
+          .close {
+            font-weight: bold;
+            font-size: xx-large;
+            position: absolute;
+            top: -30px;
+            right: -10px;
+            cursor: pointer;
+            color: #199be9;
+          }
+            
+    </style>
+    <script>            
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('.star');
+            const ratingInput = document.getElementById('ratingInput');
+            const ratingForm = document.getElementById('ratingForm');
+        
+            stars.forEach(function(star) {
+                star.addEventListener('click', function() {
+                    const value = parseInt(star.dataset.value);
+                    console.log('Submitting form');
+                    ratingInput.value = value; 
+                    stars.forEach(function(s) {
+                        if (parseInt(s.dataset.value) <= value) {
+                            s.classList.add('selected');
+                        } else {
+                            s.classList.remove('selected');
+                        }
+                    });
+                event.preventDefault();
+                submitForm();
+                });
+                
+            });
+        
+            ratingForm.addEventListener('submit', function(event) {
+                console.log('Submitting');
+                event.preventDefault();
+                submitForm();
+            });
+        
+            function submitForm() {
+                console.log('Submitting form');
+                ratingForm.submit(); 
+            }
+        });
+        
+    </script> 
+    <script>
+        function openModal(modalId, title) {
+            const targetModal = document.getElementById('modalOverlay');
+            document.getElementById('model_title').innerText = title;
+            document.getElementById('product_id').action = '/rate-product/'+modalId+'/';
+            targetModal.style.display = 'block';
+          }
+          
+          function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+          }          
+    </script>
+    <script defer="" type="text/javascript" src=" {% static 'statics/js/1d32c2cbb2-app.js' %}"></script>
+    <script defer="" type="text/javascript" src=" {% static 'statics/4d94a262ca-wishlistpage.js' %}"></script>
+
+{% endblock content %}

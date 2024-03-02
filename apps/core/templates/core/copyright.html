@@ -1,0 +1,81 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+        <link rel="stylesheet" href=" {% static 'statics/css/60d3cf2c22-funnelpage_css.css' %}">
+        <link rel="stylesheet" href="{% static 'statics/css/ee3b8afcf4-upload_pages_2_css.css' %}">
+
+        <div id="app" data-country="999" class="">
+            <div id="page" class="wrapper overview-basic-page funnel-page">
+                <article id="content" class="content-wrapper">
+                    <div id="main-section" class="section-wrapper content-attention">
+                        <section class="section-entry-header-old">
+                            <h1>
+                                Copyright or Takedown Form
+                            </h1>
+                        </section>
+                        <section class="section-subject-book section-item">
+                            <style>
+                                @media screen and (max-width: 768px) {
+                                    .screenmaker{
+                                        width: 100% !important;
+                                    }
+                                    .formmaker{
+                                        display:block !important;
+                                    }
+                                }
+                                .screenmaker{
+                                    width:45%;
+                                }
+                                .formmaker{
+                                    display: flex;
+    justify-content: space-between;
+}
+    .btnclass{
+        background: aqua;
+    padding: 1rem;
+    margin: 1rem;
+    width: 100px !important;
+    border-radius: 10px;
+    font-size: 20px;
+    float: right;
+    }
+                                
+                            </style>
+                            <script>
+                                function showAlert() {
+                                    // Show an alert when the form is submitted
+                                    alert("Requested Submitted Successfully!");
+                                }
+                            </script>
+                            <form action'.' method="POST" class="" onsubmit="showAlert()">
+                            {% csrf_token %}
+                            <div class="form-group formmaker">
+                              <label for="Username"></label>
+                              <input type="text"
+                                class="form-control" name="username" id="username" aria-describedby="helpId" placeholder="Username">
+                                <label for="Email"></label>
+                                <input type="text"
+                                  class="form-control" name="email" id="email" aria-describedby="helpId" placeholder="Email">
+  
+                            </div>
+
+                            <div class="form-group">
+                                <label for="url">Doc URL</label>
+                                <input type="text"
+                                  class="form-control" name="url" id="url" aria-describedby="helpId" placeholder="">
+                              </div>
+                              <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea type="text"
+                                  class="form-control" name="description" id="description" aria-describedby="helpId" placeholder=""></textarea>
+                              </div>
+                              <button type="submit" class="btnclass">Submit</button>
+                            </form>
+                        </section>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <script defer="" type="text/javascript" src="{% static 'statics/js/b17118436b-app.js'%}"></script>
+        <script defer="" type="text/javascript" src="{% static 'statics/js/c8e80bc462-funnelpage.js'%}"></script>
+        {% endblock content %}

@@ -1,0 +1,874 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+<script>
+    function changeurllocation(variable) {
+        window.location.href = variable;
+    }
+</script>
+<style>
+    .document-section label, .productfor-section label{
+    color: #199be9 !important;
+    background: none;
+    font-weight: bold;
+    }
+    .faq-link{
+    color: #199be9 !important; 
+    }
+</style>
+
+<link href="https://dsd5zvtm8ll6.cloudfront.net/includes/styles/rewamp/common/desktop_common_css.css?ver=1.6" rel="stylesheet"  type="text/css" >
+<link href="https://dsd5zvtm8ll6.cloudfront.net/includes/styles/rewamp/common/desktop_all_common_fonts.css" rel="stylesheet"  type="text/css" >
+<link rel="preload" href="https://dsd5zvtm8ll6.cloudfront.net/includes/styles/rewamp/common/footer/transparent_footer.css" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css">
+<link href="https://dsd5zvtm8ll6.cloudfront.net/includes/styles/rewamp/common/desktop_colored_header.css?ver=1.2" rel="stylesheet"  type="text/css" >
+<script src="https://dsd5zvtm8ll6.cloudfront.net/includes/styles/rewamp/common/desktop_common.js?ver=1.5.1" defer></script>
+<script src="https://dsd5zvtm8ll6.cloudfront.net/includes/jscripts/desktop_functions_common_js.js" defer></script>
+<script src="https://dsd5zvtm8ll6.cloudfront.net/includes/jscripts/desktop_colored_header_searchbar_2.js?ver=1.1" defer></script>
+<script src="https://dsd5zvtm8ll6.cloudfront.net/includes/jscripts/rewamp/common/function_mobile_check.js" defer></script>
+<link href="https://dsd5zvtm8ll6.cloudfront.net/includes/styles/rewamp/common/session_notification.css?ver=2.4" rel="stylesheet">
+<link  rel="stylesheet" type="text/css"  href="https://dsd5zvtm8ll6.cloudfront.net/includes/styles/rewamp/book_detail_view/book_detail_view_css.css?ver=1.2">
+<script src="https://dsd5zvtm8ll6.cloudfront.net/includes/jscripts/book_detail_view/book_detail_view_js.js" defer></script>
+<style rel="stylesheet">
+    .tab-content>.active {display:block !important}
+    .related-question-section-heading{font-size:20px;font-weight:600;color:#333;border-bottom:1px solid #ccc;padding-bottom:5px;margin-top:10px}
+    .q-icon,.qbq{position:absolute}
+    .hrf_blk{color:#252424!important}
+    .question-count{line-height:1.5;display:block}
+    .wrd_rlt{margin-left:30px;margin-top:5px;font-weight:600;font-size:12px;width:100%}
+    .tutor-info,.wrd_rlt{overflow:hidden!important;text-overflow:ellipsis}
+    .wrd_rlt{white-space:nowrap}
+    @media (min-width:200px) and (max-width:425px){.wrd_rlt{width:95%}}
+    .qbq,.tphs-head{font-weight:700}
+    .qbq{background:#6f9dd33d;border-radius:70%;padding:0 5px 5px;left: 0;}
+    .related-question-statment-redesign{padding:8px}
+    .related-question-section{margin-top: 10px;}
+    @media (max-width:485px){.qbq{top:unset}}
+    @media (max-width:768px){.related-question-section{padding: 0 10px}}
+</style>
+<script>
+    window.addEventListener("load", function(){
+    jQuery(document).ready(function($) {
+    
+                $.ajax({
+            type: "POST",
+            url: document.url,
+            data: {
+                insertView: true,
+                ref_url: document.referrer
+            },
+            success:function(response){
+            }
+        });
+        
+        jQuery(function($) {
+            jQuery('.top_searched_books').slick({
+                infinite: true,
+                slidesToShow: 6,
+                slidesToScroll: 3,
+                arrows: true,
+                responsive: [
+                    {
+                        breakpoint: 1000,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                        }
+                    }
+                ]
+            });
+        });
+    
+        if (window.matchMedia('(max-width: 1000px)').matches) {
+            $('.resp_cf_section').addClass('container');
+        } else {
+            $('.resp_cf_section').removeClass('container');
+        }
+    
+        $(window).resize(function(){
+            if ($(window).width() <= 1000){
+                $('.resp_cf_section').addClass('container');
+            }
+            else {
+                $('.resp_cf_section').removeClass('container');
+            }
+        });
+    
+        if (window.history.length <= 2) {
+            $(".goBack").addClass('hidden');
+        }
+    
+        var book_id = "92";
+        var book_type = $('#usa_book_type').attr('value');
+        var book_condition = $('#usa_book_condition').attr('value');
+        var book_price_type = $('#usa_book_price_type').attr('value');
+    
+        $('#submit_btn_checkout').on('click',function () {
+            book_type = $('#usa_book_type').attr('value');
+            book_condition = $('#usa_book_condition').attr('value');
+            book_price_type = $('#usa_book_price_type').attr('value');
+            $('#submit_btn_checkout_loader').removeClass('hidden');
+            $('#submit_btn_checkout').addClass('hidden');
+            buyBookRedirection(book_id,book_type,book_condition,book_price_type);
+        });
+    
+        $('#solution_btn_checkout').on('click',function () {
+            redirectionLink(2)
+        });
+    
+        $('#membership_btn_checkout').on('click',function () {
+            $('#membership_btn_checkout_loader').removeClass('hidden');
+            $('#membership_btn_checkout').addClass('hidden');
+            redirectionLink(1);
+        });
+    
+        function buyBookRedirection(book_id,book_type,book_condition,book_price_type){
+            $.ajax({
+                type: 'POST',
+                url: document.URL,
+                data: {
+                    checkout_redirection:true,
+                    book_id:book_id,
+                    book_type:book_type,
+                    book_condition:book_condition,
+                    price_type:book_price_type,
+                },
+                beforeSend: function () {
+                },
+                success: function (response) {
+                    /* $('.loading-overlay').hide(); */
+                    var result = $.parseJSON(response);
+                    if(result.type == '0'){
+                        window.location.reload();
+                    }
+                    if(result.type == '1'){
+                        $('.checkout_disp_errors').html('');
+                        window.location.href = result.redirect_url;
+                    }else{
+                        $('.checkout_disp_errors').html(result.error_message);
+                    }
+                }
+            });
+        }
+        $('.accordion a').click(function(){
+            $(this).toggleClass('active');
+            $(this).next('.content').slideToggle(400);
+            $(this).next('.content').css('display','grid');
+        });
+    
+        function redirectionLink(type){
+            $.ajax({
+                url:location.URL,
+                type:"POST",
+                data:{
+                    redirection_type:type
+                },success:function(res){
+                    location.href = res;
+                }
+            });
+        }
+    
+    
+    });
+    }, false);
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+</script>
+<link rel="preload " href="{% static 'statics/js/dd450856ba-contentpages.js' %}" as="script">
+<link rel="stylesheet" href="{% static 'statics/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'statics/css/2417dbe620-contentpages_css.css' %}">
+<div id="page" class="wrapper single-product contentpage-page " data-psp-trigger="" data-seller-id="958079" data-content-type="1" data-content-id="2707350" data-trigger-leave-page="1">
+    <article id="content" class="content-wrapper">
+        <div id="main-section" class="section-entry-product">
+            <div class="entry-product-wrapper">
+                <div class="identityof-product space-entry-content doc-banner">
+                    <a href="{% url 'category_detail' products.category.slug %}" target="_blank">
+                        <h2 class="typeof-product" style="color: #199be9;">{{products.category}}</h2>
+                    </a>
+                    <h1 class="titleof-product">{{products.title}}</h1>
+                    <div class="course-block">
+                        {% if products.course %}
+                        <ul class="course">
+                            <li class="label">Course</li>
+                            <li class="course">
+                                <a class="doc-banner-course-link " target="_blank">{{products.course}}</a>
+                            </li>
+                        </ul>
+                        {% endif %}
+                        {% if products.institute %}
+                        <ul class="school">
+                            <li class="label">Institution</li>
+                            <li class="school">
+                                <a href="{% url 'school_detail' products.institute.slug %}" class="doc-banner-school-link " target="_blank">{{products.institute}}</a>
+                            </li>
+                        </ul>
+                        {% endif %}
+                        {% if products.book %}
+                        <ul class="book">
+                            <li class="label">Book</li>
+                            <li class="book">
+                                <a class="doc-banner-book-link left-text " target="_blank">{{products.book}}</a>
+                            </li>
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div class="content-description">
+                        <p id="content-description" class="infoof-product">{{products.description}}</p>
+                        {% comment %} <span class="show-more " data-extra-text="ckup."  id="content-page-show">[Show more]</span> {% endcomment %}
+                    </div>
+                </div>
+                <div id="contentviewer" class="preview-product space-entry-content">
+                    <div class="caption-preview-product">
+                        <p>Preview {{products.show_pages}} out of {{products.num_pages}} &nbsp;pages</p>
+                    </div>
+                    <div class="object-preview-wrapper">
+                        <div id="pdf_preview" class="pdf-wrapper">
+                            <a href="#" class="btn-fill-blue preview-doc-class quickview-doc" data-id="2707350" data-type="1" data-loaded="false">
+                            <i class="far fa-eye"></i>&nbsp; View example
+                            </a>
+                            <input type="hidden" id="iframe_src_doc" value="" class="active">
+                            <div class="iframe-doc iframe-doc-wrap bart-blue-version" data-preview-count="4">
+                                {% if products.dummy_file %}
+                                <object data="{{ products.dummy_file.url }}" id="document-preview" class="document-preview-iframe"></object> 
+                                {% endif %}
+                            </div>
+                            <div class="preview-doc preview-doc-class"><img src="{{products.image.url}}" alt="mobile-preview"></div>
+                        </div>
+                    </div>
+                    <ul class="share-preview-product">
+                        <li><a href="/copyright-claim" class="cta-report"><i class="fal fa-thumbs-down fa-flip-horizontal"></i>&nbsp; Report Copyright Violation</a></li>
+                    </ul>
+                    <input type="hidden" id="iframe-src-doc-2707350" value="#">
+                    <div id="iframe-doc-2707350" class="display-none quickview-content doc-page">
+                        <div class="popup-wrapper">
+                            <!-- Popup Quick view -->
+                            <div class="popup-quickview inner-popup">
+                                <div class="popup-content">
+                                    <div class="view-product">
+                                        <p>Preview {{products.show_pages}} out of {{products.num_pages}} pages</p>
+                                        <a href="{% url "add-to-cart" products.id %}" class="btn-fill-blue cta-buy header-buy-btn add-item-to-shoppingcart  cursor-pointer" data-type="document" data-id="{{products.id}}" data-upselling-bundle="" data-amp-location="Document page (header button)" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
+                                        <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                                        </a>
+                                        <div class="image-view" id="preview-{{products.id}}">
+                                            {% comment %} ************************************* {% endcomment %}
+                                            {% if products.dummy_file %}
+                                            <object data="{{ products.dummy_file.url }}" id="document-preview" class="document-preview-iframe"></object> 
+                                            {% endif %}
+                                            {% comment %} ************************************* {% endcomment %}
+                                        </div>
+                                    </div>
+                                    <div class="info-product">
+                                        <div class="cta-view-product">
+                                            <a href="{% url "add-to-cart" products.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart add-to-cart-qv-2707350-document cursor-pointer" data-id="{{products.id}}" data-type="document" data-upselling-bundle="" data-amp-location="Document page - mobile quickview" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
+                                            <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
+                                            Add to cart
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="results-filter results-search-filter content-attention" id="content-page-recommendations">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding main-heading-border">
+                        <h3>Intermediate Accounting Chapter(s) :</h3>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                        <div class="accordion">
+                            <div class="accordion-item">
+                                <a class="faq-link">Chapter: 1</a>
+                                <div class="content">
+                                    <ul class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
+                                        <p style="font-weight: 700;margin-bottom: unset;">Practice Exercises:</p>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/determine-whether-the-following-statements-are-true-or-false-if">PE-1</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/match-the-numbered-statements-below-with-the-lettered-terms-an">PE-2</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/for-each-of-the-following-independent-situations-identify-the-relevant">PE-3</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/for-each-situation-listed-indicate-by-letter-the-appropriate-qualitative">PE-4</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/in-each-of-the-following-independent-situations-an-example-is">PE-5</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/for-each-of-the-following-items-identify-the-financial-statement">PE-6</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/in-each-of-the-following-independent-situations-an-example-is-given-requiring">PE-7</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/one-of-the-underlying-assumptions-of-the-accounting-model-is">PE-8</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/1-one-of-the-elements-on-a-financial-statement-is">PE-9</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/assume-that-you-just-inherited-1-million-you-are-aware">PE-10</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/emilio-valdez-worked-for-several-years-as-a-loan-analyst">PE-11</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/quality-enterprises-inc-issued-its-2010-financial-statements-on-february">PE-12</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-due-process-system-of-the-fasb-encourages-public-input">PE-13</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/fasb-statement-no-106-requires-companies-to-recognize-a-liability">PE-14</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/tom-obstinate-is-disgusted-by-all-of-the-emphasis-being">PE-15</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/for-more-than-three-decades-accounting-professionals-accounting-educators-and">PE-16</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/little-attempt-is-made-to-reconcile-the-accounting-standard-differences">PE-17</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-fasb-concluded-in-concepts-statement-no-1-that-investors">PE-18</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-cable-television-industry-is-facing-competition-from-companies-using">PE-19</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/conserv-corporation-a-computer-software-company-is-trying-to-determine">PE-20</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/financial-statements-in-the-united-states-rely-heavily-on-historical">PE-21</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/companies-regularly-obtain-money-through-the-issuance-of-bonds-the">PE-22</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/in-the-1970s-a-leader-in-the-accounting-profession-proposed">PE-23</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-existence-of-just-four-large-cpa-firms-that-service">PE-24</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/locate-the-2007-financial-statements-for-the-walt-disney">PE-25</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-following-information-comes-from-the-2006-financial-statements-of">PE-26</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/imagine-that-you-have-been-selected-to-compete-with-students">PE-27</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/to-help-you-become-familiar-with-the-accounting-open-concepts-statement">PE-28</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/accounting-standards-place-limits-on-the-set-of-allowable-alternative">PE-29</a>&nbsp;&nbsp;&nbsp;</li>
+                                    </ul>
+                                    <ul class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
+                                        <p style="font-weight: 700;margin-bottom: unset;">Questions:</p>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/accounting-has-been-defined-as-a-service-activity-who-is">Q-1</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/how-does-the-fact-that-there-are-limited-resources-in">Q-2</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/accounting-is-sometimes-characterized-as-dealing-only-with-the-past">Q-3</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/distinguish-between-management-accounting-and-financial-accounting">Q-4</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-five-items-make-up-the-generalpurpose-financial-statements">Q-5</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/contrast-the-roles-of-an-accountant-and-an-auditor">Q-6</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/why-are-independent-audits-necessary">Q-7</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-conditions-led-to-the-establishment-of-accounting-standardsetting-bodies">Q-8</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/describe-the-structure-of-the-fasb-where-does-the-fasb">Q-9</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-are-the-differences-in-purpose-and-scope-of-the">Q-10</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-characteristics-of-the-standardsetting-process-are-designed-to-increase">Q-11</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/a-what-role-does-the-eitf-play-in-establishing-accounting">Q-12</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/how-does-the-sec-influence-the-setting-of-accounting-standards">Q-13</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-is-the-aicpa-the-aaa">Q-14</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/explain-the-relationship-between-financial-accounting-rules-and-tax-accounting">Q-15</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/why-is-standard-setting-such-a-difficult-and-complex-task">Q-16</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/according-to-the-fasbs-gaap-hierarchy-which-set-of-accounting">Q-17</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/why-are-differing-national-accounting-standards-converging-to-a-common">Q-18</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-is-the-iasb-what-is-the-sec-position-regarding">Q-19</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/list-and-explain-the-main-reasons-that-a-conceptual-framework">Q-20</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/identify-the-major-objectives-of-financial-reporting-as-specified-by">Q-21</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/one-objective-of-financial-reporting-is-understandability-understandable-to-whom">Q-22</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/why-is-it-so-difficult-to-measure-the-cost-effectiveness">Q-23</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/distinguish-between-the-qualities-of-relevance-and-reliability">Q-24</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/does-reliability-imply-absolute-accuracy-explain">Q-25</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/define-comparability">Q-26</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                                            <a href="/of-what-value-is-consistency-in-financial-reporting">Q-27</a>&nbsp;&nbsp;&nbsp;
+                                        </li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-is-the-current-numerical-materiality-standard-in-accounting">Q-28</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-is-conservatism-in-accounting-what-is-an-example-of">Q-29</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/identify-the-criteria-that-an-item-must-meet-to-qualify">Q-30</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/identify-and-describe-five-different-measurement-attributes">Q-31</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/briefly-describe-the-five-traditional-assumptions-that-influence-the-conceptual">Q-32</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-is-the-most-common-career-path-for-a-college">Q-33</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-user-careers-require-a-knowledge-of-intermediate-accounting-issues">Q-34</a>&nbsp;&nbsp;&nbsp;</li>
+                                    </ul>
+                                </div>
+                                <a class="faq-link">Chapter: 2</a>
+                                <div class="content">
+                                    <ul class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
+                                        <p style="font-weight: 700;margin-bottom: unset;">Practice Exercises:</p>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-journal-entry-or-entries-necessary-to-record-the-following">PE-1</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-journal-entry-or-entries-necessary-to-record-the">PE-2</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-journal-entry-or-entries-necessary-to">PE-3</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-journal-entry-or-entries-necessary-to-record">PE-4</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-journal-entry-or-entries-necessary">PE-5</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-beginning-balance-in-the-cash-account-was-10000-during">PE-6</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-beginning-balance-in-the-accounts-payable-account-was-8000">PE-7</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/use-the-following-account-balance-information-to">PE-8</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/use-the-following-account-balance-information-to-construct">PE-9</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/prepare-two-income-statements-one-using-the-information-in-practice">PE-10</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/prepare-two-balance-sheets-one-using-the-information-in-practice">PE-11</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-adjusting-journal-entry-necessary">PE-12</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-adjusting-journal-entry-necessary-at-the-end-of">PE-13</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-adjusting-journal-entry-necessary-at-the">PE-14</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-adjusting-journal-entry-necessary-at-the-the-period-in">PE-15</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-adjusting-journal-entry-necessary-at-the-end">PE-16</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-closing-entry-or-entries-necessary-to">PE-17</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-closing-entry-or-entries-necessary-to-close-the">PE-18</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/georgia-supply-corporation-a-merchandising-firm-prepared-the-following-trial">PE-19</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/in-analyzing-the-accounts-of-sydney-corporation-the-adjusting-data">PE-20</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/upon-inspecting-the-books-and-records-for-wernli-company-for">PE-21</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/for-each-situation-reconstruct-the-adjusting-entry-that-was-made">PE-22</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/accounts-of-pioneer-heating-corporation-at-the-end-of-the">PE-23</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/below-is-the-trial-balance-for-boudreaux-company-as-of">PE-24</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/for-each-of-the-following-journal-entries-write-a-description">PE-25</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-following-accounts-were-taken-from-the-trial-balance-of">PE-26</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-following-data-were-obtained-from-an-analysis-of-the">PE-27</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/guidecom-consulting-company-initially-records-prepaid-items-as-assets-and">PE-28</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/an-accountant-for-jolley-inc-a-merchandising-enterprise-has-just">PE-29</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/dylans-taxidermy-corporation-reports-revenues-and-expenses-of-142300-and">PE-30</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/an-analysis-of-goulding-inc-disclosed-changes-in-account-balances">PE-31</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/spilker-aviation-inc-failed-to-make-yearend-adjustments-to-record">PE-32</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/selfish-gene-company-is-a-merchandising-firm-the-following-events">PE-33</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/using-the-format-provided-identify-for-each-account-1-whether">PE-34</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/on-december-31-trinkets-supply-company-noted-the-following-transactions">PE-35</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-accountant-for-save-more-company-made-the-following-adjusting">PE-36</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-bookkeeper-for-joes-hardware-co-records-all-revenue-and">PE-37</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/gee-enterprises-records-all-transactions-on-the-cash-basis-greg">PE-38</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/account-balances-taken-from-the-ledger-of-builders-supply-corporation">PE-39</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/data-for-adjustments-at-december-31-2011-are-as-follows">PE-40</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/account-balances-taken-from-the-ledger-of-high-flying-logistics">PE-41</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-following-account-balances-are-taken-from-the-general-ledger">PE-42</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/consider-the-following-account-of-a-veterinarian-attempting-to-hire">PE-43</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/explain-why-each-of-the-following-hypothetical-events-would-not">PE-44</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/jim-price-and-elaine-bijard-are-taking-an-accounting-systems">PE-45</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/alice-guth-operates-a-lowimpact-aerobics-studio-alice-has-been">PE-46</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/computers-have-drastically-altered-the-way-accounting-records-are-maintained">PE-47</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/julie-is-successful-in-her-position-as-a-consultant-for">PE-48</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                                            <a href="/locate-the-2006-financial-statements-for-lockheed-martin-corporation-on">PE-49</a>&nbsp;&nbsp;&nbsp;
+                                        </li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/some-accounting-students-feel-that-the-mechanics-of-accounting-journal">PE-50</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/to-help-you-become-familiar-with-the-accounting">PE-51</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/refer-back-to-the-section-of-the-chapter-entitled-preparing">PE-52</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/study-help/intermediate-accounting/beginning-with-chapter-2-each-chapter-in-this-text-will">PE-53</a>&nbsp;&nbsp;&nbsp;</li>
+                                    </ul>
+                                    <ul class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
+                                        <p style="font-weight: 700;margin-bottom: unset;">Questions:</p>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-types-of-reports-are-generated-from-the-accounting-system">Q-1</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-are-the-main-similarities-and-differences-between-a-manual">Q-2</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/distinguish-between-the-recording-and-reporting-phases-of-the-accounting">Q-3</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/list-and-describe-the-steps-in-the-accounting-process-why">Q-4</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/under-doubleentry-accounting-what-are-the-debitcredit-relationships-of-accounts">Q-5</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/distinguish-between-a-real-and-nominal-accounts-b-general-journal">Q-6</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/explain-the-nature-and-the-purpose-of-a-adjusting-entries">Q-7</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/as-beechnut-mining-companys-independent-certified-public-accountant-you-find">Q-8</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/give-three-common-examples-of-contra-accounts-explain-why-contra">Q-9</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/payment-of-insurance-in-advance-may-be-recorded-in-either">Q-10</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/describe-the-nature-and-purpose-of-a-work-sheet">Q-11</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-effect-if-any-does-the-use-of-a-work">Q-12</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/from-the-following-list-of-accounts-determine-which-ones-should">Q-13</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/distinguish-between-accrual-and-cashbasis-accounting">Q-14</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/is-greater-accuracy-achieved-in-financial-statements-prepared-from-doubleentry">Q-15</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-are-the-major-advantages-of-computers-as-compared-with">Q-16</a>&nbsp;&nbsp;&nbsp;</li>
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/one-of-your-clients-overheard-a-computer-manufacturer-sales-representative">Q-17</a>&nbsp;&nbsp;&nbsp;</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="reviewblock" class="ratings-product space-entry-content">
+                    <div class="top-reviews-area">
+                        <h2 class="title-rating title-rating-mobile">7&nbsp;
+                            reviews
+                        </h2>
+                        <ul class="star-rates star-rates">
+                            <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
+                            <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
+                            <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
+                            <li><i class="star-review cp-star star-grey fas fa-star"></i></li>
+                            <li><i class="star-review cp-star star-grey fas fa-star"></i></li>
+                        </ul>
+                    </div>
+                    <div class="ratings-wrapper">
+                        <div class="ratings-item">
+                            <div class="row-wrap">
+                                <div class="single-rating-wrap">
+                                    <div class="rating-wrap rating-wrap-left">
+                                        <div class="image-rater"><img src="/avatars/default_avatar.png" onerror="this.onerror=null;this.src='https://www.stuvia.com/hosted-imgs/default_avatar.png';" alt="review-writer-avatar"></div>
+                                        <div class="desc-rater">
+                                            <ul class="star-rates star-rates-4385773">
+                                                <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
+                                                <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
+                                                <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
+                                                <li><i class="star-review cp-star star-grey fas fa-star"></i></li>
+                                                <li><i class="star-review cp-star star-grey fas fa-star"></i></li>
+                                            </ul>
+                                            <p class="info-rater">By: <span class="name-rater no-a-link-js" title="User maxwj page" data-a-link="/user/maxwj">maxwj</span> • 1 year ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="rating-wrap rating-wrap-right">
+                                    </div>
+                                </div>
+                                <p class="text-paragraph review-tp-4385773" data-review-id="4385773"></p>
+                            </div>
+                            <div class="all-replies-wrap all-replies-wrap-4385773"> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <aside class="widget-entry-product space-entry-content">
+                <div class="buy-section widget-entry-item desktop">
+                    <a href="{% url 'category_detail' products.category.slug %}" target="_blank">
+                        <h3 class="title-section-sidebar" style="color: #199be9;">{{products.category}}</h3>
+                    </a>
+                    <div id="rates-4" class="ratings">
+                        <form>
+                            {% for value in "12345" %}
+                            {% if value|add:"0" <= average_rating %}
+                            <span class="star1 selected" data-value="{{ value }}">★</span>
+                            {% else %}
+                            <span class="star1" data-value="{{ value }}">★</span>
+                            {% endif %}
+                            {% endfor %}
+                        </form>
+                        <script>            
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const stars = document.querySelectorAll('.star');
+                                const ratingInput = document.getElementById('ratingInput');
+                                const ratingForm = document.getElementById('ratingForm');
+                            
+                                stars.forEach(function(star) {
+                                    star.addEventListener('click', function() {
+                                        const value = parseInt(star.dataset.value);
+                                        console.log('Submitting form');
+                                        ratingInput.value = value; 
+                                        stars.forEach(function(s) {
+                                            if (parseInt(s.dataset.value) <= value) {
+                                                s.classList.add('selected');
+                                            } else {
+                                                s.classList.remove('selected');
+                                            }
+                                        });
+                                    event.preventDefault();
+                                    submitForm();
+                                    });
+                                    
+                                });
+                            
+                                ratingForm.addEventListener('submit', function(event) {
+                                    console.log('Submitting');
+                                    event.preventDefault();
+                                    submitForm();
+                                });
+                            
+                                function submitForm() {
+                                    console.log('Submitting form');
+                                    ratingForm.submit(); 
+                                }
+                            });
+                            
+                        </script>            
+                        <style>
+                            .star {
+                            font-size: 24px;
+                            cursor: pointer;
+                            }
+                            .star.selected {
+                            color: gold;
+                            }
+                            .star1 {
+                            cursor: pointer;
+                            }
+                            .star1.selected {
+                            color: gold;
+                            }
+                            .ratingbtn{
+                            padding: 5px;
+                            margin: 5px;
+                            border-radius: 10px;
+                            background: #199be9;
+                            color: white;
+                            }
+                        </style>
+                    </div>
+                    <div class="currencyof-product">
+                        <span itemprop="price" content="{{products.id}}-document">${{products.price}}</span>
+                        {% comment %} 
+                        <link itemprop="availability" href="http://schema.org/InStock">
+                        {% endcomment %}
+                    </div>
+                    <div class="ctaof-product ">
+                        <a href="{% url "add-to-cart" products.id %}" class="btn-fill-yellow cta-buy add-item-to-shoppingcart cursor-pointer" data-id="{{products.id}}" data-upselling-bundle="" data-type="document" data-amp-location="Document page" data-user-status="yes" data-country-seller="214" data-price="1100" data-currency="USD" data-language="en" data-downloads="4" data-views="53" data-rating="0.00" data-content-contained-amount="182">
+                        <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                        </a>
+                        {% comment %} <a href="#" class="add-wishlist ajax-add-wishlist button-add-wishlist-{{products.id}}" data-id="{{products.id}}" data-type="1"><i class="far fa-heart buyblock-icon"></i>&nbsp; Add to wishlist</a>
+                        <a href="#" class="add-wishlist ajax-delete-wishlist button-delete-wishlist-{{products.id}} display-none" data-id="{{products.id}}" data-type="1"><i class="fas fa-heart buyblock-icon"></i>&nbsp; Remove from wishlist</a> {% endcomment %}
+                    </div>
+                    <ul class="guarantee-section">
+                        <li>100% satisfaction guarantee</li>
+                        <li>Immediately available after payment</li>
+                        <li>Both online and in PDF</li>
+                        <li>No strings attached</li>
+                    </ul>
+                    <ul class="tracksof-product">
+                        <li><i class="fal fa-eye icon-stats"></i>&nbsp;{{products.views}}</li>
+                        <li class=""><i class="far fa-cloud-download icon-stats"></i>&nbsp;{{products.purchased}}</li>
+                    </ul>
+                </div>
+                <div class="desktop mb-20">
+                    <div id="sellerinfo" class="seller-section widget-entry-item">
+                        <div class="title-section-wrapper">
+                            <h3 class="title-section-sidebar"></h3>
+                            <span class="cta-seller follow-user" data-sellerid="958079">Seller</span>
+                        </div>
+                        <div class="sellerof-product">
+                            <div class="seller-image-wrapper">
+                                {% if profile.image %}
+                                <img loading="lazy" src="{{profile.image.url}}" class="photo-seller" alt="avatar-seller">
+                                {% else %}
+                                <img loading="lazy" src="{% static 'statics/img/user_icon.png' %}" class="photo-seller" alt="avatar-seller">
+                                {% endif %}
+                            </div>
+                            <div class="seller-inform">
+                                <span class="name-seller"><a title="Seller page" href="#" class="">{{products.user.username}}</a></span>
+                                <label>
+                                    {% if time_since_registration %}
+                                    {% if time_since_registration < 365 %}
+                                    <p>Member for {{ time_since_registration }} day{{ time_since_registration|pluralize }}</p>
+                                    {% else %}
+                                    <p>Member for {{ time_since_registration }} year{{ time_since_registration|pluralize }}</p>
+                                    {% endif %}
+                                    {% else %}
+                                    <p>Registration date unknown</p>
+                                    {% endif %}
+                                </label>
+                                <label>
+                                {{count_products}} Total documents 
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="contentinfo" class="document-section widget-entry-item">
+                    <h3 class="title-section-sidebar">Document information</h3>
+                    <ul class="entry-tabel-data">
+                        <li>
+                            <label class="label-info">Uploaded on</label>
+                            <span class="text-info">{{products.created_at}}</span>
+                        </li>
+                        <li>
+                            <label class="label-info">Number of pages</label>
+                            <span class="text-info">{{products.num_pages}}</span>
+                        </li>
+                        <li>
+                            <label class="label-info">Type</label>
+                            <span class="text-info">{{products.category}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div id="schoolinfo" class="productfor-section widget-entry-item">
+                    <h3 class="title-section-sidebar">Written for</h3>
+                    <ul class="entry-tabel-data">
+                        <li>
+                            <label class="label-info">Institution</label>
+                            <span class="text-info"><a class="">{{products.institute}}</a></span>
+                        </li>
+                        <li>
+                            <label class="label-info">Course</label>
+                            <span class="text-info"><a class="">{{products.course}}</a></span>
+                        </li>
+                    </ul>
+                </div>
+                {% comment %} <div id="schoolinfo" class="productfor-section widget-entry-item">
+                    <h3 class="title-section-sidebar">Rate that Docs</h3>
+                    <form method="post" action="{% url 'rate_product' products.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="rating" id="ratingInput" value="0">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                        <br>
+                        <label for="description">Description:</label>
+                        <textarea id="description" name="description" rows="4" cols="50" style="height: 100;font-size: large;"></textarea><br>
+                        <input id="ratingForm" type="submit" value="Submit" class='ratingbtn'>                    
+                    </form>
+                </div> {% endcomment %}
+            </aside>
+            <div class="results-filter results-search-filter content-attention" id="content-page-recommendations">
+                <div class="recommendation-title" data-docids="2198912:1,2108464:1,2118974:1,3586378:1" data-numberofrecoms="4" data-recomsvalid="old recommendation">
+                    <h3>Suggestions based on the document that you are currently viewing</h3>
+                </div>
+                <div class="listing-grid">
+                    {% for product in latest_products %}
+                    <div class="listgrid-item selling-box before-you-leave-amplitude-click first-row" id="" data-type="content click">
+                        <a title="{{product.title}}" class="grid-list log-amplitude-js search-result-link recommended-item" data-click-location="Item" data-click-type="Document" data-click-title="{{product.title}}" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="true" rel="nofollow">
+                            <div class="icon-preview">
+                                {% if product.image %}
+                                <img src="{{product.image.url}}" class="image-boek" alt="{{product.title}}">
+                                {% else %}
+                                <img src="{% static 'statics/img/essentie_focus.png' %}" class="image-boek" alt="{{product.title}}">
+                                {% endif %} 
+                            </div>
+                            <div class="desc-preview" onclick="changeurllocation('{% url 'product_detail' product.category.slug product.slug %}')">
+                                <span class="content-title"> {{product.title}} </span>
+                                <div class="info-desc search-info-desc">
+                                    <div id="rates-4" class="ratings">
+                                        <form>
+                                            {% for value in "12345" %}
+                                            {% if value|add:"0" <= product.average_rating %}
+                                            <span class="star1 selected" data-value="{{ value }}">★</span>
+                                            {% else %}
+                                            <span class="star1" data-value="{{ value }}">★</span>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </form>
+                                        <span class="count-rates">({{product.average_rating}})</span>
+                                    </div>
+                                    <span class="prices">${{product.price}}</span>
+                                    <div class="downloads">
+                                        <span class="count-downloads">{{product.purchased}}x &nbsp;sold</span>
+                                    </div>
+                                </div>
+                                <div class="excerpt-desc">
+                                    <p>{{product.description}}
+                                    </p>
+                                    <div class="information-booken">
+                                        <div class="cta-detail desktop">
+                                            <span class="open-detail">i</span>
+                                            <span class="title-preview open-detail-title hover-act">See more info</span>
+                                            <span class="close-detail">x</span>
+                                        </div>
+                                        <ul class="details">
+                                            <li class="info-category">{{product.category}}</li>
+                                            <li class="count-pagina">&nbsp;• {{product.num_pages}}
+                                                pages
+                                                •&nbsp;
+                                            </li>
+                                            <li class="info-author">by <span class="name-author">{{product.user}}</span>&nbsp;•&nbsp;
+                                            </li>
+                                            <li class="info-author">uploaded <span class="name-author">&nbsp;{{product.created_at}}</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="quickview-doc recommended-item" data-id="{{product.id}}" data-type="1" data-loaded="false" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="false">
+                                <div class="cta-preview desktop ">
+                                    <i class="preview-icon fal fa-eye"></i>
+                                    <span class="title-preview hover-act">Quick View</span>
+                                </div>
+                            </span>
+                            <span class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" onclick="addurl('{{product.id}}')">
+                            <i class="add-to-cart-icon far fa-shopping-cart fa-flip-horizontal"></i>
+                            </span>
+                        </a>
+                        <div class="list-cta mobile">
+                            <span class="info-wrapper wrapper">
+                            <span class="open">i</span>
+                            <span class="close">x</span>
+                            </span>
+                            <span class="cart-wrapper wrapper add-item-to-shoppingcart recommended-item" data-id="{{product.id}}" onclick="addurl('{{product.id}}')">
+                            <i class="far fa-shopping-cart fa-flip-horizontal"></i>
+                            </span>
+                            <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.title}}" class="goto-wrapper wrapper recommended-item" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="{{product.title}}" data-is-link="true">
+                            <i class="fas fa-long-arrow-right"></i>
+                            </a>
+                        </div>
+                        {% if product.dummy_file %}
+                        <input type="hidden" id="iframe-src-doc-{{product.id}}" value="{{product.dummy_file.url}}">
+                        {% else %}
+                        <input type="hidden" id="iframe-src-doc-{{product.id}}" value="">
+                        {% endif %}
+                        <div id="iframe-doc-{{product.id}}" class="display-none quickview-content">
+                            <div class="popup-wrapper">
+                                <!-- Popup Quick view -->
+                                <div class="popup-quickview inner-popup">
+                                    <div class="popup-content">
+                                        <div class="view-product">
+                                            <p>Preview {{product.show_pages}} out of {{product.num_pages}} pages</p>
+                                            <a href="{% url "add-to-cart" product.id %}" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="" data-amp-location=" page (header button)" data-user-status="yes" data-country-seller="214" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
+                                            <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                                            </a>
+                                            <div class="image-view" id="preview-{{product.id}}">
+                                                {% comment %} ***************************** {% endcomment %}
+                                            </div>
+                                        </div>
+                                        <div class="info-product">
+                                            <div class="info-desc">
+                                                <span class="serif-title">{{product.category}}</span>
+                                                <div id="rates-4" class="ratings">
+                                                    <form>
+                                                        {% for value in "12345" %}
+                                                        {% if value|add:"0" <= product.average_rating %}
+                                                        <span class="star1 selected" data-value="{{ value }}">★</span>
+                                                        {% else %}
+                                                        <span class="star1" data-value="{{ value }}">★</span>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </form>
+                                                    <span class="count-rates">({{product.average_rating}})</span>
+                                                </div>
+                                            </div>
+                                            <span class="popup-title serif-title">{{product.title}}</span>
+                                            <span class="text-entry-product time-since time-since-{{product.id}}">
+                                            Last document update:
+                                            <span class="time-since-count tsc-{{product.id}}"></span>&nbsp;
+                                            <span class="time-since-unit tsu-{{product.id}}"></span>
+                                            ago {{product.updated_at}}
+                                            </span>
+                                            <p class="text-entry-product">
+                                                {{product.description}}
+                                            </p>
+                                            <div class="cta-view-product">
+                                                <div class="currencyof-product">
+                                                    <span itemprop="price">${{product.price}}</span>
+                                                    <link itemprop="availability" href="http://schema.org/InStock">
+                                                </div>
+                                                <a href="{% url "add-to-cart" product.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document recommended-item" data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="yes" data-upselling-bundle="" data-country-seller="214" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="false" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
+                                                <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
+                                                Add to cart
+                                                </a>
+                                                <a href="#" class="add-wishlist ajax-add-wishlist button-add-wishlist-{{product.id}} cursor-pointer" data-id="{{product.id}}" data-type="1">
+                                                <i class="far fa-heart"></i>
+                                                </a>
+                                                <a href="#" class="delete-wishlist ajax-delete-wishlist button-delete-wishlist-{{product.id}} cursor-pointer" data-id="{{product.id}}" data-type="1">
+                                                <i class="fas fa-heart"></i>
+                                                </a>
+                                            </div>
+                                            <div class="show-more-quickview">
+                                                <a href="{% url 'product_detail' product.category.slug product.slug %}" class="recommended-item " data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="{{product.title}}" data-is-link="true">
+                                                Show more info <i class="fa fa-long-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <section class="section-box section-columns">
+            <h2 class="title-section">The benefits of buying with AnswerDone:</h2>
+            <div class="section-columns">
+                <div class="column-item">
+                    <img loading="lazy" src="{% static 'statics/img/ComprehensiveAds.png' %}" alt="Guaranteed quality through customer reviews">
+                    <h3>Guaranteed quality through customer reviews</h3>
+                    <p>AnswerDone customers have reviewed there summaries before submitting. This how you know that you are buying the best documents.</p>
+                </div>
+                <div class="column-item">
+                    <img loading="lazy" src="{% static 'statics/img/ExperimentPrice.png' %}" alt="Quick and easy check-out">
+                    <h3>Quick and easy check-out</h3>
+                    <p>You can quickly pay through credit card for the Documents. There is no membership needed.</p>
+                </div>
+                <div class="column-item">
+                    <img loading="lazy" src="{% static 'statics/img/essentie_focus.png' %}" alt="Focus on what matters">
+                    <h3>Focus on what matters</h3>
+                    <p>Your fellow students write the study notes themselves, which is why the documents are always reliable and up-to-date. This ensures you quickly get to the core!  </p>
+                </div>
+            </div>
+        </section>
+    </article>
+    <div class="mob-bar-wrap">
+        <div class="mobile-buy-bar">
+            <div class="mob-buy-left">
+                <div class="mob-buy-price">
+                    <span itemprop="price" content="2707350-document">${{products.price}}</span>
+                    <span class="mob-buy-downloads ">&nbsp;{{products.purchased}}x &nbsp;sold</span>
+                </div>
+                <div class="mob-buy-rating">
+                    <ul class="star-rates">
+                        {% for value in "12345" %}
+                        {% if value|add:"0" <= products.average_rating %}
+                        <span class="star1 selected" data-value="{{ value }}">★</span>
+                        {% else %}
+                        <span class="star1" data-value="{{ value }}">★</span>
+                        {% endif %}
+                        {% endfor %}
+                        </form>
+                        <span class="count-rates">({{products.average_rating}})</span>
+                    </ul>
+                </div>
+            </div>
+            <div class="mob-buy-right">
+                <span class="btn-fill-yellow mob-cta-buy add-item-to-shoppingcart" onclick='addurl({{products.id}})'>
+                <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<script defer="" type="text/javascript" src=" {% static 'statics/js/1d32c2cbb2-app.js' %}"></script>
+<script defer="" type="text/javascript" src="{% static 'statics/js/dd450856ba-contentpages.js' %}"></script>
+{% endblock content %}

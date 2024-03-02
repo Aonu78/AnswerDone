@@ -1,0 +1,278 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+<style>
+    .modal{
+        display:none;
+    }
+    .display-flex{
+        display:flex;
+    }
+</style>
+        <link rel="stylesheet" href="{% static 'statics/css/8d861da500-dashboard_css.css' %}">
+        <link rel="preload " href="{% static 'statics/js/389710fa65-dashboard.js' %}" as="script">
+        <script defer="" type="text/javascript" src="{% static 'statics/js/c38bfd2f53-app.js' %}"></script>
+        <script defer="" type="text/javascript" src="{% static 'statics/js/389710fa65-dashboard.js' %}"></script>
+
+        <div id="dashboard-page" class="wrapper content-page  ">
+            <article id="content" class="content-wrapper page-dashboard">
+                <div id="main-section" class="section-wrapper content-attention">
+                    <section class="section-list-dashboard">
+                        <div class="dashboard-item dashboard-user-info" data-order-mobile="1" data-order-column="1">
+                            <div class="user-description">
+                                <div class="user-identity">
+                                    <h1 class="title-user">Hi <span>{{user.username}}</span></h1>
+                                    <p>Looking for the best summaries? Buy them today!</p>
+                                </div>
+                                <figure class="user-avatar">
+                                    {% if user.image %}
+                                    <img src="{{user.image.url}}">
+                                    {% else %}
+                                    <img src="{% static 'statics/img/user_icon.png' %}">
+                                    {% endif %}
+                                </figure>
+                            </div>
+                            <ul class="user-lists-info">
+                                <li class="buyer-intro">
+                                    <span class="label-info"><i class="far fa-file-alt" aria-hidden="true"></i>{{totalproducts}}</span>
+                                    <a href="{% url "user_uploads" %}" class="cta-info-list">Your Documents<i class="fas fa-chevron-right" aria-hidden="true"></i></a>
+                                </li>
+                                <li class="buyer-intro">
+                                    <span class="label-info"><i class="far fa-backpack" aria-hidden="true"></i>{{order_count}}</span>
+                                    <a href="{% url "downloads" %}" class="cta-info-list">Purchased Documents<i class="fas fa-chevron-right" aria-hidden="true"></i></a>
+                                </li>
+                                <li class="buyer-intro">
+                                    <span class="label-info"><i class="far fa-wallet" aria-hidden="true"></i>${{order_earn}}</span>
+                                    <a href="{% url "wallet" %}" class="cta-info-list">Your AnswerDone credit<i class="fas fa-chevron-right" aria-hidden="true"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="dashboard-item dashboard-discover-stuvia" data-order-mobile="8" data-order-column="1">
+                            <div class="entry-header-dashboarditem">
+                                <div class="icon-header">
+                                    <i class="fa fa-archive"></i>
+                                </div>
+                                <div class="content-header">
+                                    <h2 class="title-dashboard">Reviews And Rating</h2>
+                                    <p>Find the perfect thoughts from Users</p>
+                                </div>
+                                <p class="content-desc-mobile">Find the perfect thoughts from Users as they see your Docs.</p>
+                                <button class="cta-collapse-dashboarditem"></button>
+                            </div>
+                            <div class="entry-dashboarditem">
+                                <div class="listing-grid">
+                                </div>
+                                <div class="action-dashboarditem">
+                                    <a href=" {% url "reviews" %} " class="cta-dashboard-item">Reviews And Rating<i class="far fa-star"></i></a>
+                                </div>
+                            </div>
+                        </div> 
+                         
+                        
+                         {% comment %} <div id="book-dec" class="dashboard-item dashboard-user-opinion dashboard-item--active" data-order-mobile="3" data-order-column="1" style="max-height: 512px;
+                        overflow: auto;">
+                            <div class="entry-header-dashboarditem">
+                                <div class="icon-header">
+                                    <i class="fa fa-upload" aria-hidden="true"></i>
+                                    <section class="price-per-sale">
+                                    </section>
+                                </div>
+                                <div class="content-header">
+                                    <h2 class="title-dashboard">Uploaded Documents</h2>
+                                    <p>See Your list of Uploaded Documents</p>
+                                </div>
+                                <button id="uploaded-doc" class="cta-collapse-dashboarditem cta-collapse--active"></button>
+                            </div>
+                            {% for prod in products %}
+                            <div class="entry-dashboarditem display-flex" style="display: flex;justify-content: space-between;">
+                                <div class="listing-assessed-comments display-flex" style='width:70%'>
+                                    <img src='{{ prod.image.url }}' width=50px height=75px >
+                                    <h4 style="padding: 10px;">{{prod.title}}</h5>
+                                </div>
+                                <div class='display-flex'>
+                                <div class="action-dashboarditem" style="margin:0 !important">
+                                    <a class="cta-dashboard-item">{{prod.status}}</a>
+                                </div>
+                                <div class="action-dashboarditem" style="margin:0 !important; width:70px">
+                                    <a href="{% url "edit_product" prod.id %}" class="cta-dashboard-item">Edit<i class="fas fa-chevron-right"></i></a>
+                                </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>  {% endcomment %}
+                        <style>
+                            .toggle-height {
+                                height: 140px;
+                                overflow: none;
+                            }
+                            .toggle-height.expanded {
+                                height: 523px;
+                                overflow: auto;
+                            }
+                            
+                        </style>
+                        
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get a reference to the button element
+        var toggleButton = document.getElementById('uploaded-doc');
+        // Get a reference to the element with id "book-dec"
+        var uploadedDoc = document.getElementById('book-dec');
+    
+        // Add a click event listener to the button
+        toggleButton.addEventListener('click', function() {
+            // Toggle the class on the element
+            console.log("working")
+            uploadedDoc.classList.toggle('expanded');
+        });
+    });
+    
+</script>
+                        <div class="dashboard-item dashboard-item--filled dashboard-shopping-cart dashboard-item--active" data-order-mobile="2" data-order-column="2">
+                            <div class="entry-header-dashboarditem">
+                                <div class="icon-header">
+                                    <i class="far fa-shopping-cart" aria-hidden="true"></i>
+                                </div>
+                                <div class="content-header">
+                                    <h2 class="title-dashboard">Your shopping cart</h2>
+                                    <p>You currently have <strong><span id="dashboard-cart-item-count">{{cart_product}}</span> items</strong> in your shopping cart</p>
+                                </div>
+                                <button class="cta-collapse-dashboarditem cta-collapse--active" aria-label="Collapse Dashboad item"></button>
+                                <p class="content-desc-mobile">You currently have <strong><span id="dashboard-cart-item-count">{{cart_product}}</span> items</strong> in your shopping cart</p>
+                                <div class="cart-preview preview-list" style="width: -webkit-fill-available;">
+                                    <div class="preview-title">
+                                        <h4>Shopping cart</h4>
+                                        <p>{{cart_product}} items
+                                            <span class="price-shop">${{total_cost}}</span>
+                                        </p>
+                                    </div>
+                                    <script>
+                                        function hitUrl(variable) {
+                                            var url = "/remove-from-cart/" + variable + "/";
+                                            window.location.href = url;
+                                        }
+                                    </script>
+                                    {% comment %} <div class="cart-items-wrap"> {% endcomment %}
+                                        <div class="entry-dashboarditem">
+                                            <ul class="listing-discover-stuvia">
+                                                {% for item in cart %}
+                                                <li class="listing-item discover-item--large" style=" margin-right: 20px">
+                                                    <div class="cart-desc display-flex">
+                                                        <img src="{{item.product.image.url}}" width=50px height=75px>
+                                                        <div style="padding: 5px;">
+                                                        <p>{{item.product.category}}&nbsp; <span class="price-item">${{item.total_price}}</span></p>
+                                                        <h5 class="product-item">
+                                                            <a href="">{{item.product.title}}</a>
+                                                        </h5></div>
+                                                    </div>
+            
+                                                    <div class="delete-content-cart-header" onclick="hitUrl('{{item.product.id}}')">
+                                                       <a href="{% url "remove_from_cart" item.product.id %}"> <i class="head-icon-trash far fa-trash-alt"></i></a>
+                                                    </div>
+                                                </li>
+                                                {% endfor %}
+                                                {% comment %} <li class="listing-item discover-more-book-li">
+                                                    <a href="/book/international-law/9780198753018" class="discover-wrapper">
+                                                    <img src="https://www.stuvia.com/docpics/books/9200000068208138.jpg">
+                                                    </a>
+                                                </li> {% endcomment %}
+                                            </ul>
+                                            <div class="pvlist-item special-list">
+                                                {% comment %} <div class="special-promo">
+                                                    <h5>Deal: 10% discount</h5>
+                                                    <p>Buy more than 3 items and get a 10% discount</p>
+                                                </div> {% endcomment %}
+                                                <a href="{% url "checkout" %}" class="button-green header-cart-link" data-login-message="Logging you in" style="margin-top: 30px;"><i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;Checkout&nbsp;<i class="far fa-angle-right"></i></a>
+                                            </div>
+                                        </div>
+                            
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-banner dashboard-sell-knowledge" data-order-mobile="9" data-order-column="2">
+                        </div>
+                        <div class="dashboard-item dashboard-mijndownloads-stuvia dashboard-item--active" data-order-mobile="5" data-order-column="2">
+                            <div class="entry-header-dashboarditem">
+                                <div class="icon-header">
+                                    <i class="far fa-cloud-download" aria-hidden="true"></i>
+                                </div>
+                                <div class="content-header">
+                                    <h2 class="title-dashboard">My Downloads</h2>
+                                    <p>Overview of all the documents and flashcards you've purchased</p>
+                                </div>
+                                <p class="content-desc-mobile">Overview of all the documents and flashcards you've purchased</p>
+                                <button class="cta-collapse-dashboarditem cta-collapse--active"></button>
+                            </div>
+                            <div class="entry-dashboarditem">
+                                <div class="listing-grid">
+                                </div>
+                                <div class="action-dashboarditem">
+                                    <a href="/downloads" class="cta-dashboard-item">View my downloads<i class="fas fa-chevron-right"></i></a>
+                                    <a href="/uploads" class="cta-view-myupload">View my uploads<i class="fas fa-chevron-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dashboard-item dashboard-mijndownloads-stuvia dashboard-item--active" data-order-mobile="5" data-order-column="2">
+                            <div class="entry-header-dashboarditem">
+                                <div class="icon-header">
+                                    <i class="far fa-cloud-download" aria-hidden="true"></i>
+                                </div>
+                                <div class="content-header">
+                                    <h2 class="title-dashboard">Uploaded Documents</h2>
+                                    <p>See Your list of Uploaded Documents</p>
+                                </div>
+                                <p class="content-desc-mobile">Overview of all the documents and See Your list of Uploaded Documents</p>
+                                <button class="cta-collapse-dashboarditem cta-collapse--active"></button>
+                            </div>
+                            <div class="entry-dashboarditem">
+                                <div class="listing-grid">
+                                </div>
+                                <div class="action-dashboarditem">
+                                    <a href=" {% url "user_uploads" %} " class="cta-dashboard-item">View Uploaded Documents<i class="fas fa-chevron-right"></i></a>
+                                    <a href=" {% url "uploads" %}" class="cta-view-myupload">New Uploads<i class="fas fa-chevron-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        {% comment %} <div class="dashboard-item dashboard-mijndownloads-stuvia dashboard-item--active" data-order-mobile="13" data-order-column="2">
+                            <div class="entry-header-dashboarditem">
+                                <div class="icon-header">
+                                    <i class="far fa-cloud-download" aria-hidden="true"></i>
+                                </div>
+                                <div class="content-header">
+                                    <h2 class="title-dashboard">Last viewed</h2>
+                                    <p>Want to view your latest viewed documents again? </p>
+                                </div>
+                                <p class="content-desc-mobile">Want to view your latest viewed documents again? </p>
+                                <button class="cta-collapse-dashboarditem cta-collapse--active" aria-label="Collapse Dashboad item"></button>
+                            </div>
+                            <div class="entry-dashboarditem">
+                                <div class="listing-grid">
+                                </div>
+                            </div>
+                        </div> {% endcomment %}
+                        {% comment %} <div class="dashboard-item dashboard-popular-stuvia dashboard-item--active" data-order-mobile="7" data-order-column="2">
+                            <div class="entry-header-dashboarditem">
+                                <div class="icon-header">
+                                    <i class="far fa-heart" aria-hidden="true"></i>
+                                </div>
+                                <div class="content-header">
+                                    <h2 class="title-dashboard">Recommended by others</h2>
+                                    <p>Find summaries that were recommended by others</p>
+                                </div>
+                                <p class="content-desc-mobile">Find summaries that were recommended by others</p>
+                                <button class="cta-collapse-dashboarditem cta-collapse--active" aria-label="Collapse Dashboad item"></button>
+                            </div>
+                            <div class="entry-dashboarditem">
+                                <div class="listing-grid popular-suggestion">
+                                </div>
+                            </div>
+                        </div> {% endcomment %}
+                    </section>
+                </div>
+            </article>
+        </div>
+        {% endblock content %}
+        

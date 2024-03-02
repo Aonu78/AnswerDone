@@ -1,0 +1,393 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'statics/css/style.css' %}">
+{% comment %} ################## {% endcomment %}
+{% comment %} include Heder here {% endcomment %}
+{% comment %} ################## {% endcomment %}  
+<div class="wrapper" id="indexpage-wrapper">
+    <!-- Banner Section-->
+    <div class="new-banner-section banner-image-props homepage-banner-all">
+        <div class="container">
+            <div class="row">
+                <div class="banner-content">
+                    <h1 id="banner-content-title">The best study resources</h1>
+                    <h2 id="banner-content-subTitle">Save time by focussing on what matters. Study class notes and textbook summaries written by fellow students to quickly understand the essentials</h2>
+                </div>
+            </div>
+
+            <section class="searchbar-autocomplete-container" data-select2-id="5">
+
+                <div class="dropdown-filter desktop" id="dropdown-filter" data-loaded="false" data-select2-id="dropdown-filter">
+                    <select id="institutionsDropdown" class="filter-content filter-dropdown select2-hidden-accessible" data-select2-id="institutionsDropdown" tabindex="-1" aria-hidden="true">
+                        <option value="">Search by Category</option>
+                    </select>
+                        <i class="fas fa-chevron-down onload-chevron"></i>
+                        {% comment %} <div class="hidden-block"></div> {% endcomment %}
+                </div>
+
+                <div class="user-input-container">
+                    <form method="get" action="/search" id="searchbar-form">
+                        <button type="submit" class="search-icon-i">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        <i class="far fa-times remove-input big"></i>
+                        <input type="text" name="s" data-current-index="" class="searchbar" id="big-searchbar" autocomplete="off" placeholder="Search for courses, books, exams, or assignments" data-location="index">
+                        <input type="hidden" name="instellingfilter" value="" class="institution-filter">
+                        <input type="hidden" name="origin" value="homepage">
+                    </form>
+
+                    <section class="searchbar-content" style="display: none;">
+                        <div class="searchbar-content-container-link">
+                            <a class="search-link no-a-link-js"><span id="search-term"></span> <span class="search-result-count"></span></a>
+                            <span class="recent-searches">Previously searched by you</span>
+                        </div>
+                        <div class="searchbar-content-container">
+                            <div class="searchbar-item spin"><i class="fas fa-circle-notch fa-spin centered search-spinner"></i></div>
+                                                        </div>
+                    </section>
+
+                    {% comment %} <div class="hidden-block"></div> {% endcomment %}
+                </div>
+
+
+            </section>
+        </div>
+    </div>
+    <!-- summary book Section -->
+    <div class="section-5 populairbooks">
+        <div class="container">
+            <div class="section5-content overview-search-container">
+                <div class="summary-book-titel">
+                    <h3 class="heading3">Latest Summaries</h3>
+                </div>
+                <div class="all-summary-book">
+                    <div class="category-section index-books-sections">
+                        <div class="row user-tabs owl-carousel owl-theme index-textbooks-wrapper" id="index-textbooks-wrapper">
+                            {% for product in products %}
+                            <div class="book-container">
+                                <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{ product.title }}" rel="nofollow">
+                                    <div class="book-inner-container">
+                                        <div class="book-img-container">
+                                            {% if product.image %}
+                                            <img loading="lazy" width="155" height="255" src="{{ product.image.url }}">
+                                            {% else %}
+                                            <img src="{% static 'statics/img/essentie_focus.png' %}" alt="Placeholder Image">
+                                            {% endif %}                                        </div>
+                                        <div class="book-info-container">
+                                            <div class="book-info-title"><span>{{product.title}}</span></div>
+                                            <div class="book-info-author" title="{{product.description}}">
+                                                <p>{{product.description}}</p>
+                                            </div>
+                                            {% comment %} <div class="book-info-num-docs"><span>298 Documents</span></div> {% endcomment %}
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- summary book Section End-->
+    <!-- Banner Section End-->
+    <!-- Sell Your Summaries Section -->
+    <div class="container">
+        <div class="sell-your-summaries">
+            <div class="sell-summaries-title">
+                <h3 class="heading3">Sell your Doc or Note in an instant way</h3>
+            </div>
+            <div class="sell-summaries-middle">
+                <div class="sell-summaries-part">
+                    <div class="sell-summaries-picture">
+                        <img loading="lazy" width="430" height="210" src="{% static 'statics/img/summary-3.jpg' %}" alt="homepage-vind_jouw_schoolvak">
+                    </div>
+                    <div class="sell-summaries-text">
+                        <h3>Nothing to lose, only to win</h3>
+                        <p>Tens of thousands of people are searching for notes onAnswer Done every day. Including yours! Some documents even sell hundreds of times.</p>
+                    </div>
+                </div>
+                <div class="sell-summaries-part">
+                    <div class="sell-summaries-picture">
+                        <img loading="lazy" width="430" height="210" src="{% static 'statics/img/summary-2.jpg' %}" alt="homepage-vind_jouw_schoolvak">
+                    </div>
+                    <div class="sell-summaries-text">
+                        <h3>Make money quickly</h3>
+                        <p>Each time your document is sold, you earn money. This money is immediately credited to your account.</p>
+                    </div>
+                </div>
+                <div class="sell-summaries-part">
+                    <div class="sell-summaries-picture">
+                        <img loading="lazy" width="430" height="210" src="{% static 'statics/img/summary-1.jpg' %}" alt="homepage-vind_jouw_schoolvak">
+                    </div>
+                    <div class="sell-summaries-text">
+                        <h3>Easy uploading</h3>
+                        <p>In less than a minute, you have created an account, set the price of your document and started selling!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="sell-summaries-buttons">
+                <a href="{% url "sell-study-notes" %}" title="Start selling " class="button btn-green">Start selling </a>
+                <a href="{% url "sell-study-notes" %}" class="button btn-blue">Tell me more</a>
+            </div>
+        </div>
+    </div>
+    <!-- Sell Your Summaries Section End -->
+    <!-- Triple sell blocks find section -->
+    <div class="find-section container full-version">
+        <div class="find-div">
+            <div class="sub-title-find">
+                <div class="icon-img graduation">
+                    <i class="fal fa-graduation-cap"></i>
+                </div>
+                <h2>Find subjects onAnswer Done</h2>
+            </div>
+            <div>
+                <p>OnAnswer Done you will find summaries, practice questions and other study documents for all subjects. Find all the summaries you need by looking for your subject.</p>
+            </div>
+            <div>
+                <a href="/school/int">Find my subject <i class="fa fa-angle-right"></i></a>
+            </div>
+        </div>
+        <div class="find-div">
+            <div class="sub-title-find">
+                <div class="icon-img university">
+                    <i class="far fa-university"></i>
+                </div>
+                <h2>Textbooks</h2>
+            </div>
+            <div>
+                <p>You can also search for study books onAnswer Done. Use your textbook as a starting point to find the best summaries, practice exams or notes.</p>
+            </div>
+            <div>
+                <a class="button-populairbooks">Find textbooks <i class="fa fa-angle-right"></i></a>
+            </div>
+        </div>
+        <div class="find-div">
+            <div class="sub-title-find">
+                <div class="icon-img graduation2">
+                    <i class="fal fa-graduation-cap"></i>
+                </div>
+                <h2>Qualifications</h2>
+            </div>
+            <div>
+                <p>Do you need summaries or notes to study for a specific qualification? OnAnswer Done you'll find all kinds of documents that make studying for qualifications easier.</p>
+            </div>
+            <div>
+                <a href="/qualifications">Notes and summaries for qualifications <i class="fa fa-angle-right"></i></a>
+            </div>
+        </div>
+    </div>
+    <!-- find Section End -->
+    <style>
+        .counter{
+        color: #199be9;
+        font-family: 'Open Sans', sans-serif;
+        text-align: center;
+        height: 190px;
+        width: 190px;
+        padding: 30px 25px 25px;
+        margin: 0 auto;
+        border: 3px solid #199be9;
+        border-radius: 20px 20px;
+        position: relative;
+        z-index: 1;
+        }
+        .counter:before,
+        .counter:after{
+        content: "";
+        background: #f3f3f3;
+        border-radius: 20px;
+        box-shadow: 4px 4px 2px rgba(0,0,0,0.2);
+        position: absolute;
+        left: 15px;
+        top: 15px;
+        bottom: 15px;
+        right: 15px;
+        z-index: -1;
+        }
+        .counter:after{
+        background: transparent;
+        width: 100px;
+        height: 100px;
+        border: 15px solid #199be9;
+        border-top: none;
+        border-right: none;
+        border-radius: 0 0 0 20px;
+        box-shadow: none;
+        top: auto;
+        left: -10px;
+        bottom: -10px;
+        right: auto;
+        }
+        .counter .counter-icon{
+        font-size: 35px;
+        line-height: 35px;
+        margin: 0 0 15px;
+        transition: all 0.3s ease 0s;
+        }
+        .counter:hover .counter-icon{ transform: rotateY(360deg); }
+        .counter .counter-value{
+        color: #555;
+        font-size: 30px;
+        font-weight: 600;
+        line-height: 20px;
+        margin: 0 0 20px;
+        display: block;
+        transition: all 0.3s ease 0s;
+        }
+        .counter:hover .counter-value{ text-shadow: 2px 2px 0 #d1d8e0; }
+        .counter h3{
+        font-size: 17px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin: 0 0 15px;
+        }
+        .counter.blue{
+        color: #4accdb;
+        border-color: #4accdb;
+        }
+        .counter.blue:after{
+        border-bottom-color: #4accdb;
+        border-left-color: #4accdb;
+        }
+        @media screen and (max-width:990px){
+        .counter{ margin-bottom: 40px; }
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.counter-value').each(function(){
+                $(this).prop('Counter',0).animate({
+                    Counter: $(this).text()
+                },{
+                    duration: 3500,
+                    easing: 'swing',
+                    step: function (now){
+                        $(this).text(Math.ceil(now));
+                    }
+                });
+            });
+        });
+            
+    </script>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-6">
+                <div class="counter">
+                    <div class="counter-icon">
+                        <i class="fa-solid fa-school-circle-check"></i>
+                        <i class="fa fa-university"></i>
+                    </div>
+                    <span class="counter-value">{{university_count}}</span>
+                    <h3>Univercites</h3>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="counter darkblue">
+                    <div class="counter-icon">
+                        <i class="fa fa-book"></i>
+                    </div>
+                    <span class="counter-value">{{product_count}}</span>
+                    <h3>Books/Notes</h3>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="counter darkcyne">
+                    <div class="counter-icon">
+                        <i class="fa fa-money-bill"></i>
+                    </div>
+                    <span class="counter-value">{{earn_count}}</span>
+                    <h3>Earning $</h3>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="counter darkcyne">
+                    <div class="counter-icon">
+                        <i class="avatar fa fa-solid fa-user"></i>
+                    </div>
+                    <span class="counter-value">{{user_count}}</span>
+                    <h3>Users</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Latest Uploads Section-->
+    <div class="uploads-section">
+        <div class="container">
+            <a href="/latest/summaries">
+                <h3 class="heading3">New Notes</h3>
+                <p>These are the notes and summaries that are most recently published by sellers onAnswer Done.</p>
+            </a>
+            <div class="row" id="summary-uploads-normal">
+                <div class="row new-summary-row" id="row1">
+                    <div class="col m4 s12">
+                        <ul>
+                            {% for product in products|slice:":5" %}
+                            <li class="new-summary-item" id="nsItem{{product.id}}">
+                                <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.title}}">
+                                    <span>
+                                        <p><b>{{product.title}}</b>
+                                            <span class="base-text-style">{{product.category}}</span>
+                                        </p>
+                                    </span>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col m4 s12">
+                        <ul>
+                            {% for product in products|slice:"5:10" %}
+                            <li class="new-summary-item" id="nsItem{{product.id}}">
+                                <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.title}}">
+                                    <span>
+                                        <p><b>{{product.title}}</b>
+                                            <span class="base-text-style">{{product.category}}</span>
+                                        </p>
+                                    </span>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col m4 s12">
+                        <ul>
+                            {% for product in products|slice:"10:13" %}
+                            <li class="new-summary-item" id="nsItem{{product.id}}">
+                                <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.title}}">
+                                    <span>
+                                        <p><b>{{product.title}}</b>
+                                            <span class="base-text-style">{{product.category}}</span>
+                                        </p>
+                                    </span>
+                                </a>
+                            </li>
+                            {% endfor %}
+                            <li class="button-div new-summary-li" id="new-summary-end1" data-id="43">
+                                <span>
+                                    <p>Do you write study notes? 
+                                        Sell them today!
+                                    </p>
+                                </span>
+                                <a href="#" title="Do you write study notes? 
+                                    Sell them today!" class="button btn-green">Sell Now</a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% comment %} #################### {% endcomment %}
+{% comment %} include footer here {% endcomment %}
+{% comment %} #################### {% endcomment %}

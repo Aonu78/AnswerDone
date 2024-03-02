@@ -1,0 +1,324 @@
+{% load static %}
+<html lang="en">
+<head>
+    <title>{{title}} - Answer Done </title>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Favicon -->
+<link rel="apple-touch-icon" href="{% static 'statics/img/apple-touch-icon-76x76.png' %}">
+<link rel="apple-touch-icon" sizes="76x76" href="{% static 'statics/img/apple-touch-icon-76x76.png' %}">
+<link rel="apple-touch-icon" sizes="120x120" href="{% static 'statics/img/apple-touch-icon-120x120.png' %}">
+<link rel="apple-touch-icon" sizes="152x152" href="{% static 'statics/img/apple-touch-icon-152x152.png' %}">
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'statics/img/apple-touch-icon-180x180.png' %}">
+<link rel="icon" sizes="192x192" href="{% static 'statics/img/favicon.png' %}">
+<link rel="shortcut icon" sizes="192x192" type="image/x-icon" href="{% static 'statics/img/favicon.png' %}">
+<link rel="canonical" href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}" />
+<link rel="alternate" href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}" hreflang="x-default"/>
+
+<meta name="description" content="{{description}}">
+<meta property="fb:app_id" content="">
+<meta property="og:site_name" content="AnswerDone">
+<meta property="og:title" content="{{title}}">
+<meta property="og:type" content="website">
+<meta property="og:description" content="{{description}}">
+<meta property="og:image" content="{% static 'statics/img/logo_blue.png' %}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+<meta name="twitter:widgets:csp" content="on">
+<meta name="twitter:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+<meta name="twitter:description" content="{{description}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{title}}">
+<meta name="twitter:site" content="">
+<meta name="twitter:image" content="Array">
+<meta name="apple-mobile-web-app-title" content="AnswerDone">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="csrf-token" content="">
+
+        <link rel="stylesheet" href=" {% static "statics/css/4505c350ae-checkoutpage_css.css" %}">
+        <link rel="stylesheet" href="{% static 'statics/css/ee3b8afcf4-upload_pages_2_css.css' %}">
+<style>
+    form input[type=text] {
+        width: 100%;
+        padding: 15px 20px;
+    }
+    form input[type=text] {
+        width: 100%;
+        padding: 18px 33px;
+        color: #199be9;
+    }
+    form input {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        word-break: break-word;
+    }
+    form input, form textarea {
+        background-color: #fff;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        border: 1px solid #d1ebfb;
+    }
+</style>
+    </head>
+    <body class="site">
+        <div id="app" data-country="214" class="">
+            <header class="main-header" style="position: fixed;">
+                <div class="header-wrapper simple max-width">
+                    <div class="wrapper-left">
+                        <section class="logo-image desktop" id="home-btn-ampl" data-tab-name="">
+                            <a href="/">
+                                <figure>
+                                    <img loading="lazy" alt="logo" src="{% static 'statics/img/logo_blue.png' %}">
+                                </figure>
+                            </a>
+                        </section>
+                        <div class="wrapper-center mobile">
+                            <a href="/" class="logo-wrapper">
+                            <img loading="lazy" src="{% static 'statics/img/logo-2.png' %}" alt="mobile-logo" class="image-pasif">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <style>
+   
+                .row {
+                    display: -ms-flexbox;
+                    display: flex;
+                    -ms-flex-wrap: wrap;
+                    flex-wrap: wrap;
+                    margin-right: -15px;
+                    margin-left: -15px;
+                }
+                media (min-width: 768px){
+.col-md-12 {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;}
+}
+.term_modules {
+    padding-bottom: 50px;
+}
+
+.cardify, .content_title, .table_module, .card_style1, .card_style2, .credit_modules, .shortcode_modules, .upload_modules, .withdraw_module, .statement_info_card, .statement_table, .thread_sort_area, .author_info, .comment_area, .contact_tile, .featured_event, .google_map .location_address .addres_module {
+    background: #fff;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 2px 4px rgba(108, 111, 115, 0.1);
+    box-shadow: 0 2px 4px rgba(108, 111, 115, 0.1);
+}
+.term_modules .term .term__title {
+    padding-left: 30px;
+}
+.term_modules .term p {
+    padding: 30px;
+}
+
+p {
+    font-size: 16px;
+    line-height: 26px;
+    color: #555555;
+    font-weight: 400;
+}
+p {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+            </style>
+            <div id="page" class="wrapper checkout-page" data-page="checkout-page" data-login="yes" data-step="1" style="padding: 3rem;    margin-top: 3rem;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="cardify term_modules">
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h2>Welcome to Answerdone!</h2>
+                                    </div>
+                                    <p>These terms and conditions summarize the rules and regulations for the use of Answerdone’s site that is located at Answerdone.com.Kindly note that by using our website, you are accepting our terms and conditions, mentioned below. Please don’t access or use our site if you do not agree with one or more conditions. We will recommend you to read these instructions to avoid any obligation and right problem in the future.</p>
+                                </div>
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h4>INTRODUCTION AND BASIC TERMS</h4>
+                                    </div>
+                                    <p>Let yourself know about the rules to follow and restriction to apply by reading these conditions. In addition, you should know what are your rights and our responsibilities. If you have any questions, please feel free to contact us at Answerdone4@gmail.com for a general question or support@answerdone.com for technical support.
+                                    <br><br>
+                                    These Terms and Conditions (the “Terms”) are the agreement that binds you and Answerdone (“we,” “us” and Answerdone). To use our service you must agree with all the conditions that have been documented here. By using our service you agree with the Term and Conditions of Answerdone. These rules apply to you till you use this site.
+                                    <br><br><strong>Definitions:</strong>
+                                        <strong>User:</strong> according to these Terms, “User” is any person who approaches and/or registers with Answerdone, which may include a student, instructor, and someone else.
+                                        <br><br>
+                                        <strong>Instructor:</strong> these terms say that instructor is one who provides online course, gives answers to the questions, solve the problem, and provide the teaching service.
+                                        <br><br>
+                                        <strong>Student:</strong> Answerdone says that any user who buys study material, gets help in solving any question, or gets their answers from another user (tutor or second student) is a student.
+                                        <br><br>
+                                        <strong>Study material:</strong> all the data related to the study provided by you or someone other.
+                                    </p>
+                                </div>
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h4>Can these Terms and Conditions be changed?</h4>
+                                    </div>
+                                    <p> Answedone has the right to change its Terms or close this platform at any time with or without the prior notification. We have the right to change the registration procedure. In case of change, you will receive the official notification at answerdone.com.
+                                        <br><br>
+                                        If these conditions are not agreeable to you, simply give up the use of Answerdone. We are sorry to inform you that you will not be able to use this platform, in this case. If you, somehow, use this site after the implementation of change, then it means that you agree with our Terms.
+                                    </p>
+                                </div>
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h4>What does your privacy policy say?</h4>
+                                    </div>
+                                    <p>Our privacy policy makes part of these Terms and Conditions. Children under the age of 13 years are not allowed to register with this site. While using this site make sure you are above 13. If your child has added personally identifiable data, confirm that he/she has done under your supervision or contact us at 
+                                    <a href="mailto:support@answerdone.com">support@answerdone.com</a> to remove that data, permanently.</p>
+                                </div>
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h4>BASICS OF USING ANSWERDONE</h4>
+                                    </div>
+                                    <p>
+                                        <strong>Security and registration</strong>
+                                        <br>
+                                        To become a member of Answerdone you need to sign up or make an account. Choose a user name (“Answerdone ID”), and password. Put your email address and the country you live in. Tell us “who you are?” You may be a learner, a tutor, a school, college, or a university student.
+                                        <br><br>
+                                        Make sure to provide accurate and updated data about yourself. You have no right to use someone’s name, personal ID, and other data. We are not responsible in case you provide wrong or someone else information. You have no right to transfer your account to anyone without our permission. One account can be created per person. Terminated accounts cannot be restored and you cannot make the second account, after the suspension of the previous one.
+                                        <br><br>
+                                        You promise us that your age is enough to make a contract. If your age is below 13 then you are not allowed to make the contract. Alternatively, your parents or guardian can make the contract with Answerdone on your behalf.
+                                        </p>
+                                </div>
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h4>Authorization of use</h4>
+                                    </div>
+                                    <p>Promise that you would use the site for your personal use and the third party, according to the laws that apply to you. You are not permitted to use our services when inhibited by law and we are not responsible in case you break any law.</p>
+                                </div>
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h4>We do not take responsibility for the Content</h4>
+                                    </div>
+                                    <p>We are not responsible for the accuracy of the content. The assignments and other study content would belong to the specific tutor or other sellers (“student,” or “learner”).</p>
+                                </div>
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h4>Copyrighted content</h4>
+                                    </div>
+                                    <p>You agree that you would not use the content for any such purpose that goes against the law of copyright. Answerdone may allow free access to some content. You can download some data free of cost, but keep in mind that you have no right to use this content against the restrictions provided by the law.</p>
+                                </div>
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h4>Writes and obligations to your submission</h4>
+                                    </div>
+                                    <p>Your submission would be public and visible to each user. We recommended you not to add your personal information to any document. In other cases, we would not be responsible for any issue.
+                                        <br><br>
+                                        Answerdone has been just a simple platform that connects you and others. We are not responsible for the accuracy and quality of content that you upload. We are not involved in dealing with any third party and we have no right to use your content.
+                                        <br><br>
+                                        After submission of your document at Answerdone, your ownership status would remain the same. You can use your submission in your way.
+                                    </p>
+                                </div>
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h4>Restrictions apply while using our service</h4>
+                                    </div>
+                                    <p>
+                                    <strong style="text-align:center;">PROMISE US THAT YOU WOULD NOT SUBMIT OR UPLOAD COPYRIGHT VIOLATING MATERIAL. You are strongly restricted to the following, mentioned below.
+                                    </strong>
+                                    <br><br>
+                                    <strong>Violation of someone's intellectual copyright, including Answerdone;</strong><br><br>
+                                        1) Uploading of deceptive, threatening, harmful, seductive, and other objectionable content (by tutor, student, or other users; who want to sell assignments);<br>
+                                        2) Try to get the personal or account information of another user;<br>
+                                        3) Risk the security and privacy of Answerdone and other users;<br>
+                                        4) Present any type of virus that is harmful to Answerdone in any way; or<br>
+                                        5) Scrapping the content by manual or through automated tools.<br>
+                                    <br>
+                                    Any of the actions mentioned above would lead to the account suspension.</p>
+                                    <p></p>
+                                </div>
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h4>Someone exploiting your copyright</h4>
+                                    </div>
+                                    <p>It is our responsibility to respect your privacy and rights. If you encounter any content that is infringing your copyright, let us know. We are bound to terminate that account and delete that content.</p>
+                                </div>
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h4>Who is responsible for what you do on Answerdone?</h4>
+                                    </div>
+                                    <p>Anyone who produces and submits the content is responsible for it. We have nothing to do with what you do and the damage followed by it. We do not take responsibility for the accuracy of the content uploaded by a tutor or someone else. In short, we do not own the liability of the content uploaded by any user.
+                                        <br><br>
+                                        Any transaction, payment, and other dealings, only, belong to you and the third-party (maybe “individual” or “organization”). We recommend you to have the necessary information about that individual or organization before any transaction and dealing. Alternatively, we would not be responsible for any kind of loss and damage.
+                                        <br><br>
+                                        If there is a dispute between two or more users or between users and a third party, you have no right to involve the Answerdone (and “employee,” “officers,” “agent’” and any “staff member”) in it.
+                                    </p>
+                                </div>
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h4>RIGHTS AND OBLIGATIONS OF THE BUYERS AND SELLERS</h4>
+                                    </div>
+                                    <p>You must agree to the following terms to use the services of Answerdone:
+                                    <br><br>
+                                        1) Our payment information may be changed from time to time;<br>
+                                        2) To sign up as a tutor, you must have the required education, and the study content that you would upload would be accurate and not misleading;<br>
+                                        3) Take in part to maintain the quality of Answerdone by staying up to date;<br>
+                                        4) Tutor, student, and any other user have no right to interfere with the matters of other users;<br>
+                                        5) You will not take part in any activity that demands Answerdone to get a license for it.<br>
+                                    
+                                    <br>
+                                    We pointed out some main points to focus on. You can visit our Frequently Asked Questions for further information.
+                                    </p>
+                                </div>
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h4>OTHER TERMS AND CONDITIONS TO CONSIDER</h4>
+                                    </div>
+                                    <p>
+                                    <strong>Charges at Answerdone</strong>
+                                    <br>
+                                    Answerdone provides you free access to any document and it charges for the other documents. You have to make immediate payment to get the paid access. We recommend you to read our Frequently Asked Questions for more information.
+                                    <br><br>
+                                    <strong>Changes in Answerdone Service</strong>
+                                    <br>
+                                    Answerdone has the right to change and update the service at any time. It may add a new feature or quiet the other. The steps would be taken with or without notification. This service can remove, terminate, or suspend any account or some content if fails to follow the rules.
+                                    <br><br>
+                                    <strong>Refund Policy</strong>
+                                    <br>
+                                    All the payment that has been cleared, and after 7 days would not be refunded. But, we are bound to refund the payment that comes under the specific conditions.
+                                       <br><br>
+                                       These conditions are as follows:
+                                        <br><br>
+                                            1) You have received the wrong document;<br>
+                                            1) You have got the wrong answer to the question or the answer you received does don’t full fill the requiremets;<br>
+                                            1) You have other valid reasons.<br>
+                                        <br><br>
+                                        For further information, you can contact us at 
+                                        <a href="mailto:answerdone4@gmail.com">answerdone4@gmail.com</a> or 
+                                        <a href="mailto:support@answerdone.com">support@answerdone.com.</a>
+                                    </p>
+                                </div>
+                                <div class="term">
+                                    <div class="term__title">
+                                        <h4>GENERAL DISCLAIMER</h4>
+                                    </div>
+                                    <p>
+                                    <strong>Charges at Answerdone</strong>
+                                    <br>
+                                    This service is meant to provide the platform to buy and sell your assignments. We do not check the educational background of the tutor or the student (who want to sell their teaching services and old assignments) and the quality of the content. You should understand that the content may contain offensive data, but it belongs to the specific person that had uploaded it. You can not blame Answerdone in this case.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="checkout-footer shoppingcart">
+                <div class="checkout-inner-footer">
+                    Termsofuse on AnswerDone are processed under the name of Stichting AnswerDone.
+                </div>
+            </footer>
+        </div>
+    </body>
+</html>

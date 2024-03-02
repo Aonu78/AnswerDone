@@ -1,0 +1,168 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <title>{{title}} - Answer Done </title>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Favicon -->
+<link rel="apple-touch-icon" sizes="144x144" href="{% static 'statics/img/apple-touch-icon.png' %}">
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'statics/img/favicon-32x32.png' %}">
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'statics/img/favicon-16x16.png' %}">
+<link rel="manifest" href="{% static 'statics/img/site.webmanifest' %}">
+<link rel="mask-icon" href="{% static 'statics/img/safari-pinned-tab.svg' %}" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
+<link rel="canonical" href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}" />
+<link rel="alternate" href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}" hreflang="x-default"/>
+
+<meta name="description" content="{{description}}">
+<meta property="fb:app_id" content="">
+<meta property="og:site_name" content="AnswerDone">
+<meta property="og:title" content="{{title}}">
+<meta property="og:type" content="website">
+<meta property="og:description" content="{{description}}">
+<meta property="og:image" content="{% static 'statics/img/logo_blue.png' %}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+<meta name="twitter:widgets:csp" content="on">
+<meta name="twitter:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+<meta name="twitter:description" content="{{description}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{title}}">
+<meta name="twitter:site" content="">
+<meta name="twitter:image" content="Array">
+<meta name="apple-mobile-web-app-title" content="AnswerDone">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="csrf-token" content="">
+<script>
+  function hitUrl(variable) {
+      var url = "/remove-from-cart/" + variable + "/";
+      window.location.href = url;
+  }
+</script>
+<script>
+  function addurl(variable) {
+  
+      var url = "/add-to-cart/" + variable + "/";
+      window.location.href = url;
+  }
+</script>
+<style>
+  .fa-chevron-upward {
+      transform: rotate(180deg);
+  }
+  @media screen and (max-width: 1200px){
+    .search-menu .autocomplete-in-header {
+        width: 55% !important;
+    }
+  }
+</style>
+<style>
+  .hidden {
+          display: none;
+  }
+  a {
+      text-decoration: none !important;
+  }
+  #trengo-web-widget{
+      display: none !important;
+  }
+  </style>
+  
+      
+  <script>
+  // Function to open the modal
+  function openModal() {
+      var modal = document.getElementById("myModal");
+      modal.style.display = "block";
+    }
+    
+    // Function to close the modal
+    function closeModal() {
+      var modal = document.getElementById("myModal");
+      modal.style.display = "none";
+      modal.style.position = "fixed";
+    }
+    
+    // When the DOM content is fully loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      // Get the button that opens the modal
+      var btn = document.getElementById("myBtn");
+      
+      // Get the <span> element that closes the modal
+      var closeBtn = document.getElementById("closemodelbtn");
+      
+      // Get the modal
+      var modal = document.getElementById("myModal");
+      
+      // When the user clicks the button, open the modal
+      btn.addEventListener("click", function() {
+        modal.style.display = "block";
+      });
+      
+      // When the user clicks on <span> (x), close the modal
+      closeBtn.addEventListener("click", function() {
+        console.log("************")
+        modal.style.display = "none";
+      });
+    });
+      </script>
+<style>
+  ::-webkit-scrollbar {
+    background: white;
+}
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    background: #199be9;
+    border-radius: 10px;
+}
+</style>
+</head>
+<body>
+  
+        <div id="app">
+
+    {% csrf_token %}
+
+    <script>
+        var csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+        var csrfMetaTag = document.querySelector('meta[name="csrf-token"]');
+        var bodyElement = document.querySelector('body');
+
+        if (csrfMetaTag) {
+            csrfMetaTag.setAttribute('content', csrfToken);
+        } else {
+            // If meta tag doesn't exist, create it
+            var metaTag = document.createElement('meta');
+            metaTag.setAttribute('name', 'csrf-token');
+            metaTag.setAttribute('content', csrfToken);
+            document.head.appendChild(metaTag);
+        }
+        bodyElement.setAttribute('data-token', csrfToken);
+
+    </script>
+    
+      {% include "core/header.html" %}
+      {% block content %}{% endblock content %}
+      {% include "core/footer.html" %}
+
+    </div>
+    
+                    <script defer="" type="text/javascript" src="{% static 'statics/js/c38bfd2f53-app.js' %}"></script>
+    
+            
+                            <script defer="" type="text/javascript" src="{% static 'statics/js/3334ef34b3-indexpage.js' %}"></script>
+                    <script defer="" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+    
+  </body>
+</html>

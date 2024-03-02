@@ -1,0 +1,208 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+<script>
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        // Remove active class from all li elements
+        var liElements = document.querySelectorAll(".cta-group-header li");
+        for (i = 0; i < liElements.length; i++) {
+            liElements[i].classList.remove("cta-group--active");
+        }
+        // Add active class to the clicked li element
+        evt.currentTarget.parentElement.classList.add("cta-group--active");
+        
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
+       
+
+        <link rel="stylesheet" href=" {% static 'statics/css/de5535418a-myreviews_css.css' %}">
+        <link rel="stylesheet" href="{% static 'statics/css/74c8e7dfbc-wishlistpage_css.css' %}">
+
+        <div id="app" data-country="214" class="">
+            <div id="user-reviews" class="wrapper content-page">
+                <article id="content" class="content-wrapper page-mijn-beoordelingen">
+                    <div id="main-section" class="section-wrapper content-attention">
+                        <section class="section-entry-header">
+                            <h1 class="title-section">Reviews</h1>
+                            <p>Overview of all given and received reviews</p>
+                            <ul class="cta-group-header">
+                                <li class="cta-group--active"><span class="tablinks cta-sold-document active" onclick="openCity(event, 'received')">Reviews received</span></li>
+                                <li><span class="tablinks cta-purchased-document" onclick="openCity(event, 'given')">Given reviews</span></li>
+                            </ul>
+                        </section>
+
+                        <style>
+
+                            /* Style the tab */
+                            .tab {
+                              overflow: hidden;
+                              border: 1px solid #ccc;
+                              background-color: #f1f1f1;
+                            }
+                            
+                            /* Style the buttons inside the tab */
+                            .tab button {
+                              background-color: inherit;
+                              float: left;
+                              border: none;
+                              outline: none;
+                              cursor: pointer;
+                              padding: 14px 16px;
+                              transition: 0.3s;
+                              font-size: 17px;
+                            }
+                            
+                            /* Change background color of buttons on hover */
+                            .tab button:hover {
+                              background-color: #ddd;
+                            }
+                            
+                            /* Create an active/current tablink class */
+                            .tab button.active {
+                              background-color: #ccc;
+                            }
+                            
+                            /* Style the tab content */
+                            .tabcontent {
+                              display: none;
+                              padding: 6px 12px;
+                            }
+                            .star {
+                                font-size: 24px;
+                                cursor: pointer;
+                                }
+                                .star.selected {
+                                color: gold;
+                                }
+                                .star1 {
+                                cursor: pointer;
+                                }
+                                .star1.selected {
+                                color: gold;
+                                }
+                            </style>
+                        <section id="received" class="tabcontent section-entry-content content-mijn-beoordelingen" style="display: block;">
+                            <div class="main-content overview-mijn-beoordelingen pending-reviews">
+                                <h2 class="title-entry-content">My Received Reviews</h2>
+                                {% if rating is None %}
+                                <div class="message-beoordelingen">
+                                    <p>You haven't Uploaded anyThing to receive review yet</p>
+                                </div>{% endif %}
+                            </div>
+                            <section class="section-book-lists section-book-lists-wishlist section-item">
+                                <div id="user-wishlist-content" class="listing-grid">
+                                    {% for item in rating  %}                                
+                                    <div class="listgrid-item row-wishlist row-wishlist-3236146-1">
+                                        <div class="grid-list">
+                                            <div class="desc-preview">
+                                                <h4 class="title-preview"><a>{{item.product.title}} </a></h4>
+                                                <div class="excerpt-desc">
+                                                    <p>{{item.product.description}}</p>
+                                                    <div class="information-item">
+                                                        <ul class="details">
+                                                            <li class="info-author right">By </li>
+                                                            <li class="info-author"><span class="author-name"> {{item.user}} </span></li>
+                                                            <li class="bold-dot"> • </li>
+                                                            <li class="info-category-objectType info-category"> {{item.product.category}} </li>
+                                                            <li class="dot"> • </li>
+                                                            <li class="count-pagina">{{item.product.num_pages}}
+                                                                pages
+                                                                •&nbsp;
+                                                            </li>
+                                                            <div class="ratings">
+                                                                <ul class="star-rates">
+                                                                    {% for value in "12345" %}
+                                                                        {% if value|add:"0" <= item.rating %}
+                                                                            <span class="star1 selected" data-value="{{ value }}">★</span>
+                                                                        {% else %}
+                                                                            <span class="star1" data-value="{{ value }}">★</span>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </div>
+                                                            <li class="dot"> • </li>
+                                                            <li class="info-category-amount-reviews"> ({{item.rating}}) </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </section>
+                        </section>
+                        <section id="given" class="tabcontent section-entry-content content-mijn-beoordelingen">
+                            <div class="main-content overview-mijn-beoordelingen pending-reviews">
+                                <h2 class="title-entry-content">My Written Reviews</h2>
+                                {% if rating is None %}
+                                <div class="message-beoordelingen">
+                                    <p>You haven't Written any reviews yet</p>
+                                </div>{% endif %}
+                            </div>
+                            <section class="section-book-lists section-book-lists-wishlist section-item">
+                                <div id="user-wishlist-content" class="listing-grid">
+                                    {% for item in received_rating  %}                                
+                                    <div class="listgrid-item row-wishlist row-wishlist-3236146-1">
+                                        <div class="grid-list">
+                                            <div class="desc-preview">
+                                                <h4 class="title-preview"><a>{{item.product.title}} </a></h4>
+                                                <div class="excerpt-desc">
+                                                    <p>{{item.product.description}}</p>
+                                                    <div class="information-item">
+                                                        <ul class="details">
+                                                            <li class="info-author right">By </li>
+                                                            <li class="info-author"><span class="author-name"> {{item.user}} </span></li>
+                                                            <li class="bold-dot"> • </li>
+                                                            <li class="info-category-objectType info-category"> {{item.product.category}} </li>
+                                                            <li class="dot"> • </li>
+                                                            <li class="count-pagina">{{item.product.num_pages}}
+                                                                pages
+                                                                •&nbsp;
+                                                            </li>
+                                                            <div class="ratings">
+                                                                <ul class="star-rates">
+                                                                    {% for value in "12345" %}
+                                                                        {% if value|add:"0" <= item.rating %}
+                                                                            <span class="star1 selected" data-value="{{ value }}">★</span>
+                                                                        {% else %}
+                                                                            <span class="star1" data-value="{{ value }}">★</span>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </div>
+                                                            <li class="dot"> • </li>
+                                                            <li class="info-category-amount-reviews"> ({{item.rating}}) </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </section>
+                        </section>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <script defer="" type="text/javascript" src="{% static 'statics/js/1d32c2cbb2-app.js' %}"></script>
+        <script defer="" type="text/javascript" src="{% static 'statics/js/c9a14ee9ed-myreviews.js' %}"></script>
+
+        {% endblock content %}

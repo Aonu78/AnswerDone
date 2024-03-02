@@ -1,0 +1,440 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script>
+    $(document).ready(function() {
+        $('#category').select2({
+            tags: true,
+            tokenSeparators: [',', ' '], // Specify additional separators
+            createTag: function(params) {
+                var term = $.trim(params.term);
+
+                if (term === '') {
+                    return null;
+                }
+
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true // add additional parameters
+                };
+            }
+        });
+
+        $('#category').on('change', function(e) {
+            var isNew = $(this).find('[data-select2-tag="true"]').length > 0;
+            if (isNew) {
+                var newTagText = $(this).val();
+                console.log('New tag selected:', newTagText);
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#category').select2({
+            placeholder: '-- Type of Docs --',
+            allowClear: true 
+        });
+        
+        $('#institute').select2({
+            placeholder: '-- Institute Name --',
+            allowClear: true 
+        });
+        $('#sort_category').select2({
+            placeholder: '-- Type --',
+            allowClear: true 
+        });
+        $('#sort_institute').select2({
+            placeholder: '-- Institute --',
+            allowClear: true 
+        });
+    });
+</script>
+{% comment %} <link rel="stylesheet" href="{% static 'statics/css/style.css' %}"> {% endcomment %}
+<link rel="stylesheet" href="{% static 'statics/css/85185fcd95-searchpage_new_css.css' %}" as="style">
+      
+<link rel="preload " href="{% static 'statics/js/47a9372f50-searchpage_new.js' %}" as="script">
+
+<div id="book-details-info" class="book-details-info hidden">
+</div>
+<!-- banner-filter-result desktop sticky-init sticky-active sticky-down -->
+<!-- banner-filter-result desktop -->
+<form>
+<div role="banner" id="banner-filter-result" class="banner-filter-result desktop" style="" data-select2-id="banner-filter-result">
+    <div class="banner-result-desktop desktop" data-select2-id="17">
+        <div class="content-block-result" data-select2-id="16">
+            <h3 class="text-gezocht">You searched for: <strong class="keyword-search-lower"></strong></h3>
+            <div class="selecteer-jouw-group" data-select2-id="15">
+
+                <div class="selecteer-jouw-item">
+                    <input name='s' type="text" class="selecteer-jouw flat-input browser-default searchpage-search border-rounded-search" placeholder="Search for courses, books, exams, or assignments" autocomplete="off" value="Isalm">
+                </div>
+
+                <div class="selecteer-jouw-item " data-select2-id="14">
+                    <select name="category" id="category" class="" >
+                        <option value="" disabled selected></option>
+                        {% for item in all_category %}
+                        <option value="{{item.slug}}">{{item.title}}</option>
+                        {% endfor %}
+                     </select>
+
+                </div>
+                <div class="selecteer-jouw-item" data-select2-id="21">
+                    <select name="institute" id="institute" class="selecteer-jouw selecteer-vak ">
+                        <option value="" disabled selected></option>
+                        {% for item in all_university %}
+                        <option value="{{item.slug}}">{{item.title}}</option>
+                        {% endfor %}
+                         </select>
+                </div>
+
+            
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+<script>
+    $(document).ready(function () {
+        console.log('jQuery is working!');
+    });
+    
+    $(document).ready(function () {
+        var lastScrollTop = 0;
+    
+        $(window).scroll(function () {
+            // console.log("scrollTop working");
+            var st = $(this).scrollTop();
+            // console.log(st);
+    
+            if (st > lastScrollTop) {
+                // Scroll down
+                if (st > 100) {
+                    console.log(st);
+                    $('#banner-filter-result').addClass('sticky-init sticky-active sticky-down');
+                }
+            } else {
+                // Scroll up
+                if (st < 100) {
+                    console.log(st);
+                    $('#banner-filter-result').removeClass('sticky-init sticky-active sticky-down');
+                }
+            }
+    
+            lastScrollTop = st;
+        });
+    });
+</script>
+<div class="banner-result-mobile mobile">
+    <form class="form-search-wrapper">
+    <div class="search-wrapper">
+        
+            <input type="text" name="s" placeholder="Search for courses, books, exams, or assignments" autocomplete="off" value="" class="searchpage-search">
+            <button type="reset" class="cta-reset"></button>
+        
+        <div class="row-filters-resultaten">
+            <div class="sorteren-filters" style="border: 1px solid #d1ebfb;">
+                <select id="sort_category" name="category" class="selecteer-sorteren " >
+                    <option value="" disabled selected></option>
+                    {% for item in all_category %}
+                    <option value="{{item.slug}}">{{item.title}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="row-filters-resultaten">
+            <div class="sorteren-filters" style="border: 1px solid #d1ebfb;">
+                <select id="sort_institute" name="institute" class="selecteer-sorteren " >
+                    <option value="" disabled selected></option>
+                    {% for item in all_university %}
+                    <option value="{{item.slug}}">{{item.title}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+</form>
+    <div class="selecteer-alert alert-show alert-hide">
+        <p class="alert-title"><strong>Your school or university</strong></p>
+        <p class="alert-description">Improve your search results. Select your educational institution and subject so that we can show you the most relevant documents and help you in the best way possible.</p>
+        <span class="cta-selecteer-alert">Ok, I understand!</span>
+    </div>
+</div>
+<style>
+    .element-padding {
+    {% comment %} padding-top: 5px;  {% endcomment %}
+    }
+    @media screen and (max-width: 980px) {
+    .element-padding {
+    padding-top: 200px; 
+    }
+    }
+</style>
+<div id="page" class="wrapper content-page content-general-search-result element-padding"
+    style="" >
+    <article class="site-article content-attention" style="justify-content: center;">
+        <div id="content" class="section-results ">
+            <div class="title-container" style="display: none;">
+                <h1 class="default-title">Gh Study guides, Class notes &amp;
+                    Summaries
+                </h1>
+                <p class="default-text">Looking for the best study guides, study
+                    notes and summaries about gh? On this page you'll find 52119
+                    study documents about gh.
+                </p>
+            </div>
+            <div id="type-filter">
+                <section
+                    class="section-content-wrapper section-filters-resultaten">
+                    <div class="row-filters-resultaten">
+                        <p class="text-resultaten">
+                            <span id="number-of-results-pre-text"
+                                data-default-text="All">Page</span>
+                                
+                            <strong id="number-of-results"
+                                data-number-of-results="{{ products.paginator.count }}"
+                                class="count-resultaten">
+                                {{ products.number }} out of {{ products.paginator.count }}
+                            </strong>
+                            <strong> results</strong>
+                        </p>
+                       
+                    </div>
+                </section>
+            </div>
+        </div>
+    </article>
+</div>
+<style>
+    .star1 {
+        cursor: pointer;
+    }
+    .star1.selected {
+        color: gold;
+    }
+    
+</style>
+<!-- seach results -->
+<div id="page" class="wrapper content-page content-general-search-result " style="">
+    <article class="site-article content-attention">
+        <!-- section books -->
+        {% for product in products %}
+        <div id="content" class="section-results ">
+            <section class="section-content-wrapper section-listing-filters has-overlay">
+                <div class="listing-filters-grid" id="main-section">
+                    <div class="listfilters-item selling-box before-you-leave-amplitude-click
+                        " id="" data-type="content click">
+                        <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.title}}" class="{{product.title}}" data-click-position="6" data-content-id="{{product.id}}" rel="nofollow">
+                        </a>
+                        <div class="listfilters-content">
+                            <div class="listfilters-detail">
+                                <figure class="thumbnail-detail desktop">
+                                    <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.title}}" class="{{product.title}}" data-doc-id="{{product.id}}" rel="nofollow">
+                                    
+                                    {% if product.image %}
+                                    <img src="{{product.image.url}}" alt="{{product.title}}">
+                                    {% else %}
+                                    <img src="{% static 'statics/img/essentie_focus.png' %}" alt="{{product.title}}">
+                                    {% endif %} 
+                                    </a>
+                                </figure>
+                                <ul class="info-detail">
+                                    <li class="infodetail-item full-width">
+                                        <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.title}}" class="{{product.title}}" data-doc-id="{{product.id}}" rel="nofollow">
+
+                                        <h4 class="entry-title">
+                                            {{product.title}}
+                                        </h4></a>
+                                    </li>
+                                    <li class="infodetail-item">
+                                        <span class="text-samenvatting"><strong>{{product.category}}</strong> 
+                                        {% if product.num_pages %}
+                                            • {{product.num_pages}}
+                                        pages{% endif %}
+                                        <span class="text-geupdate">• {{product.created_at}}</span>
+                                        </span>
+                                    </li>
+                                    <li class="infodetail-item flex"></li>
+                                    {% comment %} <li class="infodetail-item">
+                                        <span class="bundle-banner">
+                                        <a class="bundle-link" href="/bundle/250020/aqa-gcse-religious-studies-a-806215-paper-1-islam-qp-and-ms-2023" target="_blank">Available in package deal</a>
+                                        </span>
+                                    </li> {% endcomment %}
+                                    <div class="text-excerpt toggle-text" data-more="+ Meer" data-less="- Minder">
+                                        <span class="text-container">
+                                        {{product.description}}
+                                        </span>
+                                    </div>
+                                    <li class="barrier"></li>
+                                    <li class="infodetail-item">
+                                        <div id="rates-3" class="ratings">
+                                            <form>
+                                                {% for value in "12345" %}
+                                                    {% if value|add:"0" <= product.average_rating %}
+                                                        <span class="star1 selected" data-value="{{ value }}">★</span>
+                                                    {% else %}
+                                                        <span class="star1" data-value="{{ value }}">★</span>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </form>
+                                            {% if product.average_rating is not None %}
+                                                <span class="count-rates">({{ product.average_rating }})</span>
+                                            {% else %}
+                                                <span class="count-rates">(0)</span>
+                                            {% endif %}
+
+                                        </div>
+                                    </li>
+                                    <li class="infodetail-item">
+                                        <span class="text-price">${{product.price}}</span>
+                                    </li>
+                                    <li class="infodetail-item">
+                                        <span class="text-verkocht">{{product.purchased}}x sold</span>
+                                    </li>
+                                    <li class="infodetail-item">
+                                       <a href="{% url 'product_detail' product.category.slug product.slug %}"> <span class="more-info"><span class="more-info-url log-amplitude-js" data-url="{% url 'product_detail' product.category.slug product.slug %}" data-click-location="more info" data-click-type="Document" data-click-title="{{product.title}}" data-click-position="6" data-content-id="{{product.id}}">+ learn more</span></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button class="preview-sidebar quickview-doc" data-id="{{product.id}}" data-type="1" data-loaded="false">
+                                <i class="preview-icon fal fa-eye"></i>
+                                <span class="tooltip-preview">Quick View</span>
+                            </button>
+                            <button class="price-sidebar add-item-to-shoppingcart " data-id="{{product.id}}" data-type="document" data-upselling-bundle="" data-country-seller="999" data-amp-location="Search Page Result" data-user-status="no" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17">
+                            <a href="{% url "add-to-cart" product.id %}">    <i class="add-to-cart-icon far fa-shopping-cart fa-flip-horizontal"></i></a>
+                            </button>
+                        </div>
+                        {% if product.dummy_file %}
+                        
+                        <input type="hidden" id="iframe-src-doc-{{product.id}}" value="{{product.dummy_file.url}}">
+                        {% endif %}
+                        <div id="iframe-doc-{{product.id}}" class="display-none quickview-content">
+                            <div class="popup-wrapper">
+                                <!-- Popup Quick view -->
+                                <div class="popup-quickview inner-popup">
+                                    <div class="popup-content">
+                                        <div class="view-product">
+                                            <p>Preview {{product.show_pages}} out of {{product.num_pages}} pages</p>
+                                            <a href="{% url "add-to-cart" product.id %}" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="250020" data-amp-location=" page (header button)" data-user-status="no" data-country-seller="999" data-price="$8.49" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17" rel="nofollow">
+                                            <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                                            </a>
+                                            <div class="image-view" id="preview-{{product.id}}">
+                                            </div>
+                                        </div>
+                                        <div class="info-product">
+                                            <div class="info-desc">
+                                                <span class="serif-title">{{product.category}}</span>
+                                                <div id="rates-4" class="ratings">
+                                                    <form>
+                                                        {% for value in "12345" %}
+                                                            {% if value|add:"0" <= product.average_rating %}
+                                                                <span class="star1 selected" data-value="{{ value }}">★</span>
+                                                            {% else %}
+                                                                <span class="star1" data-value="{{ value }}">★</span>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </form>
+                                                    {% if product.average_rating is not None %}
+                                                        <span class="count-rates">({{ product.average_rating }})</span>
+                                                    {% else %}
+                                                        <span class="count-rates">(0)</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <span class="popup-title serif-title">{{product.title}}</span>
+                                            <span class="text-entry-product time-since time-since-{{product.id}}">
+                                            Last document update:
+                                            <span class="time-since-count tsc-{{product.id}}"></span>&nbsp;
+                                            <span class="time-since-unit tsu-{{product.id}}"></span>
+                                            ago {{product.updated_at}}
+                                            </span>
+                                            <p class="text-entry-product">{{product.description}}</p>
+                                            <div class="cta-view-product">
+                                                <div class="currencyof-product">
+                                                    <span itemprop="price">${{product.price}}</span>
+                                                    <link itemprop="availability" href="http://schema.org/InStock">
+                                                </div>
+                                                <a href="{% url "add-to-cart" product.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document " data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="no" data-upselling-bundle="250020" data-country-seller="999" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17" rel="nofollow">
+                                                <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
+                                                Add to cart
+                                                </a>
+                                            </div>
+                                            <div class="show-more-quickview">
+                                                <a href="{% url 'product_detail' product.category.slug product.slug %}" class=" " rel="nofollow">
+                                                Show more info <i class="fa fa-long-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        {% endfor %}
+        
+    </article>
+</div>
+<!-- nav number -->
+<div id="page" class="wrapper content-page" style="">
+    <article class="site-article content-attention " style="justify-content: center;">
+        <div id="content" class="section-results ">
+            <section class="section-content-wrapper section-listing-filters has-overlay">
+
+                
+                <div class="listing-filters-grid" id="main-section">
+                    <nav class="navigation-section">
+
+                        {% comment %} <ul class="list-navigation">
+                            <li class="nav-item">
+                                <a href="{% if products.has_previous %}{{ request.path }}?page={{ products.previous_page_number }}{% else %}{{ request.path }}{% endif %}" class="link-on back-item" data-page="1" aria-label="Previous page"><i class="fal fa-angle-left"></i></a>
+                            </li>
+                            {% for page_num in products.paginator.page_range %}
+                            <li class="nav-item">
+                                {% if products.number == page_num %}
+                                <a href="{{ request.path }}?page={{ page_num }}" class="current pagination-item">{{ page_num }}</a>
+                                {% else %}
+                                <a href="{{ request.path }}?page={{ page_num }}" class="pagination-item">{{ page_num }}</a>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                            <li class="nav-item">
+                                <a href="{{ request.path }}?page={{ products.paginator.last }}" class="link-on next-item" data-page="{{ products.paginator.last }}" rel="nofollow" aria-label="Next Page"><i class="fal fa-angle-right"></i></a>
+                            </li>
+                        </ul> {% endcomment %}
+                        <ul class="list-navigation">
+                            {% if products.has_previous %}
+                            
+                            <li class="nav-item"><a href="{{ request.path }}?page=1" aria-label="First" class="link-on back-item"><i class="fal fa-angle-left"></i><i class="fal fa-angle-left"></i></a></li>
+                            <li class="nav-item"><a href="{{ request.path }}?page={{ products.previous_page_number }}" aria-label="Previous" class="link-on back-item"><i class="fal fa-angle-left"></i></a></li>
+                            {% endif %}
+                            
+                            {% for page in products.paginator.page_range %}
+                                {% if products.number == page %}
+                                <li class="nav-item"><a href="{{ request.path }}?page={{ page }}" class="current pagination-item" aria-label="Page {{ page }}">{{ page }}</a></li>
+                                {% else %}
+                                <li class="nav-item"><a href="{{ request.path }}?page={{ page }}" class="pagination-item" aria-label="Page {{ page }}">{{ page }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if products.has_next %}
+                            <li class="nav-item"><a href="{{ request.path }}?page={{ products.next_page_number }}" aria-label="Next" class="link-on next-item"><i class="fal fa-angle-right"></i></a></li>
+                            <li class="nav-item"><a href="{{ request.path }}?page={{ products.paginator.num_pages }}" aria-label="Last" class="link-on next-item"><i class="fal fa-angle-right"></i><i class="fal fa-angle-right"></i></a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </section>
+        </div>
+    </article>
+</div>
+
+<script defer="" type="text/javascript" src=" {% static 'statics/js/1d32c2cbb2-app.js' %}"></script>
+<script defer="" type="text/javascript" src="{% static 'statics/js/47a9372f50-searchpage_new.js' %}"></script>
+{% endblock content %}

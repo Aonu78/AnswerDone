@@ -1,0 +1,157 @@
+{% comment %} {% extends "core/base.html" %}
+{% block title %}Become Vendor{% endblock title %} {% endcomment %}
+{% load static %}
+{% block content %}
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% comment %} <link rel="stylesheet" href="{% static 'statics/css/style.css' %}"> {% endcomment %}
+
+         <link rel="preload " href="{% static 'statics/css/5f1aff9ab4-register_login_css.css' %}" as="style">
+        <link rel="preload " href="{% static 'statics/js/4e28eca106-register.js' %}" as="script">
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" href="{% static 'statics/img/apple-touch-icon-76x76.png' %}">
+        <link rel="apple-touch-icon" sizes="76x76" href="{% static 'statics/img/apple-touch-icon-76x76.png' %}">
+        <link rel="apple-touch-icon" sizes="120x120" href="{% static 'statics/img/apple-touch-icon-120x120.png' %}">
+        <link rel="apple-touch-icon" sizes="152x152" href="{% static 'statics/img/apple-touch-icon-152x152.png' %}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'statics/img/apple-touch-icon-180x180.png' %}">
+        <link rel="icon" sizes="192x192" href="{% static 'statics/img/favicon.png' %}">
+        <link rel="shortcut icon" sizes="192x192" type="image/x-icon" href="{% static 'statics/img/favicon.png' %}">
+        <link rel="preload " href="{% static 'statics/css/5f1aff9ab4-register_login_css.css' %}" as="style">
+        <link rel="stylesheet" href="{% static 'statics/css/5f1aff9ab4-register_login_css.css' %}">
+        {% comment %} <link rel="preload " href="{% static 'statics/js/8def7fe236-login.js' %}" as="script"> {% endcomment %}
+        {% comment %} <script defer type="text/javascript" src="{% static 'statics/js/8def7fe236-login.js' %}"></script> {% endcomment %}
+    </head>
+    <body class="user-loggedin" data-step="register" data-token="NDllZGVlY2IxMjljMmYyOTBhZGI0NTRjOGM4MTIxNzViYzQ0Y2ZhZQ==">
+        <div class="overlay">
+            <div class="cv-spinner">
+                <span class="spinner"></span>
+            </div>
+        </div>
+        <div class="modal modal-register active">
+            <div class="modal-dialog modal-register-form">
+                <div class="modal-header">
+                    <h2 class="title-modal">Create a free account</h2>
+                    <p>Start your exams prepared! Create a profile on AnswerDone.</p>
+                </div>
+                <div class="modal-content">
+{% if messages %}
+    <ul class="alert-success">
+        {% for message in messages %}
+            <li class="success">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% if form.errors %}
+
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <div id="connect-error" style="padding-top:25px;display:block">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+{% endif %}
+
+
+                    {% comment %} <div class="group-button third-party-login-btns">
+                        <a href="#" class="btn-fblogin" target="_top">
+                        <i class="fab fa-facebook-square fb-login-icon"></i>
+                        Login with Facebook
+                        </a>
+                        <a href="#" class="btn-googlelogin" id="google-sign-in" data-redirect="">
+                        <img src="{% static "statics/img/google.png" %}"> Login with Google
+                        </a>
+                        <span id="googleButtonReplace"></span>
+                    </div> {% endcomment %}
+                    <span class="line-heading">e-mail</span>
+                    <form action="{% url "register" %}" method="post" class="form-register" id="register-form" validate="" novalidate="novalidate">
+                        <div class="input-field">
+                            <input type="text" placeholder="Username" name="username" id="username" autocomplete="username" maxlength="50">
+                            <label class="valid-icon">
+                            <i class="far fa-check"></i>
+                            <i class="far fa-times"></i>
+                            </label>
+                        </div>
+                        <div class="input-field">
+                            <input type="email" placeholder="E-mail address" name="email" id="email" autocomplete="email" maxlength="50">
+                            <label class="valid-icon">
+                            <i class="far fa-check"></i>
+                            <i class="far fa-times"></i>
+                            </label>
+                        </div>
+                        <div class="input-field">
+                            <input type="password" placeholder="Password" name="password1" id="id_password1" minlength="6" maxlength="50" autocomplete="new-password">
+                            <label for="password" id="label-password">At least 8 characters</label>
+                            <label class="valid-icon">
+                            <i class="far fa-check"></i>
+                            <i class="far fa-times"></i>
+                            </label>
+                        </div>
+                        <div class="input-field">
+                            <input type="password" placeholder="Password" name="password2" id="id_password2" minlength="6" maxlength="50" autocomplete="new-password">
+                            <label for="password" id="label-password">Conform Password</label>
+                            <label class="valid-icon">
+                            <i class="far fa-check"></i>
+                            <i class="far fa-times"></i>
+                            </label>
+                        </div> 
+                        {% comment %} <div class="privacy-field">
+                            <label>
+                            <input type="checkbox" name="mailAgree" id="mail-agree">
+                            AnswerDone may keep me email me about discounts and the best new notes (no spam, promised)
+                            </label>
+                        </div> {% endcomment %}
+                        {% comment %} {{form.as_p}} {% endcomment %}
+                        {% csrf_token %} 
+                        <div class="submit-field">
+                            <button type="submit" class="cta-submit btn-register-step">Create my profile<i class="far fa-angle-right"></i></button>
+                            <p class="switch-login-register">Already have an account? <a href="{% url "login" %}">Login</a></p>
+                        </div>
+                        <div class="register-ps">
+                            By clicking "Create my profile" or logging in with Email, I agree to the <a href="/termsofuse" target="_blank">Terms and Conditions</a> and <a href="/privacystatement" target="_blank">Privacy Statement</a>.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="error-messages" data-required-msg="This field cannot be empty" data-email-msg="You've entered an invalid email address" data-password-msg="Your password needs to be at least 6 characters long" data-email-exists-msg="The email you've chosen already exists." data-alpha-num-msg="Please use letters and numbers only with at least one letter" data-username-exists-msg="Username already exists"></div>
+        
+        <script>
+            {% comment %} document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById("register-form").addEventListener("submit", function(event) {
+                    event.preventDefault();
+                    var formData = new FormData(this);
+        
+                    fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}' 
+                        }
+                    })
+                    .then(response => {
+                        console.log(response);
+                        if (response.redirected) {
+                            document.querySelector('.modal.modal-register.active').classList.remove('active');
+                            
+                           // window.parent.location.reload();
+                        } else {
+                            //document.getElementById('connect-error').style.display = 'block'
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                });
+            }); {% endcomment %}
+        </script>
+    </body>
+</html>
+
+
+{% endblock content %}
+

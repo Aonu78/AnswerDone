@@ -1,0 +1,86 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+        <link rel="stylesheet" href="{% static 'statics/css/74c8e7dfbc-wishlistpage_css.css' %}">
+
+        <div id="app" data-country="214" class="">
+
+            <div id="page" class="wrapper uploaddownload-page  ">
+                <article id="content" class="content-wrapper">
+                    <div id="main-section" class="section-wrapper content-attention section-banner">
+                        <section class="section-entry-header">
+                            <h1>My Uploads</h1>
+                            <p>Your Uploaded Documents</p>
+                        </section>
+                        <section class="section-book-lists section-book-lists-wishlist section-item">
+                            {% for product in products %}
+                            <div id="user-wishlist-content" class="listing-grid">
+                                <div class="listgrid-item row-wishlist row-wishlist-3236146-1">
+                                    <div class="grid-list">
+                                        <div class="icon-preview">
+                                            <img loading="lazy" src="{{product.image.url}}" class="lozad image-boek item-image">
+                                        </div>
+                                        <div class="desc-preview">
+                                            <h4 class="title-preview"><a href="{% url 'product_detail' product.category.slug product.slug %}">{{product.title}}  </a></h4>
+                                            <div class="excerpt-desc">
+                                                <p>{{product.description}}</p>
+                                                <div class="information-item">
+                                                    <ul class="details">
+                                                        <li class="bold-dot"> • </li>
+                                                        <li class="info-author-institution"> {{product.institute}} </li>
+                                                        <li class="bold-dot"> • </li>
+                                                        <li class="info-category-objectType info-category"> {{product.category}} </li>
+                                                        <li class="dot"> • </li>
+                                                        <li class="count-pagina">{{product.num_pages}}
+                                                            pages
+                                                            •&nbsp;
+                                                        </li>
+                                                        <div class="ratings">
+                                                            <ul class="star-rates">
+                                                                <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                                <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                                <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                                <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                                <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                        <li class="dot"> • </li>
+                                                        <li class="info-category-amount-reviews"> ({{product.purchased}}) </li>
+                                                        <li class="dot"> • </li>
+                                                        <li class="info-category-price-item"> $ {{product.price}}</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="delete-wishlist ajax-delete-wishlist" >
+                                            <div class="cta-preview desktop">
+                                                <span class="inner-cta" style="width: auto;padding: 20px;">
+                                                    {{product.status}}
+                                                </span>
+                                            </div>
+                                        </span>
+                                        <a href='{% url "edit_product" product.id %}'>
+                                        <span title="Edit" class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle" data-id="3236146" data-type="document" data-amp-location="wishlistpage" data-country-seller="214" data-price="800" data-currency="GBP" data-language="en" data-downloads="4" data-views="17" data-rating="0.00" data-content-contained-amount="35">
+                                            <i class="hover-act add-to-cart-icon far fa-cog fa-flip-horizontal"></i>
+                                        </span></a>
+                                    </div>
+                                    <div class="list-cta mobile">
+                                        
+                                        <span class="cart-wrapper wrapper add-item-to-shoppingcart" style="width: auto;">
+                                            {{product.status}}
+                                        </span>
+                                        <a href="{% url "edit_product" product.id %}" title="RE AQA GCSE Christianity and Islam model answers  " class="goto-wrapper wrapper">
+                                            <i class="far fa-cog"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </section>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <script defer="" type="text/javascript" src=" {% static 'statics/js/1d32c2cbb2-app.js' %}"></script>
+        <script defer="" type="text/javascript" src=" {% static 'statics/js/4d94a262ca-wishlistpage.js' %}"></script>
+        {% endblock content %}

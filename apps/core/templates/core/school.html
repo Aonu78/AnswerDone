@@ -1,0 +1,38 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+        <link rel="stylesheet" href=" {% static 'statics/css/60d3cf2c22-funnelpage_css.css' %}">
+
+        <div id="app" data-country="999" class="">
+            <div id="page" class="wrapper overview-basic-page funnel-page">
+                <article id="content" class="content-wrapper">
+                    <div id="main-section" class="section-wrapper content-attention">
+                        <section class="section-entry-header-old">
+                            <h1>
+                                Select school, College, University
+                            </h1>
+                        </section>
+                        <section class="section-subject-book section-item">
+                            <div class="subject-book-lists">
+                                <div class="spinner-loader display-none"><i class="far fa-circle-notch fa-spin"></i></div>
+                                <div class="listing-subjects results-funnel">
+                                    <ul class="listing-subjects no-abc" style="    width: -webkit-fill-available;">
+                                       {% for item in institute %}
+                                        <li class="">
+                                            <a href="{% url 'school_detail' item.slug %}" class="subject-book-list-link ">
+                                            <span class="item-name">{{item.title}}
+                                            </span>
+                                            </a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <script defer="" type="text/javascript" src="{% static 'statics/js/b17118436b-app.js'%}"></script>
+        <script defer="" type="text/javascript" src="{% static 'statics/js/c8e80bc462-funnelpage.js'%}"></script>
+        {% endblock content %}

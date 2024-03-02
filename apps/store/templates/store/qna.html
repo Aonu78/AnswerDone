@@ -1,0 +1,277 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+<script>
+    // JavaScript code to hide the element with ID "callqna" based on the URL path
+window.addEventListener('DOMContentLoaded', function() {
+    // Get the current URL path
+    var currentPath = window.location.pathname;
+    
+    // Check if the current URL path contains "/qna/"
+    if (currentPath.includes('/qna/')) {
+        // Hide the element with ID "callqna"
+        var callqnaElement = document.getElementById('callqna');
+        if (callqnaElement) {
+            callqnaElement.style.display = 'none';
+        }
+    }
+    if (currentPath.includes('/qna/search')) {
+        // Hide the element with ID "callqna"
+        var callqnaElement = document.getElementById('searhquery');
+        if (callqnaElement) {
+            callqnaElement.style.display = 'none';
+        }
+    }
+
+});
+
+</script>
+<script>
+    function toggleContent(productId) {
+        var answerText = document.getElementById('answer-' + productId);
+        var toggleLink = document.getElementById('toggle-' + productId);
+    
+        if (answerText.classList.contains('show-less')) {
+            answerText.classList.remove('show-less');
+            answerText.classList.add('show-more');
+            toggleLink.textContent = 'Show less -';
+        } else {
+            answerText.classList.remove('show-more');
+            answerText.classList.add('show-less');
+            toggleLink.textContent = 'Show more +';
+        }
+    }
+    
+    </script>
+    <script>
+        // script.js
+
+function incrementLike(pk) {
+    fetch(`/qna/${pk}/like/`, { method: 'GET' })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById(`like-count-${pk}`).innerText = data.like_count;
+    });
+}
+
+function incrementDislike(pk) {
+    fetch(`/qna/${pk}/dislike/`, { method: 'GET' })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById(`dislike-count-${pk}`).innerText = data.dislike_count;
+    });
+}
+
+    </script>
+    
+<style>
+    .answer-text {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    .show-more {
+        -webkit-line-clamp: initial !important;
+    }
+    
+    .show-less {
+        -webkit-line-clamp: 2;
+    }
+    .wrapper .banner-image-props {
+        background-size: cover;
+        background-position: center -7px !important;
+        background-repeat: no-repeat;
+    }
+    .wrapper .new-banner-section {
+        padding: 0 0 20px !important;
+        margin-bottom: 3px !important;
+    }
+    .select2-selection--single{
+        height:56px !important;
+    }
+    .homepage-banner-all .container .searchbar-autocomplete-container .user-input-container{
+        border-radius: 0px !important;
+    }
+    .searchbar-autocomplete-container .dropdown-filter, .searchbar-autocomplete-container .dropdown-filter.desktop{
+        width:450px !important;
+    }
+    /* Initially hide full content */
+.excerpt-desc .content {
+    overflow: hidden;
+    max-height: 100px; /* Adjust as needed */
+}
+
+/* Show Read more link when content is truncated */
+.excerpt-desc .toggle-more {
+    display: none;
+}
+
+/* Show Read less link when full content is visible */
+.excerpt-desc .toggle-less {
+    display: none;
+}
+.selling-box .grid-list .desc-preview{
+    width:100% !important;
+}
+@media screen and (max-width: 980px) {
+.grid-list .desc-preview .excerpt-desc, .grid-list .desc-preview .info-desc{
+    margin-left:0px !important;
+}
+}
+</style>
+<link rel="preload " href="{% static 'statics/js/dd450856ba-contentpages.js' %}" as="script">
+
+<link rel="stylesheet" href="{% static 'statics/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'statics/css/2417dbe620-contentpages_css.css' %}">
+<div id="page" class="wrapper single-product contentpage-page " data-psp-trigger="" data-seller-id="958079" data-content-type="1" data-content-id="2707350" data-trigger-leave-page="1">
+    <div class="new-banner-section banner-image-props homepage-banner-all">
+        <div class="container" >
+            <div class="row">
+                <div class="banner-content" style='padding-top: 10px;'>
+                    <h1 id="banner-content-title">Question & Answer</h1>
+                    <h2 id="banner-content-subTitle">Save time by focussing on what matters. Get the instant solution of your Problems and Related Fields.</h2>
+                </div>
+            </div>
+
+            <section class="searchbar-autocomplete-container" data-select2-id="5" style="padding: 15px;
+            background: white;border: 2px solid #199be9;">
+                <div class="dropdown-filter desktop" id="dropdown-filter" data-loaded="false" data-select2-id="dropdown-filter" style="border: 1px solid 199be9;">
+                    <select id="institutionsDropdown" class="filter-content filter-dropdown select2-hidden-accessible" data-select2-id="institutionsDropdown" tabindex="-1" aria-hidden="true">
+                        <option value="">Search by Category</option>
+                    </select>
+                        <i class="fas fa-chevron-down onload-chevron"></i>
+                        {% comment %} <div class="hidden-block"></div> {% endcomment %}
+                </div>
+                <div class="user-input-container" style="border: 1px solid #199be9;">
+                    <form method="get" action="/qna/search" id="searchbar-form">
+                        <button type="submit" class="search-icon-i">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        <i class="far fa-times remove-input big"></i>
+                        <input type="text" name="s" data-current-index="" class="searchbar" id="big-searchbar" autocomplete="off" placeholder="Search for courses, books, exams, or assignments" data-location="index">
+                        <input type="hidden" name="instellingfilter" value="" class="institution-filter">
+                        <input type="hidden" name="origin" value="homepage">
+                    </form>
+
+                    {% comment %} <div class="hidden-block"></div> {% endcomment %}
+                </div>
+            </section>
+        </div>
+    </div>
+    <article id="content" class="content-wrapper">
+        <div id="main-section" class="section-entry-product">
+            <div class="results-filter results-search-filter content-attention" id="content-page-recommendations">
+                {% if latest_products %}
+                <div class="recommendation-title" data-docids="2198912:1,2108464:1,2118974:1,3586378:1" data-numberofrecoms="4" data-recomsvalid="old recommendation">
+                    <h3 id="searhquery">Suggestions based on the Question and Answer that you are currently viewing</h3>
+                    {% if query %}<h3 id="searhquery1">Page {{ latest_products.number }} out of {{ latest_products.paginator.count }} results for {{query}}</h3>   {% endif %}       
+                </div>{% endif %}
+                <div class="listing-grid">
+                    {% for product in latest_products %}
+                    <div class="listgrid-item selling-box before-you-leave-amplitude-click first-row" id="" data-type="content click" style="    margin: 5px 0px;">
+                        <a title="{{product.question}}" class="grid-list log-amplitude-js search-result-link recommended-item" data-click-location="Item" data-click-type="Question" data-click-title="{{product.question}}" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="true" rel="nofollow">
+                            <div class="desc-preview">
+                                <span class="content-title"> {{product.question|safe}} </span>
+                                <div class="info-desc search-info-desc">
+                                    <div class="downloads">
+                                        <span class="count-downloads"><h2>{{product.category}}</h2></span>
+                                    </div>
+                                    <span class="prices"></span>
+                                    <div class="downloads">
+                                        <span class="count-downloads"><h2 id="like-count-{{product.id}}">{{product.like}}</h2>x &nbsp;Like</span>
+                                    </div>
+                                    <span class="prices"></span>
+                                    <div class="downloads">
+                                        <span class="count-downloads"><h2 id="dislike-count-{{product.id}}">{{product.dislike}}</h2>x &nbsp;Dislike</span>
+                                    </div>
+                                </div>
+                                <div class="excerpt-desc">
+                                    <p id="answer-{{product.id}}" class="answer">{{product.answer|safe}}</p>
+                                    <p id="toggle-{{product.id}}" class="toggle-link show-less" onclick="toggleContent('{{product.id}}')" style='color: #199be9;'>Show more +</p>
+                                </div>
+                            </div>
+                            {% comment %} <span class="quickview-doc recommended-item" data-id="{{product.id}}" data-type="1" data-loaded="false" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="Question and Answer" data-is-link="false">
+                                <div class="cta-preview desktop ">
+                                    <i class="fa fa-thumbs-down"></i>
+                                </div>
+                            </span> {% endcomment %}
+                            <span onclick="incrementDislike({{product.pk}})" class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" style="color: red;margin-right: 45px;">
+                            <i class="add-to-cart-icon fa fa-thumbs-down fa-flip-horizontal"></i>
+                            </span>
+                            <span onclick="incrementLike({{product.id}})" class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}">
+                                <i class="add-to-cart-icon fa fa-thumbs-up fa-flip-horizontal"></i>
+                                </span>
+                            {% comment %} <span class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" onclick="addurl('{{product.id}}')">
+                                <i class="add-to-cart-icon fa fa-thumbs-up fa-flip-horizontal"></i>
+                                </span> {% endcomment %}
+                        </a>
+                        <div class="list-cta mobile">
+                            
+                            <a onclick="incrementDislike({{product.pk}})" title="{{product.question}}" class="goto-wrapper wrapper recommended-item" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="{{product.question}}" data-is-link="true" style="color: red;">
+                            <i class="fa fa-thumbs-down fa-flip-horizontal" style="color: red;"></i>
+                            </a>
+                            <a onclick="incrementLike({{product.id}})" title="{{product.question}}" class="goto-wrapper wrapper recommended-item" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="{{product.question}}" data-is-link="true">
+                                <i class="fa fa-thumbs-up fa-flip-horizontal" style="color:#58c18e;"></i>
+                                </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <article class="site-article content-attention " style="justify-content: center;">
+            <div id="content" class="section-results ">
+                <section class="section-content-wrapper section-listing-filters has-overlay">
+                    <div class="listing-filters-grid" id="main-section">
+                        <nav class="navigation-section">
+                            <ul class="list-navigation">
+                                {% if products.has_previous %}
+                                
+                                <li class="nav-item"><a href="{{ request.path }}?page=1" aria-label="First" class="link-on back-item"><i class="fal fa-angle-left"></i><i class="fal fa-angle-left"></i></a></li>
+                                <li class="nav-item"><a href="{{ request.path }}?page={{ products.previous_page_number }}" aria-label="Previous" class="link-on back-item"><i class="fal fa-angle-left"></i></a></li>
+                                {% endif %}
+                                
+                                {% for page in products.paginator.page_range %}
+                                    {% if products.number == page %}
+                                    <li class="nav-item"><a href="{{ request.path }}?page={{ page }}" class="current pagination-item" aria-label="Page {{ page }}">{{ page }}</a></li>
+                                    {% else %}
+                                    <li class="nav-item"><a href="{{ request.path }}?page={{ page }}" class="pagination-item" aria-label="Page {{ page }}">{{ page }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if products.has_next %}
+                                <li class="nav-item"><a href="{{ request.path }}?page={{ products.next_page_number }}" aria-label="Next" class="link-on next-item"><i class="fal fa-angle-right"></i></a></li>
+                                <li class="nav-item"><a href="{{ request.path }}?page={{ products.paginator.num_pages }}" aria-label="Last" class="link-on next-item"><i class="fal fa-angle-right"></i><i class="fal fa-angle-right"></i></a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </section>
+            </div>
+        </article>
+        <section class="section-box section-columns">
+            <h2 class="title-section">The benefits of buying with AnswerDone:</h2>
+            <div class="section-columns">
+                <div class="column-item">
+                    <img loading="lazy" src="{% static 'statics/img/ComprehensiveAds.png' %}" alt="Guaranteed quality through customer reviews">
+                    <h3>Guaranteed quality through customer reviews</h3>
+                    <p>AnswerDone customers have reviewed there summaries before submitting. This how you know that you are buying the best documents.</p>
+                </div>
+                <div class="column-item">
+                    <img loading="lazy" src="{% static 'statics/img/ExperimentPrice.png' %}" alt="Quick and easy check-out">
+                    <h3>Quick and easy check-out</h3>
+                    <p>You can quickly pay through credit card for the Documents. There is no membership needed.</p>
+                </div>
+                <div class="column-item">
+                    <img loading="lazy" src="{% static 'statics/img/essentie_focus.png' %}" alt="Focus on what matters">
+                    <h3>Focus on what matters</h3>
+                    <p>Your fellow students write the study notes themselves, which is why the documents are always reliable and up-to-date. This ensures you quickly get to the core!  </p>
+                </div>
+            </div>
+        </section>
+    </article>
+</div>
+<script defer="" type="text/javascript" src=" {% static 'statics/js/1d32c2cbb2-app.js' %}"></script>
+<script defer="" type="text/javascript" src="{% static 'statics/js/dd450856ba-contentpages.js' %}"></script>
+{% endblock content %}

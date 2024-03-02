@@ -1,0 +1,414 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+<link rel="preload " href="{% static 'statics/js/dd450856ba-contentpages.js' %}" as="script">
+
+<link rel="stylesheet" href="{% static 'statics/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'statics/css/2417dbe620-contentpages_css.css' %}">
+<div id="page" class="wrapper single-product contentpage-page " data-psp-trigger="" data-seller-id="958079" data-content-type="1" data-content-id="2707350" data-trigger-leave-page="1">
+    <article id="content" class="content-wrapper">
+        <div id="main-section" class="section-entry-product">
+            <div class="entry-product-wrapper">
+                <div class="identityof-product space-entry-content doc-banner">
+                    <a href="{% url 'category_detail' products.category.slug %}" target="_blank"><h2 class="typeof-product" style="color: #199be9;">{{products.category}}</h2></a>
+                    <h1 class="titleof-product">{{products.title}}</h1>
+                    <div class="course-block">
+                        {% if products.course %}
+                        <ul class="course">
+                            <li class="label">Course</li>
+                            <li class="course">
+                                <a class="doc-banner-course-link " target="_blank">{{products.course}}</a>
+                            </li>
+                        </ul>
+                        {% endif %}
+                        {% if products.institute %}
+                        <ul class="school">
+                            <li class="label">Institution</li>
+                            <li class="school">
+                                <a href="{% url 'school_detail' products.institute.slug %}" class="doc-banner-school-link " target="_blank">{{products.institute}}</a>
+                            </li>
+                        </ul>
+                        {% endif %}
+                        {% if products.book %}
+                        <ul class="book">
+                            <li class="label">Book</li>
+                            <li class="book">
+                                <a class="doc-banner-book-link left-text " target="_blank">{{products.book}}</a>
+                            </li>
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div class="content-description">
+                        <p id="content-description" class="infoof-product">{{products.description}}</p>
+                        {% comment %} <span class="show-more " data-extra-text="ckup."  id="content-page-show">[Show more]</span> {% endcomment %}
+                    </div>
+                </div>
+                <div id="contentviewer" class="preview-product space-entry-content">
+                    <div class="caption-preview-product">
+                        <p>Preview {{products.show_pages}} out of {{products.num_pages}} &nbsp;pages</p>
+                    </div>
+                    <div class="object-preview-wrapper">
+                        <div id="pdf_preview" class="pdf-wrapper">
+                            <a href="#" class="btn-fill-blue preview-doc-class quickview-doc" data-id="2707350" data-type="1" data-loaded="false">
+                            <i class="far fa-eye"></i>&nbsp; View example
+                            </a>
+                            <input type="hidden" id="iframe_src_doc" value="" class="active">
+                            <div class="iframe-doc iframe-doc-wrap bart-blue-version" data-preview-count="4">
+                                {% if products.file %}
+                                <object data="{{ products.file.url }}" id="document-preview" class="document-preview-iframe"></object> 
+                                {% endif %}
+                            </div>
+                            <div class="preview-doc preview-doc-class"><img src="{{products.image.url}}" alt="mobile-preview"></div>
+                        </div>
+                    </div>
+                    <ul class="share-preview-product">
+                        <li><a href="/copyright-claim" class="cta-report"><i class="fal fa-thumbs-down fa-flip-horizontal"></i>&nbsp; Report Copyright Violation</a></li>
+                    </ul>
+                    <input type="hidden" id="iframe-src-doc-2707350" value="/live/views/content/document/documentPreview.php?docid=2707350&amp;seller_id=&amp;page=mvc&amp;quickview=true-mvc&amp;csrf=NWMyZDUwMDM4MDA0NTUxN2U4NGJmMzA2NGY3M2QyOGM2OTJjYzU2ZQ==">
+                    <div id="iframe-doc-2707350" class="display-none quickview-content doc-page">
+                        <div class="popup-wrapper">
+                            <!-- Popup Quick view -->
+                            <div class="popup-quickview inner-popup">
+                                <div class="popup-content">
+                                    <div class="view-product">
+                                        <p>Preview {{products.show_pages}} out of {{products.num_pages}} pages</p>
+                                        <a href="{% url "add-to-cart" products.id %}" class="btn-fill-blue cta-buy header-buy-btn add-item-to-shoppingcart  cursor-pointer" data-type="document" data-id="{{products.id}}" data-upselling-bundle="" data-amp-location="Document page (header button)" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
+                                        <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                                        </a>
+                                        <div class="image-view" id="preview-{{products.id}}">
+                                            {% comment %} ************************************* {% endcomment %}
+                                            {% if products.file %}
+                                            <object data="{{ products.file.url }}" id="document-preview" class="document-preview-iframe"></object> 
+                                            {% endif %}
+                                            {% comment %} ************************************* {% endcomment %}
+                                        </div>
+                                    </div>
+                                    <div class="info-product">
+                                        <div class="cta-view-product">
+                                            <a href="{% url "add-to-cart" products.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart add-to-cart-qv-2707350-document cursor-pointer" data-id="{{products.id}}" data-type="document" data-upselling-bundle="" data-amp-location="Document page - mobile quickview" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
+                                            <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
+                                            Add to cart
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <aside class="widget-entry-product space-entry-content">
+                <div class="buy-section widget-entry-item desktop">
+                    <a href="{% url 'category_detail' products.category.slug %}" target="_blank"><h3 class="title-section-sidebar" style="color: #199be9;">{{products.category}}</h3></a>
+                    <div id="rates-4" class="ratings">
+                        <form>
+                            {% for value in "12345" %}
+                                {% if value|add:"0" <= average_rating %}
+                                    <span class="star1 selected" data-value="{{ value }}">★</span>
+                                {% else %}
+                                    <span class="star1" data-value="{{ value }}">★</span>
+                                {% endif %}
+                            {% endfor %}
+                        </form>
+                    </div>
+<style>
+    .star1 {
+        cursor: pointer;
+    }
+    .star1.selected {
+        color: gold;
+    }
+</style>
+                    <ul class="guarantee-section">
+                        <li>100% satisfaction guarantee</li>
+                        <li>Immediately available after payment</li>
+                        <li>Both online and in PDF</li>
+                        <li>No strings attached</li>
+                    </ul>
+                    <ul class="tracksof-product">
+                        <li><i class="fal fa-eye icon-stats"></i>&nbsp;{{products.views}}</li>
+                        <li class=""><i class="far fa-cloud-download icon-stats"></i>&nbsp;{{products.purchased}}</li>
+                    </ul>
+                </div>
+                <div class="desktop mb-20">
+                    <div id="sellerinfo" class="seller-section widget-entry-item">
+                        <div class="title-section-wrapper">
+                            <h3 class="title-section-sidebar"></h3>
+                            <span class="cta-seller follow-user" data-sellerid="958079">Seller</span>
+                        </div>
+                        <div class="sellerof-product">
+                            <div class="seller-image-wrapper">
+                                {% if profile.image %}
+                                <img loading="lazy" src="{{profile.image.url}}" class="photo-seller" alt="avatar-seller">
+                                {% else %}
+                                <img loading="lazy" src="{% static 'statics/img/user_icon.png' %}" class="photo-seller" alt="avatar-seller">
+                                {% endif %}
+                            </div>
+                            <div class="seller-inform">
+                                <span class="name-seller"><a title="Seller page" href="#" class="">{{products.user.username}}</a></span>
+                                <label>
+                                    {% if time_since_registration %}
+    {% if time_since_registration < 365 %}
+        <p>Member for {{ time_since_registration }} day{{ time_since_registration|pluralize }}</p>
+    {% else %}
+        <p>Member for {{ time_since_registration }} year{{ time_since_registration|pluralize }}</p>
+    {% endif %}
+{% else %}
+    <p>Registration date unknown</p>
+{% endif %}
+
+                                </label>
+                                <label>
+                                {{count_products}} Total documents 
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="contentinfo" class="document-section widget-entry-item">
+                    <h3 class="title-section-sidebar">Document information</h3>
+                    <ul class="entry-tabel-data">
+                        <li>
+                            <label class="label-info">Uploaded on</label>
+                            <span class="text-info">{{products.created_at}}</span>
+                        </li>
+                        <li>
+                            <label class="label-info">Number of pages</label>
+                            <span class="text-info">{{products.num_pages}}</span>
+                        </li>
+                        {% comment %} <li>
+                            <label class="label-info">Written in</label>
+                            <span class="text-info">2022/2023</span>
+                        </li> {% endcomment %}
+                        <li>
+                            <label class="label-info">Type</label>
+                            <span class="text-info">{{products.category}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div id="schoolinfo" class="productfor-section widget-entry-item">
+                    <h3 class="title-section-sidebar">Written for</h3>
+                    <ul class="entry-tabel-data">
+                        <li>
+                            <label class="label-info">Institution</label>
+                            <span class="text-info"><a class="">{{products.institute}}</a></span>
+                        </li>
+                        <li>
+                            <label class="label-info">Course</label>
+                            <span class="text-info"><a class="">{{products.course}}</a></span>
+                        </li>
+                    </ul>
+                    
+                    {% comment %} <a href="/school/us/az/walden-university/nurs-6540-advanced-practice-care-of-frail-elders" class="cta-widget-arrow ">All documents for this subject (31)<i class="far fa-arrow-right"></i></a> {% endcomment %}
+                </div>
+            </aside>
+            <div class="results-filter results-search-filter content-attention" id="content-page-recommendations">
+                <div class="recommendation-title" data-docids="2198912:1,2108464:1,2118974:1,3586378:1" data-numberofrecoms="4" data-recomsvalid="old recommendation">
+                    <h3>Suggestions based on the document that you are currently viewing</h3>
+                </div>
+                <div class="listing-grid">
+                    {% for product in latest_products %}
+                    <div class="listgrid-item selling-box before-you-leave-amplitude-click first-row" id="" data-type="content click">
+                        <a href="#" title="{{product.title}}" class="grid-list log-amplitude-js search-result-link recommended-item" data-click-location="Item" data-click-type="Document" data-click-title="{{product.title}}" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="true" rel="nofollow">
+                            <div class="icon-preview">
+                                {% if product.image %}
+                                <img src="{{product.image.url}}" class="image-boek" alt="{{product.title}}">
+                                {% else %}
+                                <img src="{% static 'statics/img/essentie_focus.png' %}" class="image-boek" alt="{{product.title}}">
+                                {% endif %} 
+                            </div>
+                            <div class="desc-preview">
+                                <span class="content-title"> {{product.title}} </span>
+                                <div class="info-desc search-info-desc">
+                                    <div id="rates-4" class="ratings">
+                                        <ul class="star-rates">
+                                            <li><i class="star-review star-grey fas fa-star"></i></li>
+                                            <li><i class="star-review star-grey fas fa-star"></i></li>
+                                            <li><i class="star-review star-grey fas fa-star"></i></li>
+                                            <li><i class="star-review star-grey fas fa-star"></i></li>
+                                            <li><i class="star-review star-grey fas fa-star"></i></li>
+                                        </ul>
+                                        <span class="count-rates">(0)</span>
+                                    </div>
+                                    <span class="prices">${{product.price}}</span>
+                                    <div class="downloads">
+                                        <span class="count-downloads">{{product.purchased}}x &nbsp;sold</span>
+                                    </div>
+                                </div>
+                                <div class="excerpt-desc">
+                                    <p>{{product.description}}
+                                    </p>
+                                    <div class="information-booken">
+                                        <div class="cta-detail desktop">
+                                            <span class="open-detail">i</span>
+                                            <span class="title-preview open-detail-title hover-act">See more info</span>
+                                            <span class="close-detail">x</span>
+                                        </div>
+                                        <ul class="details">
+                                            <li class="info-category">{{product.category}}</li>
+                                            <li class="count-pagina">&nbsp;• {{product.num_pages}}
+                                                pages
+                                                •&nbsp;
+                                            </li>
+                                            <li class="info-author">by <span class="name-author">examsetters</span>&nbsp;•&nbsp;
+                                            </li>
+                                            <li class="info-author">uploaded <span class="name-author">&nbsp;{{product.created_at}}</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="quickview-doc recommended-item" data-id="{{product.id}}" data-type="1" data-loaded="false" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="false">
+                                <div class="cta-preview desktop ">
+                                    <i class="preview-icon fal fa-eye"></i>
+                                    <span class="title-preview hover-act">Quick View</span>
+                                </div>
+                            </span>
+                            
+                            <span class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" onclick="addurl('{{product.id}}')">
+                            <i class="add-to-cart-icon far fa-shopping-cart fa-flip-horizontal"></i>
+                            </span>
+                        </a>
+                        <div class="list-cta mobile">
+                        
+                            <span class="info-wrapper wrapper">
+                                <span class="open">i</span>
+                                <span class="close">x</span>
+                            </span>
+                            
+                            <span class="cart-wrapper wrapper add-item-to-shoppingcart recommended-item" data-id="{{product.id}}" onclick="addurl('{{product.id}}')">
+                            <i class="far fa-shopping-cart fa-flip-horizontal"></i>
+                            </span>
+                            <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.title}}" class="goto-wrapper wrapper recommended-item" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="{{product.title}}" data-is-link="true">
+                            <i class="fas fa-long-arrow-right"></i>
+                            </a>
+                        </div>
+                        {% comment %} <div class="detail-info">
+                            <ul>
+                                <li>
+                                    <i class="fa fa-university"></i>&nbsp;
+                                    <p>
+                                        <a href="/search/us/nurs-6540/nurs-6540">&nbsp;NURS 6540</a>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div> {% endcomment %}
+                        <input type="hidden" id="iframe-src-doc-{{product.id}}" value="/live/views/content/document/documentPreview.php?docid=2198912&amp;seller_id=1592032&amp;page=mvc&amp;quickview=true-mvc&amp;csrf=NWMyZDUwMDM4MDA0NTUxN2U4NGJmMzA2NGY3M2QyOGM2OTJjYzU2ZQ==">
+                        <div id="iframe-doc-{{product.id}}" class="display-none quickview-content">
+                            <div class="popup-wrapper">
+                                <!-- Popup Quick view -->
+                                <div class="popup-quickview inner-popup">
+                                    <div class="popup-content">
+                                        <div class="view-product">
+                                            <p>Preview {{product.show_pages}} out of {{product.num_pages}} pages</p>
+                                            <a href="{% url "add-to-cart" product.id %}" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="" data-amp-location=" page (header button)" data-user-status="yes" data-country-seller="214" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
+                                            <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                                            </a>
+                                            <div class="image-view" id="preview-{{product.id}}">
+                                                {% comment %} ***************************** {% endcomment %}
+                                            </div>
+                                        </div>
+                                        <div class="info-product">
+                                            <div class="info-desc">
+                                                <span class="serif-title">{{product.category}}</span>
+                                                <div id="rates-4" class="ratings">
+                                                    <ul class="star-rates">
+                                                        <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                        <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                        <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                        <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                        <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                    </ul>
+                                                    <span class="count-rates">(0)</span>
+                                                </div>
+                                            </div>
+                                            <span class="popup-title serif-title">{{product.title}}</span>
+                                            <span class="text-entry-product time-since time-since-{{product.id}}">
+                                            Last document update:
+                                            <span class="time-since-count tsc-{{product.id}}"></span>&nbsp;
+                                            <span class="time-since-unit tsu-{{product.id}}"></span>
+                                            ago
+                                            </span>
+                                            <p class="text-entry-product">
+                                                {{product.description}}
+                                            </p>
+                                            <div class="cta-view-product">
+                                                <div class="currencyof-product">
+                                                    <span itemprop="price">${{product.price}}</span>
+                                                    <link itemprop="availability" href="http://schema.org/InStock">
+                                                </div>
+                                                <a href="{% url "add-to-cart" product.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document recommended-item" data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="yes" data-upselling-bundle="" data-country-seller="214" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="false" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
+                                                <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
+                                                Add to cart
+                                                </a>
+                                                <a href="#" class="add-wishlist ajax-add-wishlist button-add-wishlist-{{product.id}} cursor-pointer" data-id="{{product.id}}" data-type="1">
+                                                <i class="far fa-heart"></i>
+                                                </a>
+                                                <a href="#" class="delete-wishlist ajax-delete-wishlist button-delete-wishlist-{{product.id}} cursor-pointer" data-id="{{product.id}}" data-type="1">
+                                                <i class="fas fa-heart"></i>
+                                                </a>
+                                            </div>
+                                            <div class="show-more-quickview">
+                                                <a href="{% url 'product_detail' product.category.slug product.slug %}" class="recommended-item " data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="{{product.title}}" data-is-link="true">
+                                                Show more info <i class="fa fa-long-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <section class="section-box section-columns">
+            <h2 class="title-section">The benefits of buying with AnswerDone:</h2>
+            <div class="section-columns">
+                <div class="column-item">
+                    <img loading="lazy" src="{% static 'statics/img/ComprehensiveAds.png' %}" alt="Guaranteed quality through customer reviews">
+                    <h3>Guaranteed quality through customer reviews</h3>
+                    <p>AnswerDone customers have reviewed there summaries before submitting. This how you know that you are buying the best documents.</p>
+                </div>
+                <div class="column-item">
+                    <img loading="lazy" src="{% static 'statics/img/ExperimentPrice.png' %}" alt="Quick and easy check-out">
+                    <h3>Quick and easy check-out</h3>
+                    <p>You can quickly pay through credit card for the Documents. There is no membership needed.</p>
+                </div>
+                <div class="column-item">
+                    <img loading="lazy" src="{% static 'statics/img/essentie_focus.png' %}" alt="Focus on what matters">
+                    <h3>Focus on what matters</h3>
+                    <p>Your fellow students write the study notes themselves, which is why the documents are always reliable and up-to-date. This ensures you quickly get to the core!  </p>
+                </div>
+            </div>
+        </section>
+    </article>
+    <div class="mob-bar-wrap">
+        <div class="mobile-buy-bar">
+            <div class="mob-buy-left">
+                <div class="mob-buy-price">
+                    <span itemprop="price" content="2707350-document">${{products.price}}</span>
+                    <span class="mob-buy-downloads ">&nbsp;{{products.purchased}}x &nbsp;sold</span>
+                </div>
+                <div class="mob-buy-rating">
+                    <ul class="star-rates">
+                        <li><i class="star-review star-grey fas fa-star"></i></li>
+                        <li><i class="star-review star-grey fas fa-star"></i></li>
+                        <li><i class="star-review star-grey fas fa-star"></i></li>
+                        <li><i class="star-review star-grey fas fa-star"></i></li>
+                        <li><i class="star-review star-grey fas fa-star"></i></li>
+                        <li><span class="count-rates">(0)</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mob-buy-right">
+                <span class="btn-fill-yellow mob-cta-buy add-item-to-shoppingcart" data-type="document" data-id="2707350" data-upselling-bundle="" data-amp-location="Document page (mobile bottom bar)" data-user-status="yes" data-country-seller="214" data-price="1100" data-currency="USD" data-language="en" data-downloads="4" data-views="53" data-rating="0.00" data-content-contained-amount="182">
+                <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<script defer="" type="text/javascript" src=" {% static 'statics/js/1d32c2cbb2-app.js' %}"></script>
+<script defer="" type="text/javascript" src="{% static 'statics/js/dd450856ba-contentpages.js' %}"></script>
+
+{% endblock content %}

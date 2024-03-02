@@ -1,0 +1,471 @@
+{% load static %}
+<!-- The Modal -->
+<div id="myModal" class="modal" style="z-index: 99999; display:none;">
+    <style>
+        .mega-menu .mega-menu-item .list-item span:hover {
+            color: white;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const navOption = document.querySelector('.user-menu');
+            const previewList = document.querySelector('.user-preview.preview-list');
+        
+            navOption.addEventListener('click', function() {
+                if (previewList.classList.contains('active')) {
+                    previewList.classList.remove('active');
+                } else {
+                    previewList.classList.add('active');
+                }
+            });
+            var fancyboxContainer = document.getElementById('fancybox-container-3');
+            if (fancyboxContainer) {
+                if (fancyboxContainer.style.display === 'none') {
+                    fancyboxContainer.style.display = 'block';
+                } else {
+                    fancyboxContainer.style.display = 'none';
+                }
+            }
+        });
+        
+    </script>
+    <script>
+        function toggleFancybox() {
+          var fancyboxContainer = document.getElementById('fancybox-container-3');
+          if (fancyboxContainer) {
+              if (fancyboxContainer.style.display === 'none') {
+                  fancyboxContainer.style.display = 'block';
+              } else {
+                  fancyboxContainer.style.display = 'none';
+              }
+          }
+        };
+        function callqna(){
+            window.location.href = '/qna/'
+        }
+    </script>
+    <script>
+        function toggleCartBox() {
+            var cartContainer = document.getElementById('header-cart');
+            if (cartContainer) {
+              //cartContainer.classList.toggle('active');
+              console.log('working');
+            }
+          }
+    </script>
+    <style>
+        .user-preview.preview-list {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .user-preview.preview-list.active {
+        opacity: 1;
+        visibility: visible;
+        }
+    </style>
+    <div class="fancybox-container fancybox-is-open fancybox-can-swipe" role="dialog" tabindex="-1" id="fancybox-container-1" style="transition-duration: 366ms;">
+        <div class="fancybox-bg"></div>
+        <div class="fancybox-inner">
+            <div class="fancybox-infobar"><span data-fancybox-index="">1</span>&nbsp;/&nbsp;<span data-fancybox-count="">1</span></div>
+            <div class="fancybox-toolbar"></div>
+            <div class="fancybox-navigation">
+                <button data-fancybox-prev="" class="fancybox-button fancybox-button--arrow_left" title="Previous" disabled="">
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M11.28 15.7l-1.34 1.37L5 12l4.94-5.07 1.34 1.38-2.68 2.72H19v1.94H8.6z"></path>
+                        </svg>
+                    </div>
+                </button>
+                <button data-fancybox-next="" class="fancybox-button fancybox-button--arrow_right" title="Next" disabled="">
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M15.4 12.97l-2.68 2.72 1.34 1.38L19 12l-4.94-5.07-1.34 1.38 2.68 2.72H5v1.94z"></path>
+                        </svg>
+                    </div>
+                </button>
+            </div>
+            <div class="fancybox-stage">
+                <div class="fancybox-slide fancybox-slide--iframe fancybox-slide--current fancybox-slide--complete" style="">
+                    <div class="fancybox-content" style="max-width: 680px; max-height: 900px;">
+                        <iframe id="fancybox-frame1707998268953" name="fancybox-frame1707998268953" class="fancybox-iframe" allowfullscreen="allowfullscreen" allow="autoplay; fullscreen" src="{% url "login" %}" scrolling="auto"></iframe>
+                        <button type="button" data-fancybox-close="" id="closemodelbtn" class=" fancybox-button fancybox-close-small" title="Close">
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 24 24">
+                                <path d="M13 12l5-5-1-1-5 5-5-5-1 1 5 5-5 5 1 1 5-5 5 5 1-1z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="fancybox-caption fancybox-caption--separate">
+                <div class="fancybox-caption__body"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<header class="main-header header-color-white " style="position: fixed;">
+    <div class="full-width-wrap blue">
+    <div class="header-wrapper  max-width">
+        <div class="wrapper-left">
+            <section id='navmanubtn' class="m-hamburger cta-active mobile">
+                <div class="hamburger-menu">
+                    <span class="hamburger-icon"></span>
+                    <span class="hamburger-icon"></span>
+                </div>
+            </section>
+            <section class="logo-image desktop" id="home-btn-ampl" data-tab-name="/">
+                <a href="/" aria-label="home">
+                    <figure><img loading="lazy" width="130" height="45" src="{% static 'statics/img/logo_blue.png' %}" alt="logo-home">
+                    </figure>
+                </a>
+            </section>
+            {% if ismain %}
+            <div class="desktop hidden" id="hidinclas">
+                {% else %}  
+                <div class="desktop" id="hidinclas">
+                    {% endif %}
+                    <section class="search-menu search-bar-input search-menu-out search-form header-search-autocomplete-js display-block">
+                        <div class="form-search-header main-desktop autocomplete-in-header hidden">
+                            <section class="searchbar-autocomplete-container header">
+                                <div class="user-input-container">
+                                    <form action="/search" method="get" id="searchbar-form-header">
+                                        <button type="submit" class="search-icon-i" title="header-search-btn">
+                                        <i class="fa fa-search"></i>
+                                        </button>
+                                        <i class="far fa-times remove-input big"></i>
+                                        <input type="text" name="s" data-current-index="" class="searchbar" id="searchbar-header" autocomplete="off" placeholder="Search for courses, books, exams, or assignments" data-location="header" value="">
+                                    </form>
+                                    <section class="searchbar-content">
+                                        <div class="searchbar-content-container-link">
+                                            <span data-a-link="" class="search-link no-a-link-js"><span id="search-term"></span><span class="search-result-count"></span></span>
+                                            <span class="recent-searches">Previously searched by you</span>
+                                            <input type="hidden" id="HOME_DROPDOWN_ALL_RESULTS" value="View all search results for [*TERM*]">
+                                        </div>
+                                        <div class="searchbar-content-container">
+                                        </div>
+                                    </section>
+                                </div>
+                            </section>
+                        </div>
+                    </section>
+                </div>
+                <div class="mobile">
+                    <section id='smallsearchbox' class="search-menu search-menu-out">
+                        <span id="search-icon-mob-js" class="search-icon"><i class="far fa-search"></i></span>
+                        <form class="form-search-header mobile" method="get" action="/search">
+                            <section class="searchbar-autocomplete-container header">
+                                <div class="user-input-container">
+                                    <i class="fa fa-search search-icon"></i>
+                                    <i class="far fa-times remove-input big"></i>
+                                    <input type="text" name="s" class="searchbar" autocomplete="off" placeholder="Search for courses, books, exams, or assignments" data-location="index">
+                                    <section class="searchbar-content searchbar-content-mob">
+                                        <div class="searchbar-content-container-link">
+                                            <span data-a-link="" class="search-link no-a-link-js"><span id="search-term"></span><span class="search-result-count"></span></span>
+                                            <span class="recent-searches">Previously searched by you</span>
+                                            <input type="hidden" id="HOME_DROPDOWN_ALL_RESULTS" value="View all search results for [*TERM*]">
+                                        </div>
+                                        <div class="searchbar-content-container">
+                                        </div>
+                                    </section>
+                                </div>
+                            </section>
+                        </form>
+                    </section>
+                </div>
+            </div>
+            <div class="wrapper-center mobile">
+                <a href="/" class="logo-wrapper" aria-label="home">
+                <img loading="lazy" width="40" height="45" src="{% static 'statics/img/logo-2.png' %}" class="image-pasif" alt="logo">
+                </a>
+            </div>
+            <div class="wrapper-right ">
+                <section class="nav-option">
+                    <nav class="user-menu has-preview">
+                        {% if request.user.is_authenticated %}
+                        <span class="user-avatar">
+                        <span class="avatar-btn">
+                        <i class="avatar fa fa-solid fa-user"></i>
+                        </span>
+                        </span>
+                        <div class="user-preview preview-list">
+                            <div class="preview-title">
+                                <h4>My Profile</h4>
+                            </div>
+                            <div class="column-flex user-preview-wrapper">
+                                <ul class="inner-col2 left-wrapper">
+                                    <li class="pvlist-item"><a href="{% url "dashboard" %}" class="mp-new-header"><i class="fal fa-home-lg-alt"></i><label>Dashboard</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
+                                    <li class="pvlist-item"><a href="{% url "user_uploads" %}" class="mp-new-header"><i class="fal fa-file-alt"></i><label>Uploads</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
+                                    <li class="pvlist-item"><a href="{% url "downloads" %}" class="mp-new-header"><i class="fal fa-cloud-download"></i><label>Downloads</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
+                                </ul>
+                                <ul class="inner-col2 right-wrapper">
+                                    <li class="pvlist-item"><a href="{% url "wallet" %}" class="mp-new-header"><i class="far fa-wallet"></i><label>Wallet</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
+                                    <li class="pvlist-item"><a href="{% url "reviews" %}" class="mp-new-header"><i class="far fa-star"></i><label>Reviews</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
+
+                                    <li class="pvlist-item"><a href="{% url "profile" %}" class="mp-new-header"><i class="fal fa-cog"></i><label>Profile Settings</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
+                                    <li class="pvlist-item"><a href="{% url "logout" %}" class="mp-new-header"><i class="far fa-long-arrow-alt-right"></i><label>Logout</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                        {% else %}
+                        <span class="user-avatar" id="myBtn">
+                        <span class="avatar-btn">
+                        <i class="avatar fa fa-solid fa-user"></i>
+                        </span>
+                        </span>
+                        {% endif %}    
+                    </nav>
+                    {% if cart_product != 0 %}                
+                    <nav id="header-cart" class="nav-cart has-preview">
+                        <span class="cart-now" onclick="toggleCartBox()" >
+                        <i class="far fa-shopping-cart fa-flip-horizontal header-cart-icon"></i>
+                        <label><span class="desktop"> ${{total_cost}}</span></label>
+                        <span class="count-shop">{{cart_product}}</span>
+                        </span>
+                        <div class="cart-preview preview-list">
+                            <div class="preview-title">
+                                <h4>Shopping cart</h4>
+                                <p>{{cart_product}} items
+                                    <span class="price-shop">${{total_cost}}</span>
+                                </p>
+                            </div>
+                            
+                            <div class="cart-items-wrap">
+                                <ul>
+                                    {% for item in cart %}
+                                    <li class="pvlist-item">
+                                        <div class="cart-desc">
+                                            <p>{{item.product.category}}&nbsp; <span class="price-item">${{item.total_price}}</span></p>
+                                            <h5 class="product-item">
+                                                <a href="">{{item.product.title}}</a>
+                                            </h5>
+                                        </div>
+                                        <div class="delete-content-cart-header" onclick="hitUrl('{{item.product.id}}')">
+                                            <a href="{% url "remove_from_cart" item.product.id %}"> <i class="head-icon-trash far fa-trash-alt"></i></a>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="pvlist-item special-list">
+
+                                <a href="{% url "checkout" %}" class="button-green header-cart-link" data-login-message="Logging you in"><i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;Checkout&nbsp;<i class="far fa-angle-right"></i></a>
+                            </div>
+                        </div>
+                    </nav>
+                    {% endif %}
+                    {% if request.path == '/sell-study-notes/' %}
+                    {% if request.user %}
+                    <nav class="cta-sell has-preview desktop" >
+                        <a href="{% url "uploads" %}" class="button-sell default-sell mp-new-header">
+                        <i class="fa fa-upload"></i> <span>Sell</span>
+                        </a>
+                    </nav>
+                    {% else %}
+                    <nav class="cta-sell has-preview desktop" onclick="openModal()">
+                        <a class="button-sell default-sell mp-new-header">
+                        <i class="fa fa-upload"></i> <span>Sell</span>
+                        </a>
+                    </nav>
+                    {% endif %}
+                    {% else %}
+                    {% if request.path != '/sell-study-notes/' and not request.user %}
+                    <nav class="cta-sell has-preview desktop" onclick="openModal()">
+                        <a class="button-sell default-sell mp-new-header">
+                        <i class="fa fa-upload"></i> <span>Sell</span>
+                        </a>
+                    </nav>
+                    {% else %}
+                    <nav class="cta-sell has-preview desktop">
+                        <a href="{% url "uploads" %}" class="button-sell default-sell mp-new-header">
+                        <i class="fa fa-upload"></i> <span>Sell</span>
+                        </a>
+                    </nav>
+                    {% endif %}
+                    {% endif %}
+                </section>
+            </div>
+        </div>
+    </div>
+    <a id="callqna" href="{% url "qna" %}" onclick="callqna()">
+    <nav class="nav-cart has-preview" style="right: 1px;position: absolute;margin-right: 12px;">
+        <span class="cart-now" style="border: none;
+        background: #199be9;">
+            <img src="{% static 'statics/img/qna.png' %}" style="width: 25px;
+            margin-right: 17px;">
+        <label>
+            <span class="desktop" style="    color: white;"> Question & Answer</span>
+        </label>
+    </span>
+    </nav>
+</a>
+    {% if ismain %}
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            console.log('jQuery is working!');
+        });
+        
+        $(document).ready(function () {
+            var lastScrollTop = 0;
+        
+            $(window).scroll(function () {
+                // console.log("scrollTop working");
+                var st = $(this).scrollTop();
+                // console.log(st);
+        
+                if (st > lastScrollTop) {
+                    // Scroll down
+                    if (st > 500) {
+                        console.log(st);
+                        $('#hidinclas').removeClass('hidden');
+                    }
+                } else {
+                    // Scroll up
+                    if (st < 500) {
+                        console.log(st);
+                        $('#hidinclas').addClass('hidden');
+                    }
+                }
+        
+                lastScrollTop = st;
+            });
+        });
+    </script>
+    <nav id="header-categories-js" class="nav-main desktop" style="">
+        <div class="full-width-wrap light-blue">
+            <div class="mega-menu max-width">
+                <div class="mega-menu-item">
+                    <span class="header-tc-span">Universities<i class="header-top-icon fa fa-chevron-down"></i></span>
+                    <ul class="sub-menu column-flex ">
+                        <li class="menu-right">
+                            <div class="category-index-1-CATEGORY_UNIVERSITY_SCHOOL header-category-content header-category-content-CATEGORY_UNIVERSITY_SCHOOL ">
+                                <h6>Popular Universities</h6>
+                                <ul class="list-menu">
+                                    {% for uni in nav_university %}
+                                    <li class="list-item three-columns">
+                                        <a href="{% url 'school_detail' uni.slug %}" class="item-desc header-cat-link" data-content="{{uni.title}}"  title="{{uni.title}}">
+                                        <i class="fas fa-angle-right"></i>
+                                        <label class="list-style"><span>{{uni.title}}</span></label>
+                                        </a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                <a href="{% url "all-school" %}" class="top-cat-link header-cat-link" data-content="Browse all institutions" data-category="CATEGORY_UNIVERSITY_SCHOOL" title="Browse all institutions" data-index="1">Browse all institutions</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mega-menu-item">
+                    <span class="header-tc-span">Latest Uploads<i class="header-top-icon fa fa-chevron-down"></i></span>
+                    <ul class="sub-menu column-flex  book-menu ">
+                        <li class="menu-right full-width">
+                            <div class="category-index-1-CATEGORY_BOOKS header-category-content header-category-content-CATEGORY_BOOKS ">
+                                <h6>Recent Latest Uploaded</h6>
+                                <ul class="list-menu">
+                                    {% for nav_prod in nav_products %}
+                                    <a href="{% url 'product_detail' nav_prod.category.slug nav_prod.slug %}" class="book-header-item header-cat-link">
+                                        <img loading="lazy" alt="{{nav_prod.title}}" src="{{nav_prod.image.url}}" class="suggestion-image">
+                                        <p>
+                                            <span class="one-line-text-header">{{nav_prod.title}}</span>
+                                            <label class="book-header">{{ nav_prod.description|truncatechars:25 }}
+                                            </label>
+                                        </p>
+                                    </a>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mega-menu-item">
+                    <span class="header-tc-span">Categories<i class="header-top-icon fa fa-chevron-down"></i></span>
+                    <ul class="sub-menu column-flex ">
+                        <li class="menu-right full-width">
+                            <div class="category-index-1-CATEGORY_QUALIFICATIONS header-category-content header-category-content-CATEGORY_QUALIFICATIONS ">
+                                <h6>Popular Categories</h6>
+                                <ul class="list-menu">
+                                    {% for nav_cat in nav_category %}
+                                    <li class="list-item ">
+                                        <a href="{% url 'category_detail' nav_cat.slug %}" class="item-desc header-cat-link" title="{{nav_cat.title}}">
+                                        <i class="fas fa-angle-right"></i>
+                                        <label class="list-style"><span>{{nav_cat.title}}</span></label>
+                                        </a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <a id='callqna' href="{% url "qna" %}" onclick="callqna()">
+                <nav class="nav-cart has-preview" style="right: 1px;position: absolute;    margin-top: -23px;">
+                    <span class="cart-now" style="border: none;
+                    background: #199be9;">
+                        <img src="{% static 'statics/img/qna.png' %}" style="width: 25px;
+                        margin-right: 10px;">
+                    <label>
+                        <span class="desktop" style="    color: white;"> Question & Answer</span>
+                    </label>
+                    
+                </nav></a>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+    <nav id='sidnavbar' class="nav-primary nav-primary-mo mobile">
+        <button id="mobile-header-close-action" class="close mobile-header-close"><i class="fal fa-times"></i></button>
+        <h3 class="title-navprimary">Find study resources for</h3>
+        <ul class="menu-primary">
+            <li class="list-menu">
+                <label>Universities</label><i class="fal fa-angle-right"></i>
+                <nav class="nav-menu-child">
+                    <div class="header-navchild">
+                        <span class="back-list-menu"><i class="fas fa-arrow-left"></i></span>
+                        <span class="title-navchild">Universities</span>
+                    </div>
+                    <ul class="list-wrapper mo-wrap mo-wrap-CATEGORY_UNIVERSITY_SCHOOL-1">
+                        <h5 class="list-title">Latest Universities</h5>
+                        {% for uni in nav_university %}
+                        <li class="list-style"><i class="far fa-angle-right"></i><a href="{% url 'school_detail' uni.slug %}" title="{{uni.title}}">{{uni.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            </li>
+            <li class="list-menu">
+                <label>Textbooks</label><i class="fal fa-angle-right"></i>
+                <nav class="nav-menu-child">
+                    <div class="header-navchild">
+                        <span class="back-list-menu"><i class="fas fa-arrow-left"></i></span>
+                        <span class="title-navchild">Textbooks</span>
+                    </div>
+                    <ul class="list-wrapper mo-wrap mo-wrap-CATEGORY_BOOKS-1">
+                        <h5 class="list-title">Books</h5>
+                        {% for nav_prod in nav_products %}
+                        <li class="list-style"><i class="far fa-angle-right"></i><a href="{% url 'product_detail' nav_prod.category.slug nav_prod.slug %}" title="{{nav_prod.title}}">{{nav_prod.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            </li>
+            <li class="list-menu">
+                <label>Categories</label><i class="fal fa-angle-right"></i>
+                <nav class="nav-menu-child">
+                    <div class="header-navchild">
+                        <span class="back-list-menu"><i class="fas fa-arrow-left"></i></span>
+                        <span class="title-navchild">Categories</span>
+                    </div>
+                    <ul class="list-wrapper mo-wrap mo-wrap-CATEGORY_QUALIFICATIONS-1">
+                        <h5 class="list-title">Category</h5>
+                        {% for nav_cat in nav_category %}
+                        <li class="list-style"><i class="far fa-angle-right"></i><a href="{% url 'category_detail' nav_cat.slug %}" title="{{nav_cat.title}}">{{nav_cat.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            </li>
+        </ul>
+        <div class="footnav-primary" style="justify-content: center;">
+            <a href="{% url "sell-study-notes" %}" class="sell-option"><img loading="lazy" alt="sell-button" src="{% static 'statics/img/sound-icon.png' %}"><label>Sell</label></a>
+        </div>
+    </nav>
+    <input type="hidden" id="flag-class" value="fa fa-globe">
+    <div class="background-distraction"></div>
+</header>

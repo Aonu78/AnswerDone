@@ -1,0 +1,49 @@
+{% load static %}
+<footer class="main-footer background-image">
+    <div class="footer-container container">
+        <section class="column-flex footer-column">
+            <div class="inner-col4 inner-column">
+                <h5 class="serif-font">Platform</h5>
+                <ul>
+                    <li class="list-style"><a href="{% url "sell-study-notes" %}" class="sell-link amp-js" title="How does it work?" data-name="FOOTER_STUDY_HOW" data-link="/about-stuvia"><i class="far fa-angle-right"></i>How does it work?</a></li>
+                    <li class="list-style"><a href="{% url "sell-study-notes" %}" class="sell-link amp-js" title="Sell onAnswer Done" data-name="FOOTER_SELL_ON_STUVIA" data-link="#"><i class="far fa-angle-right"></i>Sell onAnswer Done</a></li>
+                    <li class="list-style"><a href="{% url "sell-study-notes" %}" class="sell-link amp-js" title="Tips to sell more" data-name="PAGETITLE_SELL_TIPS" data-link="/selltips"><i class="far fa-angle-right"></i>Tips to sell more</a></li>
+                </ul>
+            </div>
+            <div class="inner-col4 inner-column">
+                <h5 class="serif-font">Company</h5>
+                <ul class="help-links">
+                    <li class="list-style"><a href="{% url "aboutus" %}" title="About" data-name="PAGETITLE_ABOUT" data-link="/aboutus"><i class="far fa-angle-right"></i>About</a></li>
+                    <div class="footer-btn-blue">
+                        <a href="https://web.facebook.com/Answerdone4" class="btn-instagram" title="Follow us on Facebook" data-name="Follow us on Facebook" data-link="https://web.facebook.com/Answerdone4" target="_blank" rel="nofollow">
+                        &nbsp;<i class="fab fa-facebook"></i> &nbsp;Follow us on Facebook</a>
+                    </div>
+                </ul>
+            </div>
+            <div class="inner-col4 inner-column">
+                <h5 class="serif-font">Copyright</h5>
+                <ul class="help-links">
+                    <li class="list-style"><a href="{% url "copyright" %}"><i class="far fa-angle-right"></i>Copyright Center</a></li>
+                    <li class="list-style"><a href="{% url "copyright" %}"><i class="far fa-angle-right"></i>Notice &amp; Takedown</a></li>
+                </ul>
+            </div>
+            <div class="inner-col4 inner-column">
+                <h5 class="serif-font">Need help?</h5>
+                <ul class="help-links">
+                    <li class="list-img-style help-footer-subtitle">We're available through e-mail, and Facebook.</li>
+                    <li class="list-img-style"><a href="{% url "faq" %}" class="faq-class amp-js" title="FAQ" data-name="FAQ" data-link="#"><i class="fal fa-question-circle"></i> &nbsp;FAQ</a></li>
+                </ul>
+            </div>
+        </section>
+        <section class="copyright-coloumn column-flex">
+            <div class="inner-column inner-copy inner-col3">
+                <img loading="lazy" class="answerdone-logo-small" src="{% static 'statics/img/logo-3.png' %}" alt="small-logo">
+                <p>Copyright © Answer Done International BV {% now "Y" %} ·
+                    • <a href="{% url "termsofuse" %}" class="term-of-use-links">Terms of Use</a>
+                    • <a href="{% url "privacy-policy" %}" class="term-of-use-links">Privacy Statement</a>
+                </p>
+                <p class="not-sponsored">Answer Done is not sponsored or endorsed by any college or university</p>
+            </div>
+        </section>
+    </div>
+</footer>
