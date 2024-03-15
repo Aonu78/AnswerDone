@@ -42,7 +42,6 @@ class Courses(models.Model):
 
     def __str__(self):
         return self.title
-    
 # DRAFT = 'Draft'
 # WATING_APPROVAL = 'Wating Approval'
 # ACTIVE = 'Active'
@@ -56,11 +55,11 @@ STATUS_CHOICES = (
 class Product(models.Model):
     
     user = models.ForeignKey(User, related_name='products', on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE,blank=True, null=True)
+    category = models.ForeignKey(Category, related_name='products', on_delete=models.SET_NULL,blank=True, null=True)
     title = models.CharField(max_length=255)
     slug = models.CharField(max_length=255, unique=True, null=True)
-    course = models.ForeignKey(Courses, related_name='products', on_delete=models.CASCADE, default=None,blank=True, null=True)
-    institute = models.ForeignKey(Institute, related_name='products', on_delete=models.CASCADE, blank=True, null=True)
+    course = models.ForeignKey(Courses, related_name='products', on_delete=models.SET_NULL, default=None,blank=True, null=True)
+    institute = models.ForeignKey(Institute, related_name='products', on_delete=models.SET_NULL, blank=True, null=True)
     book = models.CharField(max_length=255, blank=True, null=True)
     isbn = models.CharField(max_length=255, blank=True, null=True)
     author = models.CharField(max_length=255, blank=True, null=True)
@@ -183,3 +182,20 @@ def update_dummy_file_on_file_change(sender, instance, **kwargs):
             logging.error(f"File not found at path: {file_path}")
 
 
+    
+class Bundle(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.CharField(max_length=255)
+    product = models.ManyToManyField(Product, related_name='bundles', blank=True)
+    description = models.TextField(blank=True)
+    price = models.FloatField(default=0)
+    views = models.IntegerField(default=0)
+    purchased = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    class Meta:
+        verbose_name_plural = "Buldles"
+
+    def __str__(self):
+        return self.title
+    

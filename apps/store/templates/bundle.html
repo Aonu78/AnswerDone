@@ -1,0 +1,183 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('search-document-practicequest');
+        const listingItems = document.querySelectorAll('.listing-grid');
+    
+        searchInput.addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+    
+            listingItems.forEach(function (item) {
+                const title = item.querySelector('.title-preview').innerText.toLowerCase();
+                if (title.includes(searchTerm)) {
+                    item.style.display = 'block';  // Show the item
+                } else {
+                    item.style.display = 'none';   // Hide the item
+                }
+            });
+        });
+    });
+
+</script>
+<script>
+    function confirmDelete(productId) {
+        var confirmation = confirm("Are you sure you want to delete this bundle?");
+        if (confirmation) {
+            window.location.href = '/bundle/remove/' + productId + '/';
+        }
+    }
+</script>
+
+<style>
+    .upload-form {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        align-items: flex-start;
+        flex-flow: row wrap;
+        justify-content: space-between;
+    }
+    .filter-document-practicequest .input-field {
+        margin-bottom: 10px;
+    }
+    .upload-form .input-field {
+        position: relative;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .upload-form .title-field {
+        display: block;
+        color: #272e5d;
+        font-size: 1em;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+    
+.upload-form .input-field.search-field input {
+padding-right: 30px;
+}
+
+.upload-form .input-field input, .upload-form .input-field textarea {
+color: #199be9;
+}
+.upload-form input[type=search], .upload-form input[type=text] {
+width: 100%;
+padding: 15px 20px;
+}
+.upload-form input {
+overflow: hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 1;
+word-break: break-word;
+}
+.upload-form input, .upload-form textarea {
+background-color: #fff;
+-webkit-border-radius: 2px;
+-moz-border-radius: 2px;
+border-radius: 2px;
+border: 1px solid #d1ebfb;
+}
+input {
+font-size: 1em;
+}
+</style>
+
+        <link rel="stylesheet" href="{% static 'statics/css/74c8e7dfbc-wishlistpage_css.css' %}">
+
+        <div id="app" data-country="214" class="">
+
+            <div id="page" class="wrapper uploaddownload-page  ">
+                <article id="content" class="content-wrapper">
+                    <div id="main-section" class="section-wrapper content-attention section-banner">
+                        <section class="section-entry-header">
+                            <h1>My Bundles</h1>
+                            <p>Your Uploaded Documents as Bundles</p>
+                        </section>
+                        {% if total_active < 1%}
+                        <section class="section-infobox section-increase-revenue">
+                            <div class="thumbnail-infobox">
+                                <img loading="lazy" src=" {% static 'statics/img/wind-doc.svg' %}">
+                            </div>
+                            <div class="content-infobox">
+                                <h3 class="title-infobox">Add some documents to create Bundles</h3>
+                                <p>A bundle is a collection of documents sold for a single price. By bundling your documents you will help customers to purchase multiple documents in one transaction.</p>
+                            </div>
+                            <a href="{% url "uploads" %}" class="cta-infobox add-bundle-amp-js"><i class="fa fa-upload"></i>Uploads Documents</a>
+                        </section>
+                        {% endif %}
+                        {% if products %}
+                        <section class="section-infobox section-increase-revenue">
+                            <div class="thumbnail-infobox">
+                                <img loading="lazy" src=" {% static 'statics/img/wind-doc.svg' %}">
+                            </div>
+                            <div class="content-infobox">
+                                <h3 class="title-infobox">Increase your income by bundling your documents</h3>
+                                <p>A bundle is a collection of documents sold for a single price. By bundling your documents you will help customers to purchase multiple documents in one transaction.</p>
+                            </div>
+                            <a href="{% url "create_bundle" %}" class="cta-infobox add-bundle-amp-js"><i class="fa fa-plus"></i>Create a package deal</a>
+                        </section>
+                        
+                        <section class="section-book-lists section-book-lists-wishlist section-item">
+                                    <div class="upload-form filter-document-practicequest">
+                                        <div class="input-field search-field">
+                                            <label class="title-field" for="search-document-practicequest">Search for documents</label>
+                                            <input type="search" id="search-document-practicequest" class="search-uploads" placeholder="Search...">
+                                        </div>
+                                    </div>
+                            {% for product in products %}
+                            <div id="user-wishlist-content" class="listing-grid">
+                                <div class="listgrid-item row-wishlist row-wishlist-3236146-1">
+                                    <div class="grid-list">
+                                        <div class="icon-preview">
+                                            
+                                            <img loading="lazy" src="{% static 'statics/img/essentie_focus.png' %}" class="lozad image-boek item-image">
+                                        </div>
+                                        <div class="desc-preview">
+                                            {% comment %} {% url 'product_detail' product.category.slug product.slug %} {% endcomment %}
+                                            <h4 class="title-preview"><a href="#">{{product.title}}  </a></h4>
+                                            <div class="excerpt-desc">
+                                                <p>{{product.description}}</p>
+                                                <div class="information-item">
+                                                    <ul class="details">
+                                                        <li class="info-category-price-item"> $ {{product.price}}</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a href='#' onclick='confirmDelete({{ product.id }}); return false;'>
+                                            <span title="Delete" class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle" 
+                                                  data-id="3236146" data-type="document" data-amp-location="wishlistpage" 
+                                                  data-country-seller="214" data-price="800" data-currency="GBP" 
+                                                  data-language="en" data-downloads="4" data-views="17" data-rating="0.00" 
+                                                  data-content-contained-amount="35">
+                                                <i class="hover-act add-to-cart-icon far fa-trash fa-flip-horizontal"></i>
+                                            </span>
+                                        </a>                                        
+                                    </div>
+                                    <div class="list-cta mobile">
+                                        
+                                        <span class="cart-wrapper wrapper add-item-to-shoppingcart" style="width: auto;">
+                                            {{product.status}}
+                                        </span>
+                                        <a href="{% url "edit_product" product.id %}" title="RE AQA GCSE Christianity and Islam model answers  " class="goto-wrapper wrapper">
+                                            <i class="far fa-cog"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </section>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <script defer="" type="text/javascript" src=" {% static 'statics/js/1d32c2cbb2-app.js' %}"></script>
+        <script defer="" type="text/javascript" src=" {% static 'statics/js/4d94a262ca-wishlistpage.js' %}"></script>
+        {% endblock content %}

@@ -16,7 +16,10 @@
         <link rel="icon" sizes="192x192" href="{% static 'statics/img/favicon.png' %}">
         <link rel="shortcut icon" sizes="192x192" type="image/x-icon" href="{% static 'statics/img/favicon.png' %}">
         <link rel="stylesheet" href="{% static 'statics/css/5f1aff9ab4-register_login_css.css' %}">
-
+<style>
+    #connect-success{
+    }
+</style>
     </head>
     <body class="user-loggedin" data-step="login" data-token="NDllZGVlY2IxMjljMmYyOTBhZGI0NTRjOGM4MTIxNzViYzQ0Y2ZhZQ==">
         <div class="overlay">
@@ -34,27 +37,18 @@
                     <div id="connect-error" style='padding-top: 25px;'>
                         Wrong Email or Password
                     </div>
-                    {% comment %} <div class="group-button">
-                        <a href="" class="btn-fblogin fb-login-button">
-                        <i class="fab fa-facebook-square fb-login-icon"></i>
-                        Login with Facebook
-                        </a>
-                        <a href="#" class="btn-googlelogin" id="google-sign-in" data-redirect="">
-                        <img src="{% static "statics/img/google.png" %}"> Login with Google
-                        </a>
-                        <span id="googleButtonReplace"></span>
-                    </div> {% endcomment %}
+
                     <span class="line-heading">e-mail</span>
-                    <form action="#" method="post" id="loginForm" class="form-register" validate="" novalidate="novalidate">
+                    <form action="{% url "login" %}" method="POST" id="loginForm" class="form-register" >
                         <div class="input-field">
-                            <input type="email" placeholder="Email or username" name="username" id="username" autocomplete="username" required="" maxlength="50">
+                            <input type="text" placeholder="Email or username" name="username" id="username" autocomplete="username" required="" maxlength="50">
                             <label class="valid-icon">
                             <i class="far fa-check"></i>
                             <i class="far fa-times"></i>
                             </label>
                         </div>
                         <div class="input-field">
-                            <input type="password" placeholder="Password" name="password" id="password" minlength="6" maxlength="50" autocomplete="current-password" required="">
+                            <input type="password" placeholder="Password" name="password" id="password" minlength="5" maxlength="50" autocomplete="current-password" required="">
                             <label class="valid-icon">
                             <i class="far fa-check"></i>
                             <i class="far fa-times"></i>
@@ -76,7 +70,7 @@
         document.getElementById("loginForm").addEventListener("submit", function(event) {
             event.preventDefault();
             var formData = new FormData(this);
-
+            console.log(window.location.pathname)
             fetch(this.action, {
                 method: 'POST',
                 body: formData,
@@ -88,8 +82,39 @@
                 console.log(response);
                 if (response.redirected) {
                     document.querySelector('.modal.modal-register.active').classList.remove('active');
+                    if (!window.parent.location.href.includes('/accounts/login/')) {
+                        window.parent.location.reload();
+                    }
+                    console.log("***************")
+                    //}
+                    //else{
+                    console.log("$$$$$$$$$$$$$$$4")
+                    //}
+                    var currentUrl = window.location.href;
+                    var searchParams = new URLSearchParams(currentUrl);
+                    var nextUrl = searchParams.get('next');
+                    console.log(nextUrl)
+                    console.log(nextUrl)
+                    console.log(nextUrl)
+                    console.log(nextUrl)
+                    console.log(nextUrl)
+                    console.log(nextUrl)
+                    console.log(nextUrl)
+                    console.log(nextUrl)
+                    console.log(nextUrl)
+                    console.log(nextUrl)
+                    console.log(nextUrl)
+                    // Get the current URL
+                    var fullUrl = window.location.href;
+                    console.log("Full URL:", fullUrl);
+                    var url = new URL(fullUrl);
+
+                    // Get the value of the 'next' parameter
+                    var nextUrl = url.searchParams.get('next');
+
+                    console.log("Next URL:", nextUrl);
+                    window.location.href = nextUrl || '/accounts/login/';                    
                     
-                    window.parent.location.reload();
                 } else {
                     document.getElementById('connect-error').style.display = 'block'
                 }

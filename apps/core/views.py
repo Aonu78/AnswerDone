@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.db.models import Q, Sum
@@ -8,9 +9,9 @@ from ..store.cart import Cart
 from .models import ServiceCosts, ChargePrice,Copyright_Request
 from ..vendor.forms import OrderForm
 from ..vendor.models import OrderItem, Order
-from ..store.models import Institute, Category
+from ..store.models import Institute, Category, Bundle
 from django.contrib import sitemaps
-from django.urls import reverse
+from django.utils.text import slugify
 from django.conf import settings
 from django.http import JsonResponse
 from django.contrib import messages
@@ -41,23 +42,30 @@ def question_answer_add(request):
     print()
     if request.method == 'POST':
         try:
+            title = request.POST.get('title')
             product_id = request.POST.get('product')
             question_type = request.POST.get('question_type')
             question_no = request.POST.get('question_no')
             question = request.POST.get('question')
             short_answer = request.POST.get('short_answer')
             answer = request.POST.get('answer')
+            chapter_no = request.POST.get('chapter_no')
+            price = request.POST.get('price')
             
             prod = Product.objects.get(id=product_id)
             
             question_answer = Question_Answer.objects.create(
                 user=request.user,
+                title=title,
                 product=prod,
+                chapter_no=chapter_no,
                 question_type=question_type,
                 question_no=question_no,
                 question=question,
                 short_answer=short_answer,
-                answer=answer
+                answer=answer,
+                price=price,
+                slug=slugify(title)
             )
             
             messages.success(request, 'Question_Answer instance created successfully!')
@@ -105,7 +113,7 @@ def index(request):
     nav_products = products
     nav_university = Institute.objects.order_by('-created_at')[:12]
     cart = Cart(request)
-    user_count = User.objects.all().count()
+    answer_count = Question_Answer.objects.all().count()
     product_count = Product.objects.all().count()
     earn_count = OrderItem.objects.aggregate(total_price=Sum('price'))['total_price']
     university_count = Institute.objects.all().count()
@@ -114,7 +122,7 @@ def index(request):
     return render(request, 'core/index.html',{
         'products':products,'ismain':True,
         'cart':cart,'cart_product':len(cart),'total_cost':total_cost,
-        'user_count':user_count,'product_count':product_count,'earn_count':earn_count,'university_count':university_count,
+        'answer_count':answer_count,'product_count':product_count,'earn_count':earn_count,'university_count':university_count,
         'title':title,'description':description,
         'nav_university':nav_university,'nav_products':nav_products,'nav_category':nav_category
     })
@@ -240,18 +248,29 @@ def checkout(request):
             order.save()
             
             for item in cart:
-                product = item['product']
-                quantity = int(item['quantity'])
-                price = item['product'].price * quantity
-                try:
-                    product_id = item['product'].id
-                    prod = Product.objects.get(id=item['product'].id)
-                    prod.purchased += 1  
-                    prod.save() 
-                    item = OrderItem.objects.create(order=order, product=product, price=price, quantity=quantity)
-                    print("OrderItem created successfully")
-                except Exception as e:
-                    print("Error creating OrderItem:", e)
+                item_type = item['item_type']
+                item_id = item['item_id']
+                content_type = None
+                
+                # Determine the model class based on the item type
+                model_class = None
+                if item_type == 'note':
+                    model_class = Product
+                elif item_type == 'bundle':
+                    model_class = Bundle
+                elif item_type == 'question':
+                    model_class = Question_Answer
+
+                if model_class:
+                    content_type = ContentType.objects.get_for_model(model_class.objects.get(id=item_id))
+                    
+                OrderItem.objects.create(
+                    order=order,
+                    content_type=content_type,
+                    object_id=item_id,
+                    price=item['total_price'],
+                    quantity=item['quantity']
+                )
 
             cart.clear()
 
@@ -260,6 +279,7 @@ def checkout(request):
         form = OrderForm()
 
     return render(request, 'core/shoppingcart.html',{'cart':cart,'form':form,'cart_product':len(cart),'total_cost':total_cost,'shop':shop})
+
 
 def termsofuse(request):
     return render(request, 'core/termsofuse.html',{})

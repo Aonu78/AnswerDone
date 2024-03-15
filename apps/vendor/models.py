@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db import models
 from ..store.models import Product
+from ..core.models import Question_Answer
 from model_utils import Choices
 
 
@@ -65,15 +68,26 @@ class Order(models.Model):
         return str(self.created_by)
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, related_name='order', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, related_name='order', on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, related_name='order_items', on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
     price = models.FloatField()
     quantity = models.IntegerField(default=1)
+
     def __str__(self):
-        return str(self.product)
+        return str(self.content_object)
+    
 
 class Rating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     description = models.TextField(null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    created_at = models.DateTimeField(auto_now_add=True,null=True)
+
+class Rating_QA(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    description = models.TextField(null=True)
+    question = models.ForeignKey(Question_Answer, on_delete=models.CASCADE)
     rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])

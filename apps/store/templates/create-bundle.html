@@ -1,0 +1,177 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('search-document-practicequest');
+        const listingItems = document.querySelectorAll('.listing-item');
+    
+        searchInput.addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+    
+            listingItems.forEach(function (item) {
+                const title = item.querySelector('.title-listing').innerText.toLowerCase();
+                if (title.includes(searchTerm)) {
+                    item.style.display = 'flex';  // Show the item
+                } else {
+                    item.style.display = 'none';   // Hide the item
+                }
+            });
+        });
+    });
+    
+</script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<link rel="stylesheet" href=" {% static "statics/css/d0e1e987c8-createbundle_css.css" %} ">      
+<link rel="preload " href="{% static "statics/js/5c6ba62ce4-createbundle.js" %}" as="script">
+<div id="page" class="wrapper content-page">
+    <article id="content" class="content-wrapper page-create-bundle">
+        <div id="main-section" class="section-wrapper content-attention">
+            <section class="section-entry-header">
+                <h1>Create a package deal</h1>
+                <p class="top-description">A package deal enables you to cluster several documents and sell them for a single price. This is useful, for example, when at the end of the semester you want to sell your lecture notes as one bundle.</p>
+            </section>
+            <section class="section-entry-createbundle">
+                <div class="block-entry-section block-your-upload">
+                    <h2 class="title-section-block">Select your uploads</h2>
+                    <div class="upload-form filter-document-practicequest">
+                        <div class="input-field search-field">
+                            <label class="title-field" for="search-document-practicequest">Search for documents</label>
+                            <input type="search" id="search-document-practicequest" class="search-uploads" placeholder="Search...">
+                        </div>
+                    </div>
+                    <div class="listing-upload-wrapper">
+                        <div class="user-uploads-list listing-your-upload">
+                            {% for product in products %}
+                            <div class="listing-item upload-item-1_{{product.id}} upload-block-group-0">
+                                <figure class="thumbnail-item">
+                                    {% if product.image %}
+                                    <img src="{{product.image.url}}" alt="{{product.title}}">
+                                    {% else %}
+                                    <img src="{% static 'statics/img/essentie_focus.png' %}" alt="{{product.title}}">
+                                    {% endif %}  
+                                </figure>
+                                <div class="content-item">
+                                    <span class="type-document">{{product.category}}</span>
+                                    <h3 class="title-listing">{{product.title}}</h3>
+                                    <button class="cta-you-upload add-to-bundle" data-key="1_{{product.id}}" data-title="{{product.title}}" data-type="{{product.category}}" data-price="{{product.price}}">
+                                    <i class="fa" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="block-entry-section block-bundle-information">
+                    <h2 class="title-section-block">Package deal information</h2>
+                    <input type="hidden" name='charge_earn' id='charge_earn' value='{{charge_earn}}'>
+                    <div class="upload-form form-bundle-information">
+                        <div class="input-field">
+                            <label for="title-bundle-information" class="title-field">Title</label>
+                            <input type="text" name="title-bundle-information" id="title-bundle" placeholder="Give a title to your package deal" value="">
+                        </div>
+                        <div class="input-field textarea-field">
+                            <label for="describe-bundle-information" class="title-field">Description</label>
+                            <textarea name="describe-bundle-information" id="desc-bundle" placeholder="Give a clear and complete description to your package deal (max. 350 characters)" minlength="10" maxlength="350"></textarea>
+                            <div class="info-textarea">
+                                <span class="max-description">350</span> <span> characters left</span>
+                            </div>
+                        </div>
+                        <div class="choose-price-alert alert-warning display-none" data-show-price="" style="display: none;">
+                            <i class="fas fa-do-not-enter"></i><span>Note:</span> this price is low for your type of document. Are you sure you want to choose this price?
+                        </div>
+                        <div class="input-field input-field--info price-field">
+                            <div class="input-field-wrapper">
+                                <label for="price-bundle-information" class="title-field">Choose your price</label>
+                                <div class="input-number">
+                                    <button class="decrease-number" data-step-size="0.10" data-min-price="2.50" aria-label="Decrease Number"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                    <input name="yourPrice" id="your-price" type="text" data-dot-or-comma="dot" value="10.00" required="">
+                                    <button class="increase-number" data-step-size="0.50" data-min-price="2.50" aria-label="Increase Number"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                </div>
+                                {% comment %} 
+                                <div class="sale-price">Selling price &nbsp;
+                                    $
+                                    <span class="sale-price-num">10.49</span>
+                                </div>
+                                {% endcomment %}
+                            </div>
+                            <div class="info-field earning-sale-field">
+                                <span class="title-field">Earnings per sale</span>
+                                <div class="tooltip-sale-wrapper">
+                                </div>
+                                <span class="price-sale">
+                                $
+                                <span id="user-earning">5.51</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="input-field document-field--bundle">
+                            <div class="entry-header-docfield">
+                                <h3 class="title-entry-header-field">Items in package deal</h3>
+                                <span class="total-priceloss-docfield">
+                                Total value $ <span class="total-single-value-num" id='totalvalue'>0</span>
+                                </span>
+                                <div class="submit-field">
+                                    <button class="submitBundle cta-form-bundle disabled" data-page="create" disabled="disabled">+ Save package deal</button>
+                                </div>
+                            </div>
+                            <span class="selected-content-empty " style="">You have not selected any items yet</span>
+                            <ul id="final-bundle-list" class="lists-document-bundle"></ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </article>
+</div>
+<script>
+    $(document).ready(function() {
+        // Function to update the earnings per sale value
+        function updateEarnings() {
+            var price = parseFloat($('#your-price').val());
+            var charge_earn = parseFloat($('#charge_earn').val()) || 50;
+            // Calculate earnings per sale (example calculation)
+            console.log(price);
+            console.log(charge_earn);
+            var earnings = price - (price * (charge_earn / 100));
+            console.log(earnings);
+            $('#user-earning').text(earnings.toFixed(2));
+        }
+    
+        // Increase button click event
+        $('.increase-number').click(function() {
+            var currentValue = parseFloat($('#your-price').val());
+            var stepSize = parseFloat($(this).data('step-size'));
+            var minValue = parseFloat($(this).data('min-price'));
+            var newValue = currentValue + stepSize;
+            if (newValue >= minValue) {
+                $('#your-price').val(newValue.toFixed(2));
+                updateEarnings(); // Update earnings after changing the price
+            }
+        });
+    
+        // Decrease button click event
+        $('.decrease-number').click(function() {
+            var currentValue = parseFloat($('#your-price').val());
+            var stepSize = parseFloat($(this).data('step-size'));
+            var minValue = parseFloat($(this).data('min-price'));
+            var newValue = currentValue - stepSize;
+            if (newValue >= minValue) {
+                $('#your-price').val(newValue.toFixed(2));
+                updateEarnings(); // Update earnings after changing the price
+            }
+        });
+    
+        // Input change event
+        $('#your-price').on('input', function() {
+            updateEarnings(); // Update earnings when the price input changes
+        });
+    
+        // Initial update of earnings
+        updateEarnings();
+    });
+</script>
+<script defer="" type="text/javascript" src="{% static 'statics/js/1d32c2cbb2-app.js' %}"></script>        
+<script defer="" type="text/javascript" src="{% static "statics/js/5c6ba62ce4-createbundle.js" %}"></script>
+{% endblock content %}

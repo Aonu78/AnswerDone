@@ -1,8 +1,13 @@
 {% extends "core/base.html" %}
 {% load static %}
 {% block content %}
-<link rel="preload " href="{% static 'statics/js/dd450856ba-contentpages.js' %}" as="script">
+<script>
+    function changeurllocation(variable) {
+        window.location.href = variable;
+    }
+</script>
 
+<link rel="preload " href="{% static 'statics/js/dd450856ba-contentpages.js' %}" as="script">
 <link rel="stylesheet" href="{% static 'statics/css/style.css' %}">
 <link rel="stylesheet" href="{% static 'statics/css/2417dbe620-contentpages_css.css' %}">
 <div id="page" class="wrapper single-product contentpage-page " data-psp-trigger="" data-seller-id="958079" data-content-type="1" data-content-id="2707350" data-trigger-leave-page="1">
@@ -72,7 +77,7 @@
                                 <div class="popup-content">
                                     <div class="view-product">
                                         <p>Preview {{products.show_pages}} out of {{products.num_pages}} pages</p>
-                                        <a href="{% url "add-to-cart" products.id %}" class="btn-fill-blue cta-buy header-buy-btn add-item-to-shoppingcart  cursor-pointer" data-type="document" data-id="{{products.id}}" data-upselling-bundle="" data-amp-location="Document page (header button)" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
+                                        <a href="{% url "add-to-cart" product_type='note' product_id=products.id %}" class="btn-fill-blue cta-buy header-buy-btn add-item-to-shoppingcart  cursor-pointer" data-type="document" data-id="{{products.id}}" data-upselling-bundle="" data-amp-location="Document page (header button)" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
                                         <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
                                         </a>
                                         <div class="image-view" id="preview-{{products.id}}">
@@ -85,7 +90,7 @@
                                     </div>
                                     <div class="info-product">
                                         <div class="cta-view-product">
-                                            <a href="{% url "add-to-cart" products.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart add-to-cart-qv-2707350-document cursor-pointer" data-id="{{products.id}}" data-type="document" data-upselling-bundle="" data-amp-location="Document page - mobile quickview" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
+                                            <a href="{% url "add-to-cart" product_type='note' product_id=products.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart add-to-cart-qv-2707350-document cursor-pointer" data-id="{{products.id}}" data-type="document" data-upselling-bundle="" data-amp-location="Document page - mobile quickview" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
                                             <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
                                             Add to cart
                                             </a>
@@ -209,7 +214,7 @@
                 <div class="listing-grid">
                     {% for product in latest_products %}
                     <div class="listgrid-item selling-box before-you-leave-amplitude-click first-row" id="" data-type="content click">
-                        <a href="#" title="{{product.title}}" class="grid-list log-amplitude-js search-result-link recommended-item" data-click-location="Item" data-click-type="Document" data-click-title="{{product.title}}" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="true" rel="nofollow">
+                        <a title="{{product.title}}" class="grid-list log-amplitude-js search-result-link recommended-item" data-click-location="Item" data-click-type="Document" data-click-title="{{product.title}}" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="true" rel="nofollow">
                             <div class="icon-preview">
                                 {% if product.image %}
                                 <img src="{{product.image.url}}" class="image-boek" alt="{{product.title}}">
@@ -217,18 +222,20 @@
                                 <img src="{% static 'statics/img/essentie_focus.png' %}" class="image-boek" alt="{{product.title}}">
                                 {% endif %} 
                             </div>
-                            <div class="desc-preview">
-                                <span class="content-title"> {{product.title}} </span>
+                            <div class="desc-preview" onclick="changeurllocation('{% url 'product_detail' product.category.slug product.slug %}')">
+                                <span class="content-title" > {{product.title}} </span>
                                 <div class="info-desc search-info-desc">
                                     <div id="rates-4" class="ratings">
                                         <ul class="star-rates">
-                                            <li><i class="star-review star-grey fas fa-star"></i></li>
-                                            <li><i class="star-review star-grey fas fa-star"></i></li>
-                                            <li><i class="star-review star-grey fas fa-star"></i></li>
-                                            <li><i class="star-review star-grey fas fa-star"></i></li>
-                                            <li><i class="star-review star-grey fas fa-star"></i></li>
+                                            {% for value in "12345" %}
+                                {% if value|add:"0" <= product.average_rating %}
+                                <li><i class="star-review star-gold fas fa-star"></i></li>
+                                {% else %}
+                                <li><i class="star-review star-grey fas fa-star"></i></li>
+                                {% endif %}
+                            {% endfor %}
                                         </ul>
-                                        <span class="count-rates">(0)</span>
+                                        <span class="count-rates">({{product.count_rating}})</span>
                                     </div>
                                     <span class="prices">${{product.price}}</span>
                                     <div class="downloads">
@@ -264,7 +271,7 @@
                                 </div>
                             </span>
                             
-                            <span class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" onclick="addurl('{{product.id}}')">
+                            <span class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" onclick="addurl('note', {{product.id}})">
                             <i class="add-to-cart-icon far fa-shopping-cart fa-flip-horizontal"></i>
                             </span>
                         </a>
@@ -275,10 +282,10 @@
                                 <span class="close">x</span>
                             </span>
                             
-                            <span class="cart-wrapper wrapper add-item-to-shoppingcart recommended-item" data-id="{{product.id}}" onclick="addurl('{{product.id}}')">
+                            <span class="cart-wrapper wrapper add-item-to-shoppingcart recommended-item" data-id="{{product.id}}" onclick="addurl('note', {{product.id}})">
                             <i class="far fa-shopping-cart fa-flip-horizontal"></i>
                             </span>
-                            <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.title}}" class="goto-wrapper wrapper recommended-item" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="{{product.title}}" data-is-link="true">
+                            <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.title}}" class="goto-wrapper wrapper recommended-item" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="{{product.title}}" data-is-link="true" onclick="changeurllocation('{% url 'product_detail' product.category.slug product.slug %}')">
                             <i class="fas fa-long-arrow-right"></i>
                             </a>
                         </div>
@@ -300,7 +307,7 @@
                                     <div class="popup-content">
                                         <div class="view-product">
                                             <p>Preview {{product.show_pages}} out of {{product.num_pages}} pages</p>
-                                            <a href="{% url "add-to-cart" product.id %}" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="" data-amp-location=" page (header button)" data-user-status="yes" data-country-seller="214" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
+                                            <a href="{% url "add-to-cart" product_type='note' product_id=products.id %}" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="" data-amp-location=" page (header button)" data-user-status="yes" data-country-seller="214" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
                                             <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
                                             </a>
                                             <div class="image-view" id="preview-{{product.id}}">
@@ -312,8 +319,8 @@
                                                 <span class="serif-title">{{product.category}}</span>
                                                 <div id="rates-4" class="ratings">
                                                     <ul class="star-rates">
-                                                        <li><i class="star-review star-grey fas fa-star"></i></li>
-                                                        <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                        <li><i class="star-review star-gold fas fa-star"></i></li>
+                                                        <li><i class="star-review star-gold fas fa-star"></i></li>
                                                         <li><i class="star-review star-grey fas fa-star"></i></li>
                                                         <li><i class="star-review star-grey fas fa-star"></i></li>
                                                         <li><i class="star-review star-grey fas fa-star"></i></li>
@@ -336,7 +343,7 @@
                                                     <span itemprop="price">${{product.price}}</span>
                                                     <link itemprop="availability" href="http://schema.org/InStock">
                                                 </div>
-                                                <a href="{% url "add-to-cart" product.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document recommended-item" data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="yes" data-upselling-bundle="" data-country-seller="214" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="false" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
+                                                <a href="{% url "add-to-cart" product_type='note' product_id=products.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document recommended-item" data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="yes" data-upselling-bundle="" data-country-seller="214" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="false" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
                                                 <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
                                                 Add to cart
                                                 </a>
@@ -391,12 +398,14 @@
                 </div>
                 <div class="mob-buy-rating">
                     <ul class="star-rates">
-                        <li><i class="star-review star-grey fas fa-star"></i></li>
-                        <li><i class="star-review star-grey fas fa-star"></i></li>
-                        <li><i class="star-review star-grey fas fa-star"></i></li>
-                        <li><i class="star-review star-grey fas fa-star"></i></li>
-                        <li><i class="star-review star-grey fas fa-star"></i></li>
-                        <li><span class="count-rates">(0)</span></li>
+                        {% for value in "12345" %}
+                                {% if value|add:"0" <= average_rating %}
+                                <li><i class="star-review star-gold fas fa-star"></i></li>
+                                {% else %}
+                                <li><i class="star-review star-grey fas fa-star"></i></li>
+                                {% endif %}
+                            {% endfor %}
+                        <li><span class="count-rates">({{count_rating}})</span></li>
                     </ul>
                 </div>
             </div>

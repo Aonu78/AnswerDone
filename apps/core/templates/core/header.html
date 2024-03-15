@@ -195,6 +195,7 @@
                                 <ul class="inner-col2 left-wrapper">
                                     <li class="pvlist-item"><a href="{% url "dashboard" %}" class="mp-new-header"><i class="fal fa-home-lg-alt"></i><label>Dashboard</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
                                     <li class="pvlist-item"><a href="{% url "user_uploads" %}" class="mp-new-header"><i class="fal fa-file-alt"></i><label>Uploads</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
+                                    <li class="pvlist-item"><a href="{% url "bundles" %}" class="mp-new-header"><i class="far fa-books"></i><label>Bundles</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
                                     <li class="pvlist-item"><a href="{% url "downloads" %}" class="mp-new-header"><i class="fal fa-cloud-download"></i><label>Downloads</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
                                 </ul>
                                 <ul class="inner-col2 right-wrapper">
@@ -232,17 +233,48 @@
                             <div class="cart-items-wrap">
                                 <ul>
                                     {% for item in cart %}
+                                    {% if item.note %}
                                     <li class="pvlist-item">
                                         <div class="cart-desc">
-                                            <p>{{item.product.category}}&nbsp; <span class="price-item">${{item.total_price}}</span></p>
+                                            <p>{{item.note.category}}&nbsp; <span class="price-item">${{item.total_price}}</span></p>
                                             <h5 class="product-item">
-                                                <a href="">{{item.product.title}}</a>
+                                                
+                                                <a href="">{{item.note.title}}</a>
                                             </h5>
                                         </div>
-                                        <div class="delete-content-cart-header" onclick="hitUrl('{{item.product.id}}')">
-                                            <a href="{% url "remove_from_cart" item.product.id %}"> <i class="head-icon-trash far fa-trash-alt"></i></a>
+                                        <div class="delete-content-cart-header" onclick="hitUrl('{{ item.item_type }}', '{{ item.id }}')">
+                                            <a href="{% url "remove_from_cart" product_type=item.item_type product_id=item.id %}"> <i class="head-icon-trash far fa-trash-alt"></i></a>
                                         </div>
                                     </li>
+                                    {% endif %}
+                                    {% if item.question %}
+                                    <li class="pvlist-item">
+                                        <div class="cart-desc">
+                                            <p>Question Solution&nbsp; <span class="price-item">${{item.total_price}}</span></p>
+                                            <h5 class="product-item">
+                                                
+                                                <a href="">{{item.question.title}}</a>
+                                            </h5>
+                                        </div>
+                                        <div class="delete-content-cart-header" onclick="hitUrl('{{ item.item_type }}', '{{ item.id }}')">
+                                            <a href="{% url "remove_from_cart" product_type=item.item_type product_id=item.id %}"> <i class="head-icon-trash far fa-trash-alt"></i></a>
+                                        </div>
+                                    </li>
+                                    {% endif %}
+                                    {% if item.bundle %}
+                                    <li class="pvlist-item">
+                                        <div class="cart-desc">
+                                            <p>Package deal&nbsp; <span class="price-item">${{item.total_price}}</span></p>
+                                            <h5 class="product-item">
+                                                
+                                                <a href="">{{item.bundle.title}}</a>
+                                            </h5>
+                                        </div>
+                                        <div class="delete-content-cart-header" onclick="hitUrl('{{ item.item_type }}', '{{ item.id }}')">
+                                            <a href="{% url "remove_from_cart" product_type=item.item_type product_id=item.id %}"> <i class="head-icon-trash far fa-trash-alt"></i></a>
+                                        </div>
+                                    </li>
+                                    {% endif %}
                                     {% endfor %}
                                 </ul>
                             </div>

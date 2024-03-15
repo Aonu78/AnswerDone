@@ -1,0 +1,251 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+<script>
+    function changeurllocation(variable) {
+        window.location.href = variable;
+    }
+</script>
+<link rel="preload " href="{% static 'statics/js/dd450856ba-contentpages.js' %}" as="script">
+<link rel="stylesheet" href="{% static 'statics/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'statics/css/2417dbe620-contentpages_css.css' %}">
+<div id="app" data-country="214" class="">
+    <div class="contentpage-header-wrap desktop-wrap" style="display: none;">
+        <div class="max-width price-bar-wrap">
+            <span class="header-content-title">
+            <span class="inner-title">TEST BANK and SOLUTIONS MANUAL for College Algebra, 2nd Edition by Julie Miller, Donna Gerken. ISBN13: 9780077836344. (Complete Chapters 1-8)</span>
+            <span class="header-content-price">${{products.price}}</span>
+            </span>
+            <a href="{% url "add-to-cart" product_type='bundle' product_id=products.id %}" class="btn-fill-yellow cta-buy header-buy-btn add-item-to-shoppingcart" data-type="bundle" data-id="{{products.id}}" data-upselling-bundle="" data-amp-location="Bundle page (header button)" data-user-status="yes" data-country-seller="214" data-price="4450" data-currency="USD" data-language="Array" data-downloads="3" data-views="49" data-rating="0" data-content-contained-amount="2">
+            <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+            </a>
+        </div>
+    </div>
+    <div id="page" class="wrapper single-product contentpage-page " data-psp-trigger="" data-seller-id="718966" data-content-type="3" data-content-id="{{products.id}}" data-trigger-leave-page="">
+        <article id="content" class="content-wrapper">
+            <div id="main-section" class="section-entry-product">
+                <div class="entry-product-wrapper">
+                    <div class="identityof-product space-entry-content">
+                        <h2 class="typeof-product">Package deal</h2>
+                        <h1 class="titleof-product">{{products.title}}</h1>
+                        <div class="content-description">
+                            <p id="content-description" class="infoof-product">{{products.description}}
+                            </p>
+                            <span class="show-more display-none" data-extra-text="{{products.description}}" id="content-page-show">[Show more]</span>
+                        </div>
+                        <input type="hidden" id="SEARCH_MORE" value="Show more" class="active">
+                        <input type="hidden" id="SEARCH_LESS" value="Show less">
+                    </div>
+                    <div id="contentviewer" class="bundle-viewer preview-product space-entry-content">
+                        <div class="bundle-count">{{total_item}} items </div>
+                        <div class="bundle-content-row-wrap">
+                            
+                            {% for product in bundle.product.all %}
+                            <div class="bundle-item  ">
+                                <div class="grid-list">
+                                    <div class="icon-preview ">
+                                        <a href="{% url 'product_detail' product.category.slug product.slug %}">
+                                            {% if product.image %}
+                                            <img loading="lazy" src="{{product.image.url}}" alt="{{product.title}}" class="bundle-doc-img">
+                                            {% else %}
+                                            <img loading="lazy" src="{% static 'statics/img/essentie_focus.png' %}" alt="{{product.title}}" class="bundle-doc-img">
+                                            {% endif %}
+                                            <i class="mobile bundle-preview-icon fal fa-eye quickview-doc" data-id="{{product.id}}" data-type="1" data-loaded="false">
+                                            </i>
+                                        </a>
+                                    </div>
+                                    <div class="desc-preview">
+                                        <h4><a href="{% url 'product_detail' product.category.slug product.slug %}"> {{ product.title }} </a></h4>
+                                        <div class="info-desc">
+                                            <div id="rates-4" class="ratings">
+                                                <ul class="star-rates">
+                                                   
+                                                    {% for value in "12345" %}
+                                                        {% for product_id, ratings_dict in product_ratings.items %}
+                                                            {% if product_id == product.id %}
+                                                                {% if value|add:"0" <= ratings_dict.average_rating %}
+                                                                    <li><i class="star-review star-gold fas fa-star"></i></li>
+                                                                {% else %}
+                                                                    <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endfor %}
+
+                                                </ul>
+                                                {% for product_id, ratings_dict in product_ratings.items %}
+                                                    {% if product_id == product.id %}
+                                                        <span class="count-rates">({{ ratings_dict.count_rating }})</span>
+                                                    {% endif %}
+                                                {% endfor %}
+
+                                            </div>
+                                            <span class="prices">${{product.price}}</span>
+                                            <div class="downloads">
+                                            </div>
+                                        </div>
+                                        <div class="excerpt-desc">
+                                            <p>{{product.description}}...</p>
+                                        </div>
+                                    </div>
+                                    <div class="quickview-doc" data-id="{{product.id}}" data-type="1" data-loaded="false">
+                                        <span class="cta-preview desktop">
+                                        <i class="preview-icon fal fa-eye"></i>
+                                        <span class="title-preview hover-act">View example</span>
+                                        </span>
+                                    </div>
+                                    {% if product.dummy_file %}
+                                    <input type="hidden" id="iframe-src-doc-{{product.id}}" value="{{product.dummy_file.url}}">
+                                    {% else %}
+                                    <input type="hidden" id="iframe-src-doc-{{product.id}}" value="{% static 'statics/img/essentie_focus.png' %}">
+                                    {% endif %}
+                                    {% comment %} <input type="hidden" id="iframe-src-doc-{{product.id}}" value=""> {% endcomment %}
+                                    <div id="iframe-doc-{{product.id}}" class="display-none quickview-content" style="display: none;">
+                                        <div class="popup-wrapper">
+                                            <!-- Popup Quick view -->
+                                            <div class="popup-quickview inner-popup">
+                                                <div class="popup-content">
+                                                    <div class="view-product">
+                                                        <p>Preview {{product.show_pages}} out of {{product.num_pages}} pages</p>
+                                                        <a href="#" class="btn-fill-blue cta-buy header-buy-btn add-item-to-shoppingcart" data-type="document" data-id="{{product.id}}" data-upselling-bundle="" data-amp-location="Document page (header button)" data-user-status="yes" data-country-seller="214" data-price="{{product.price}}" data-currency="USD" data-language="en" data-downloads="0" data-views="1" data-rating="{{product.average_rating}}" data-content-contained-amount="2">
+                                                        <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                                                        </a>
+                                                        {% if product.dummy_file %}
+                                                        <div class="image-view" id="preview-{{product.id}}"><iframe src="{{product.dummy_file.url}}" id="document-preview" class="document-preview-iframe" style="width: 100%; height: 100%;"></iframe></div>
+                                                        {% else %}
+                                                        <div class="image-view" id="preview-{{product.id}}"><iframe src="{% static 'statics/img/essentie_focus.png' %}" id="document-preview" class="document-preview-iframe" style="width: 100%; height: 100%;"></iframe></div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="info-product">
+                                                        <div class="info-desc">
+                                                            <span class="serif-title"></span>
+                                                            <div id="rates-4" class="ratings">
+                                                                <ul class="star-rates">
+                                                                    
+                                                    {% for value in "12345" %}
+                                                    {% for product_id, ratings_dict in product_ratings.items %}
+                                                        {% if product_id == product.id %}
+                                                            {% if value|add:"0" <= ratings_dict.average_rating %}
+                                                                <li><i class="star-review star-gold fas fa-star"></i></li>
+                                                            {% else %}
+                                                                <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endfor %}
+                                                                </ul>
+                                                                {% for product_id, ratings_dict in product_ratings.items %}
+                                                                    {% if product_id == product.id %}
+                                                                        <span class="count-rates">({{ ratings_dict.count_rating }})</span>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                        <span class="popup-title serif-title">{{product.title}}</span>
+                                                        <span class="text-entry-product time-since time-since-{{product.id}}" style="display: none;">
+                                                        Last document update:
+                                                        <span class="time-since-count tsc-{{product.id}}"></span>&nbsp;
+                                                        <span class="time-since-unit tsu-{{product.id}}"></span>
+                                                        ago
+                                                        </span>
+                                                        <p class="text-entry-product">{{product.description}}...</p>
+                                                        <div class="cta-view-product">
+                                                            <div class="currencyof-product">
+                                                                <span itemprop="price">${{product.price}}</span>
+                                                                <link itemprop="availability" href="http://schema.org/InStock">
+                                                            </div>
+                                                            <a href="{% url "add-to-cart" product_type='bundle' product_id=product.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart add-to-cart-qv-{{product.id}}-document" data-id="{{product.id}}" data-type="document" data-upselling-bundle="" data-amp-location="Bundle page single item quickview" data-user-status="yes" data-country-seller="214" data-price="{{product.price}}" data-currency="USD" data-language="en" data-downloads="0" data-views="1" data-rating="{{product.average_rating}}" data-content-contained-amount="2">
+                                                            <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
+                                                            Add to cart
+                                                            </a>
+                                                            
+                                                        </div>
+                                                        <div class="show-more-quickview">
+                                                            <a href="{% url 'product_detail' product.category.slug product.slug %}">Show more info <i class="fa fa-long-arrow-right"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        
+                        </div>
+                    </div>
+                </div>
+                <aside class="widget-entry-product space-entry-content">
+                    <div class="buy-section widget-entry-item desktop">
+                        <h3 class="title-section-sidebar">Package deal</h3>
+                        <div id="rates-4" class="ratings">
+                        </div>
+                        <div class="currencyof-product">
+                            <span class="bundle-added-price">${{total_value}}</span>
+                            &nbsp;
+                            <span itemprop="price" class="price-green" content="{{products.id}}-bundle">${{products.price}}</span>
+                            <link itemprop="availability" href="http://schema.org/InStock">
+                        </div>
+                        <div class="ctaof-product ">
+                            <a href="{% url "add-to-cart" product_type='bundle' product_id=products.id %}" class="btn-fill-yellow cta-buy add-item-to-shoppingcart cursor-pointer" data-id="{{products.id}}" data-upselling-bundle="" data-type="bundle" data-amp-location="Bundle page" data-user-status="yes" data-country-seller="214" data-price="4450" data-currency="USD" data-language="Array" data-downloads="3" data-views="49" data-rating="0" data-content-contained-amount="2">
+                            <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                            </a>
+                        </div>
+                        <ul class="guarantee-section">
+                            <li>100% satisfaction guarantee</li>
+                            <li>Both online and in PDF</li>
+                            <li>No strings attached</li>
+                        </ul>
+                        <ul class="tracksof-product">
+                            <li><i class="fal fa-eye icon-stats"></i>&nbsp;49</li>
+                            <li class=""><i class="far fa-cloud-download icon-stats"></i>&nbsp;3</li>
+                        </ul>
+                    </div>
+                    <div class="content-recommendations-block"></div>
+                </aside>
+            </div>
+            <section class="section-box section-columns">
+                <h2 class="title-section">The benefits of buying with AnswerDone:</h2>
+                <div class="section-columns">
+                    <div class="column-item">
+                        <img loading="lazy" src="{% static 'statics/img/ComprehensiveAds.png' %}" alt="Guaranteed quality through customer reviews">
+                        <h3>Guaranteed quality through customer reviews</h3>
+                        <p>AnswerDone customers have reviewed there summaries before submitting. This how you know that you are buying the best documents.</p>
+                    </div>
+                    <div class="column-item">
+                        <img loading="lazy" src="{% static 'statics/img/ExperimentPrice.png' %}" alt="Quick and easy check-out">
+                        <h3>Quick and easy check-out</h3>
+                        <p>You can quickly pay through credit card for the Documents. There is no membership needed.</p>
+                    </div>
+                    <div class="column-item">
+                        <img loading="lazy" src="{% static 'statics/img/essentie_focus.png' %}" alt="Focus on what matters">
+                        <h3>Focus on what matters</h3>
+                        <p>Your fellow students write the study notes themselves, which is why the documents are always reliable and up-to-date. This ensures you quickly get to the core!  </p>
+                    </div>
+                </div>
+            </section>
+        </article>
+        <div class="mob-bar-wrap">
+            <div class="mobile-buy-bar">
+                <div class="mob-buy-left">
+                    <div class="mob-buy-price">
+                        <span class="bundle-added-price">${{total_value}}</span>
+                        <span itemprop="price" class="price-green" content="{{products.id}}-bundle">${{products.price}}</span>
+                        <span class="mob-buy-downloads bundle-download">&nbsp;3x &nbsp;sold</span>
+                    </div>
+                    <div class="mob-buy-rating">
+                        
+                    </div>
+                </div>
+                <div class="mob-buy-right">
+                    <span class="btn-fill-yellow mob-cta-buy add-item-to-shoppingcart" onclick="addurl('bundle', {{products.id}})" data-type="bundle" data-id="{{products.id}}" data-upselling-bundle="" data-amp-location="Bundle page (mobile bottom bar)" data-user-status="yes" data-country-seller="214" data-price="4450" data-currency="USD" data-language="Array" data-downloads="3" data-views="49" data-rating="0" data-content-contained-amount="2">
+                    <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script defer="" type="text/javascript" src=" {% static 'statics/js/1d32c2cbb2-app.js' %}"></script>
+<script defer="" type="text/javascript" src="{% static 'statics/js/dd450856ba-contentpages.js' %}"></script>
+{% endblock content %}

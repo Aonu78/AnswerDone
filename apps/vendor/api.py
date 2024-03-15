@@ -4,9 +4,13 @@ from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.db.models import Q, Sum
 from django.contrib.auth.models import User
-from .serializers import UserUpdateSerializer
+from .serializers import UserUpdateSerializer, BundleSerializer
 from ..store.models import Category
 from ..vendor.models import Product
+from rest_framework.decorators import api_view
+from ..store.models import Bundle
+from django.utils.text import slugify
+
 
 class UserUpdateView(APIView):
     def put(self, request, pk):
@@ -66,3 +70,29 @@ def get_institution_dropdown_content(request):
 
 def settings_edit(request):
     pass
+
+
+@api_view(['POST'])
+def create_bundle(request):
+    print(request.POST.dict())
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        data = request.data.copy()  
+        product_ids = [key.split('_')[1] for key in data.pop('keys[]', []) if '_' in key]
+        
+        title = data.get('title', '')
+        slug = slugify(title)
+        data['slug'] = slug
+        data['description'] = request.POST.get("desc")
+        data['created_by'] = request.user.id
+        serializer = BundleSerializer(data=data)
+        if serializer.is_valid():
+            bundle = serializer.save()            
+            bundle.product.set(product_ids)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({"error": "Invalid request method"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

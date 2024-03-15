@@ -72,7 +72,7 @@
             <div class="selecteer-jouw-group" data-select2-id="15">
 
                 <div class="selecteer-jouw-item">
-                    <input name='s' type="text" class="selecteer-jouw flat-input browser-default searchpage-search border-rounded-search" placeholder="Search for courses, books, exams, or assignments" autocomplete="off" value="Isalm">
+                    <input name='s' type="text" class="selecteer-jouw flat-input browser-default searchpage-search border-rounded-search" placeholder="Search for courses, books, exams, or assignments" autocomplete="off" value="">
                 </div>
 
                 <div class="selecteer-jouw-item " data-select2-id="14">
@@ -297,8 +297,15 @@
                                         <span class="text-verkocht">{{product.purchased}}x sold</span>
                                     </li>
                                     <li class="infodetail-item">
-                                       <a href="{% url 'product_detail' product.category.slug product.slug %}"> <span class="more-info"><span class="more-info-url log-amplitude-js" data-url="{% url 'product_detail' product.category.slug product.slug %}" data-click-location="more info" data-click-type="Document" data-click-title="{{product.title}}" data-click-position="6" data-content-id="{{product.id}}">+ learn more</span></span></a>
+                                       <a > <span class="more-info"><span class="more-info-url log-amplitude-js" data-url="{% url 'product_detail' product.category.slug product.slug %}" data-click-location="more info" data-click-type="Document" data-click-title="{{product.title}}" data-click-position="6" data-content-id="{{product.id}}">+ learn more</span></span></a>
                                     </li>
+                                    {% if product.bundle %}
+                                    <li class="infodetail-item">
+                                        <span class="bundle-banner">
+                                            <a class="bundle-link" href=" {% url "bundle_detail" product.bundle_slug %} " target="_blank">Available in package deal</a>
+                                        </span>
+                                    </li>
+                                    {% endif %}
                                 </ul>
                             </div>
                             <button class="preview-sidebar quickview-doc" data-id="{{product.id}}" data-type="1" data-loaded="false">
@@ -306,12 +313,14 @@
                                 <span class="tooltip-preview">Quick View</span>
                             </button>
                             <button class="price-sidebar add-item-to-shoppingcart " data-id="{{product.id}}" data-type="document" data-upselling-bundle="" data-country-seller="999" data-amp-location="Search Page Result" data-user-status="no" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17">
-                            <a href="{% url "add-to-cart" product.id %}">    <i class="add-to-cart-icon far fa-shopping-cart fa-flip-horizontal"></i></a>
+                            <a href="{% url "add-to-cart" product_type='note' product_id=product.id %}">    <i class="add-to-cart-icon far fa-shopping-cart fa-flip-horizontal"></i></a>
                             </button>
                         </div>
                         {% if product.dummy_file %}
                         
                         <input type="hidden" id="iframe-src-doc-{{product.id}}" value="{{product.dummy_file.url}}">
+                        {% else %}
+                        <input type="hidden" id="iframe-src-doc-{{product.id}}" value="{% static 'statics/img/essentie_focus.png' %}">
                         {% endif %}
                         <div id="iframe-doc-{{product.id}}" class="display-none quickview-content">
                             <div class="popup-wrapper">
@@ -320,7 +329,7 @@
                                     <div class="popup-content">
                                         <div class="view-product">
                                             <p>Preview {{product.show_pages}} out of {{product.num_pages}} pages</p>
-                                            <a href="{% url "add-to-cart" product.id %}" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="250020" data-amp-location=" page (header button)" data-user-status="no" data-country-seller="999" data-price="$8.49" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17" rel="nofollow">
+                                            <a href="{% url "add-to-cart" product_type='note' product_id=product.id %}" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="250020" data-amp-location=" page (header button)" data-user-status="no" data-country-seller="999" data-price="$8.49" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17" rel="nofollow">
                                             <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
                                             </a>
                                             <div class="image-view" id="preview-{{product.id}}">
@@ -359,7 +368,7 @@
                                                     <span itemprop="price">${{product.price}}</span>
                                                     <link itemprop="availability" href="http://schema.org/InStock">
                                                 </div>
-                                                <a href="{% url "add-to-cart" product.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document " data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="no" data-upselling-bundle="250020" data-country-seller="999" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17" rel="nofollow">
+                                                <a href="{% url "add-to-cart" product_type='note' product_id=product.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document " data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="no" data-upselling-bundle="250020" data-country-seller="999" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17" rel="nofollow">
                                                 <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
                                                 Add to cart
                                                 </a>

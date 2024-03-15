@@ -1,0 +1,676 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+<script>
+    function changeurllocation(variable) {
+        window.location.href = variable;
+    }
+</script>
+<style>
+    .document-section label, .productfor-section label{
+    color: #199be9 !important;
+    background: none;
+    font-weight: bold;
+    }
+    .faq-link{
+    color: #199be9 !important; 
+    }
+</style>
+
+<link href="https://dsd5zvtm8ll6.cloudfront.net/includes/styles/rewamp/common/desktop_common_css.css?ver=1.6" rel="stylesheet"  type="text/css" >
+<link href="https://dsd5zvtm8ll6.cloudfront.net/includes/styles/rewamp/common/desktop_all_common_fonts.css" rel="stylesheet"  type="text/css" >
+<link rel="preload" href="https://dsd5zvtm8ll6.cloudfront.net/includes/styles/rewamp/common/footer/transparent_footer.css" as="style" onload="this.onload=null;this.rel='stylesheet'" type="text/css">
+<link href="https://dsd5zvtm8ll6.cloudfront.net/includes/styles/rewamp/common/desktop_colored_header.css?ver=1.2" rel="stylesheet"  type="text/css" >
+<script src="https://dsd5zvtm8ll6.cloudfront.net/includes/styles/rewamp/common/desktop_common.js?ver=1.5.1" defer></script>
+<script src="https://dsd5zvtm8ll6.cloudfront.net/includes/jscripts/desktop_functions_common_js.js" defer></script>
+<script src="https://dsd5zvtm8ll6.cloudfront.net/includes/jscripts/desktop_colored_header_searchbar_2.js?ver=1.1" defer></script>
+<script src="https://dsd5zvtm8ll6.cloudfront.net/includes/jscripts/rewamp/common/function_mobile_check.js" defer></script>
+<link href="https://dsd5zvtm8ll6.cloudfront.net/includes/styles/rewamp/common/session_notification.css?ver=2.4" rel="stylesheet">
+<link  rel="stylesheet" type="text/css"  href="https://dsd5zvtm8ll6.cloudfront.net/includes/styles/rewamp/book_detail_view/book_detail_view_css.css?ver=1.2">
+<script src="https://dsd5zvtm8ll6.cloudfront.net/includes/jscripts/book_detail_view/book_detail_view_js.js" defer></script>
+<style rel="stylesheet">
+    .tab-content>.active {display:block !important}
+    .related-question-section-heading{font-size:20px;font-weight:600;color:#333;border-bottom:1px solid #ccc;padding-bottom:5px;margin-top:10px}
+    .q-icon,.qbq{position:absolute}
+    .hrf_blk{color:#252424!important}
+    .question-count{line-height:1.5;display:block}
+    .wrd_rlt{margin-left:30px;margin-top:5px;font-weight:600;font-size:12px;width:100%}
+    .tutor-info,.wrd_rlt{overflow:hidden!important;text-overflow:ellipsis}
+    .wrd_rlt{white-space:nowrap}
+    @media (min-width:200px) and (max-width:425px){.wrd_rlt{width:95%}}
+    .qbq,.tphs-head{font-weight:700}
+    .qbq{background:#6f9dd33d;border-radius:70%;padding:0 5px 5px;left: 0;}
+    .related-question-statment-redesign{padding:8px}
+    .related-question-section{margin-top: 10px;}
+    @media (max-width:485px){.qbq{top:unset}}
+    @media (max-width:768px){.related-question-section{padding: 0 10px}}
+
+    .answer-text {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    .show-more {
+        -webkit-line-clamp: initial !important;
+    }
+    
+    .show-less {
+        -webkit-line-clamp: 2;
+    }
+    .show-less-small {
+        -webkit-line-clamp: 1;
+    }
+ 
+    @media screen and (max-width: 600px){
+        .doc-banner .course-block ul.book li.book {
+            width: 100% !important;
+        }
+        }
+        .section {
+            display: block;
+        }
+        .answer-heading {
+            margin-bottom: 1%;
+            border-bottom: 3px solid #9ac427;
+        }
+        
+        .no-padding {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .answer-heading h2 {
+            color: #1269ba;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: revert;
+        }
+        @media screen and (max-width: 1023px){
+.tutor-ans-section {
+    margin-top: 10px !important;
+}
+}
+
+.tutor-ans-section {
+    list-style: none;
+    border-radius: 15px;
+    border: 1px solid #788995;
+    box-shadow: rgba(0,0,0,0.24) 0px 3px 8px;
+    padding: 20px;
+    width: 100%;
+    font-weight: 400;
+    font-size: 14px;
+}
+.book_answer_div, .tutor-ans-section {
+    font-family: Poppins, sans-serif;
+    word-spacing: 2px;
+}
+.related-question-section {
+    display: inline-block;
+    list-style: none;
+}
+.answer-heading-sticky {
+    font-size: 22px;
+}
+.pull-left {
+    float: left !important;
+}
+
+.book_answer_div {
+    line-height: 22px;
+    font-weight: 400;
+    font-size: 14px;
+    margin-top: revert;
+}
+.no-padding {
+    padding-left: 0;
+    padding-right: 0;
+}
+.answer-rating-section {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+}
+.answer-info {
+    color: #626262;
+    font-size: 14px;
+    font-weight: 600;
+}
+.cancel, .navbar-menuitem, .qbq, .see-f-a a, .tphs-head, b, strong {
+    font-weight: 700;
+}
+
+.question-position-new-styling {
+    margin-left: 10px;
+    font-size: 12px;
+    font-family: Poppins, sans-serif;
+    color: #1269ba;
+    line-height: 1.5;
+    position: relative;
+}
+.horizontal-line {
+    border-bottom: 1px solid #788995;
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
+.answerby-text {
+    position: absolute;
+    right: 5px;
+    font-size: 14px;
+    color: #2575bf;
+    margin-top: -10px;
+    font-weight: 600;
+    font-style: italic;
+}
+.tutor-profile-section {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    gap: 20px;
+}
+img.tutor-profile-img {
+    width: 80px;
+    height: 80px;
+    border: 5px solid #1269ba;
+    border-right-color: transparent;
+    border-radius: 59%;
+    transition: transform 25s;
+    transform: translateZ(0);
+}
+.tutor-detail-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 15px;
+}
+.tutor-name {
+    color: #000;
+    font-size: 16px;
+    font-weight: 700;
+}
+.tutor-info {
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    color: #404040;
+    font-size: 14px;
+    font-weight: 400;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.tutor-review-div {
+    color: #537a00;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.rating-star-text {
+    color: #c45500;
+    font-size: 15px;
+    font-weight: 600;
+}
+.tutor-solved-question, .tutor-total-review {
+    border-left: 1px solid #788995;
+    padding-left: 10px;
+}
+.tutor-solved-question, .tutor-total-review {
+    border-left: 1px solid #788995;
+    padding-left: 10px;
+}
+.see-answer-section {
+    position: sticky;
+    top: 80rem;
+    height: 0;
+    margin-top: -9rem;
+    z-index: 3;
+    width: 100%;
+    display: flex;
+}
+.see-answer-section-div {
+    font-family: Poppins, Sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    height: 150px;
+    margin: 1rem auto;
+    position: relative;
+    top: 10rem;
+    width: 433px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: rgba(0,0,0,.3) 0 1px 3px, rgba(0,0,0,.3) 0 1px 3px;
+}
+}
+.optly-color-swap-new {
+    border-radius: 5px;
+    font-size: 18px;
+    color: #fff;
+    font-weight: 600;
+    padding: 5px 20px;
+    border-color: rgb(67 159 244 / 38%);
+    background-color: #1269ba;
+    height: 55px;
+}
+button {
+    overflow: visible;
+    text-transform: none;
+    -webkit-appearance: button;
+    cursor: pointer;
+}
+button, input {
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    font-family: Poppins, sans-serif;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.ask-answer {
+    padding-top: 10px;
+}
+.h5 {
+    margin-top: 10px;
+    font-size: 15px;
+}
+#see_the_answer{
+    font-weight: bold !important;
+    padding: 1rem !important;
+}
+.desc-preview{
+    width:100% !important;
+}
+@media screen and (max-width: 767px){
+.selling-box .grid-list .desc-preview .excerpt-desc, .selling-box .grid-list .desc-preview .info-desc {
+    margin-left: 1px !important;
+}
+.desc-preview .content-title, .desc-preview .excerpt-desc p, .desc-preview h4 {
+    -webkit-line-clamp: 3 !important;
+}
+}
+</style>
+<script>
+    window.addEventListener("load", function(){
+    jQuery(document).ready(function($) {
+    
+                $.ajax({
+            type: "POST",
+            url: document.url,
+            data: {
+                insertView: true,
+                ref_url: document.referrer
+            },
+            success:function(response){
+            }
+        });
+        
+        jQuery(function($) {
+            jQuery('.top_searched_books').slick({
+                infinite: true,
+                slidesToShow: 6,
+                slidesToScroll: 3,
+                arrows: true,
+                responsive: [
+                    {
+                        breakpoint: 1000,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                        }
+                    }
+                ]
+            });
+        });
+    
+        if (window.matchMedia('(max-width: 1000px)').matches) {
+            $('.resp_cf_section').addClass('container');
+        } else {
+            $('.resp_cf_section').removeClass('container');
+        }
+    
+        $(window).resize(function(){
+            if ($(window).width() <= 1000){
+                $('.resp_cf_section').addClass('container');
+            }
+            else {
+                $('.resp_cf_section').removeClass('container');
+            }
+        });
+    
+        if (window.history.length <= 2) {
+            $(".goBack").addClass('hidden');
+        }
+    
+        var book_id = "92";
+        var book_type = $('#usa_book_type').attr('value');
+        var book_condition = $('#usa_book_condition').attr('value');
+        var book_price_type = $('#usa_book_price_type').attr('value');
+    
+        $('#submit_btn_checkout').on('click',function () {
+            book_type = $('#usa_book_type').attr('value');
+            book_condition = $('#usa_book_condition').attr('value');
+            book_price_type = $('#usa_book_price_type').attr('value');
+            $('#submit_btn_checkout_loader').removeClass('hidden');
+            $('#submit_btn_checkout').addClass('hidden');
+            buyBookRedirection(book_id,book_type,book_condition,book_price_type);
+        });
+    
+        $('#solution_btn_checkout').on('click',function () {
+            redirectionLink(2)
+        });
+    
+        $('#membership_btn_checkout').on('click',function () {
+            $('#membership_btn_checkout_loader').removeClass('hidden');
+            $('#membership_btn_checkout').addClass('hidden');
+            redirectionLink(1);
+        });
+    
+        function buyBookRedirection(book_id,book_type,book_condition,book_price_type){
+            $.ajax({
+                type: 'POST',
+                url: document.URL,
+                data: {
+                    checkout_redirection:true,
+                    book_id:book_id,
+                    book_type:book_type,
+                    book_condition:book_condition,
+                    price_type:book_price_type,
+                },
+                beforeSend: function () {
+                },
+                success: function (response) {
+                    /* $('.loading-overlay').hide(); */
+                    var result = $.parseJSON(response);
+                    if(result.type == '0'){
+                        window.location.reload();
+                    }
+                    if(result.type == '1'){
+                        $('.checkout_disp_errors').html('');
+                        window.location.href = result.redirect_url;
+                    }else{
+                        $('.checkout_disp_errors').html(result.error_message);
+                    }
+                }
+            });
+        }
+        $('.accordion a').click(function(){
+            $(this).toggleClass('active');
+            $(this).next('.content').slideToggle(400);
+            $(this).next('.content').css('display','grid');
+        });
+    
+        function redirectionLink(type){
+            $.ajax({
+                url:location.URL,
+                type:"POST",
+                data:{
+                    redirection_type:type
+                },success:function(res){
+                    location.href = res;
+                }
+            });
+        }
+    
+    
+    });
+    }, false);
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+</script>
+<link rel="preload " href="{% static 'statics/js/dd450856ba-contentpages.js' %}" as="script">
+<link rel="stylesheet" href="{% static 'statics/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'statics/css/2417dbe620-contentpages_css.css' %}">
+<div id="page" class="wrapper single-product contentpage-page " data-psp-trigger="" data-seller-id="958079" data-content-type="1" data-content-id="2707350" data-trigger-leave-page="1">
+    <article id="content" class="content-wrapper">
+        <div id="main-section" class="section-entry-product">
+            <div class="entry-product-wrapper">
+                <div class="identityof-product space-entry-content doc-banner">
+                    
+                    <h1 class="titleof-product">{{questions.title}}</h1>
+                    <div class="course-block">
+                        {% if questions.product %}
+                        <ul class="book">
+                            <li class="label">Book</li>
+                            <li class="book">
+                                <a class="doc-banner-book-link left-text " target="_blank">{{questions.product.title}}</a>
+                            </li>
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div class="content-description">
+                        <p id="content-description" class="infoof-product">{{questions.question|safe}}</p>
+                        {% comment %} <span class="show-more " data-extra-text="ckup."  id="content-page-show">[Show more]</span> {% endcomment %}
+                    </div>
+                </div>
+                <section id="ansnumber" style="clear: both">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding answer-heading">
+                        <h2>Step by Step Answer:</h2>
+                    </div>
+        
+                    <div class=" related-question-section tutor-ans-section">
+                                        <div class="answer-heading-sticky">
+                            <div class="answer-rating-section">
+                                                    <div class="answer-info">Answer rating: {{average_rating}} ({{count_rating}} reviews)</div>
+                                                </div>
+                        </div>
+                                            
+                            <br>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding section-marginization-top">
+                            {{questions.answer|safe}}
+                                                <div class="horizontal-line"></div>
+                            
+                        </div>
+                    </div>
+                </section>
+                
+               
+                <div id="reviewblock" class="ratings-product space-entry-content" style="margin-top: 1rem;">
+                    <div class="top-reviews-area">
+                        <h2 class="title-rating title-rating-mobile">{{count_rating}}&nbsp;
+                            reviews
+                        </h2>
+                        <ul class="star-rates star-rates">
+                            {% for value in "12345" %}
+                            {% if value|add:"0" <= average_rating %}
+                            <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
+                            {% else %}
+                            <li><i class="star-review cp-star star-grey fas fa-star"></i></li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="ratings-wrapper">
+                        <div class="ratings-item">
+                            <div class="row-wrap">
+                                <div class="single-rating-wrap">
+                                    <div class="rating-wrap rating-wrap-left">
+                                        <div class="image-rater"><img src="/avatars/default_avatar.png" onerror="this.onerror=null;this.src='https://www.stuvia.com/hosted-imgs/default_avatar.png';" alt="review-writer-avatar"></div>
+                                        <div class="desc-rater">
+                                            <ul class="star-rates star-rates-4385773">
+                                                <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
+                                                <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
+                                                <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
+                                                <li><i class="star-review cp-star star-grey fas fa-star"></i></li>
+                                                <li><i class="star-review cp-star star-grey fas fa-star"></i></li>
+                                            </ul>
+                                            <p class="info-rater">By: <span class="name-rater no-a-link-js" title="User maxwj page" data-a-link="/user/maxwj">maxwj</span> • 1 year ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="rating-wrap rating-wrap-right">
+                                    </div>
+                                </div>
+                                <p class="text-paragraph review-tp-4385773" data-review-id="4385773"></p>
+                            </div>
+                            <div class="all-replies-wrap all-replies-wrap-4385773"> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <aside class="widget-entry-product space-entry-content">
+                <div class="buy-section widget-entry-item desktop">
+                    
+                    <div id="rates-4" class="ratings">
+                        <form>
+                            {% for value in "12345" %}
+                            {% if value|add:"0" <= average_rating %}
+                            <span class="star1 selected" data-value="{{ value }}">★</span>
+                            {% else %}
+                            <span class="star1" data-value="{{ value }}">★</span>
+                            {% endif %}
+                            {% endfor %}({{count_rating}})
+                        </form>           
+                        <style>
+                            .star {
+                            font-size: 24px;
+                            cursor: pointer;
+                            }
+                            .star.selected {
+                            color: gold;
+                            }
+                            .star1 {
+                            cursor: pointer;
+                            }
+                            .star1.selected {
+                            color: gold;
+                            }
+                            .ratingbtn{
+                            padding: 5px;
+                            margin: 5px;
+                            border-radius: 10px;
+                            background: #199be9;
+                            color: white;
+                            }
+                        </style>
+                    </div>
+                    <div class="currencyof-product">
+                        {% comment %} 
+                        <link itemprop="availability" href="http://schema.org/InStock">
+                        {% endcomment %}
+                    </div>
+                    <div class="ctaof-product ">
+                        
+                        {% comment %} <a href="#" class="add-wishlist ajax-add-wishlist button-add-wishlist-{{products.id}}" data-id="{{products.id}}" data-type="1"><i class="far fa-heart buyblock-icon"></i>&nbsp; Add to wishlist</a>
+                        <a href="#" class="add-wishlist ajax-delete-wishlist button-delete-wishlist-{{products.id}} display-none" data-id="{{products.id}}" data-type="1"><i class="fas fa-heart buyblock-icon"></i>&nbsp; Remove from wishlist</a> {% endcomment %}
+                    </div>
+                    <ul class="guarantee-section">
+                        <li>100% satisfaction guarantee</li>
+                        <li>Immediately available after payment</li>
+                        <li>Both online and in PDF</li>
+                        <li>No strings attached</li>
+                    </ul>
+                    <ul class="tracksof-product">
+                        <li><i class="fal fa-eye icon-stats"></i>&nbsp;{{questions.views}}</li>
+                        <li class=""><i class="far fa-cloud-download icon-stats"></i>&nbsp;{{questions.purchased}}</li>
+                    </ul>
+                </div>
+                <div class="desktop mb-20">
+                    <div id="sellerinfo" class="seller-section widget-entry-item">
+                        <div class="title-section-wrapper">
+                            <h3 class="title-section-sidebar"></h3>
+                            <span class="cta-seller follow-user" data-sellerid="{{questions.id}}">Seller</span>
+                        </div>
+                        <div class="sellerof-product">
+                            <div class="seller-image-wrapper">
+                                {% if profile.image %}
+                                <img loading="lazy" src="{{profile.image.url}}" class="photo-seller" alt="avatar-seller">
+                                {% else %}
+                                <img loading="lazy" src="{% static 'statics/img/user_icon.png' %}" class="photo-seller" alt="avatar-seller">
+                                {% endif %}
+                            </div>
+                            <div class="seller-inform">
+                                <span class="name-seller"><a title="Seller page" href="#" class="">{{questions.user.username}}</a></span>
+                                <label>
+                                    {% if time_since_registration %}
+                                    {% if time_since_registration < 365 %}
+                                    <p>Member for {{ time_since_registration }} day{{ time_since_registration|pluralize }}</p>
+                                    {% else %}
+                                    <p>Member for {{ time_since_registration }} year{{ time_since_registration|pluralize }}</p>
+                                    {% endif %}
+                                    {% else %}
+                                    <p>Registration date unknown</p>
+                                    {% endif %}
+                                </label>
+                                <label>
+                                {{count_products}} Total Answers 
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </aside>
+            
+            
+        </div>
+        <section class="section-box section-columns">
+            <h2 class="title-section">The benefits of buying with AnswerDone:</h2>
+            <div class="section-columns">
+                <div class="column-item">
+                    <img loading="lazy" src="{% static 'statics/img/ComprehensiveAds.png' %}" alt="Guaranteed quality through customer reviews">
+                    <h3>Guaranteed quality through customer reviews</h3>
+                    <p>AnswerDone customers have reviewed there summaries before submitting. This how you know that you are buying the best documents.</p>
+                </div>
+                <div class="column-item">
+                    <img loading="lazy" src="{% static 'statics/img/ExperimentPrice.png' %}" alt="Quick and easy check-out">
+                    <h3>Quick and easy check-out</h3>
+                    <p>You can quickly pay through credit card for the Documents. There is no membership needed.</p>
+                </div>
+                <div class="column-item">
+                    <img loading="lazy" src="{% static 'statics/img/essentie_focus.png' %}" alt="Focus on what matters">
+                    <h3>Focus on what matters</h3>
+                    <p>Your fellow students write the study notes themselves, which is why the documents are always reliable and up-to-date. This ensures you quickly get to the core!  </p>
+                </div>
+            </div>
+        </section>
+    </article>
+    <div class="mob-bar-wrap">
+        <div class="mobile-buy-bar">
+            <div class="mob-buy-left">
+                <div class="mob-buy-price">
+                    <span itemprop="price" content="2707350-document">${{questions.price}}</span>
+                    <span class="mob-buy-downloads ">&nbsp;{{questions.purchased}}x &nbsp;sold</span>
+                </div>
+                <div class="mob-buy-rating">
+                    <ul class="star-rates">
+                        {% for value in "12345" %}
+                        {% if value|add:"0" <= average_rating %}
+                        <span class="star1 selected" data-value="{{ value }}">★</span>
+                        {% else %}
+                        <span class="star1" data-value="{{ value }}">★</span>
+                        {% endif %}
+                        {% endfor %}
+                        </form>
+                        <span class="count-rates">({{average_rating}})</span>
+                    </ul>
+                </div>
+            </div>
+            <div class="mob-buy-right">
+                <span class="btn-fill-yellow mob-cta-buy add-item-to-shoppingcart" onclick='addurl({{products.id}})'>
+                <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<script defer="" type="text/javascript" src=" {% static 'statics/js/1d32c2cbb2-app.js' %}"></script>
+<script defer="" type="text/javascript" src="{% static 'statics/js/dd450856ba-contentpages.js' %}"></script>
+{% endblock content %}

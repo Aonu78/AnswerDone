@@ -24,7 +24,7 @@
 <meta property="og:title" content="{{title}}">
 <meta property="og:type" content="website">
 <meta property="og:description" content="{{description}}">
-<meta property="og:image" content="{% static 'statics/img/logo_blue.png' %}">
+<meta property="og:image" content="{% static 'statics/img/favicon.png' %}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="en_US">
@@ -34,22 +34,22 @@
 <meta name="twitter:description" content="{{description}}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{title}}">
-<meta name="twitter:site" content="">
-<meta name="twitter:image" content="Array">
+<meta name="twitter:site" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}">
+<meta name="twitter:image" content="{% static 'statics/img/favicon.png' %}">
 <meta name="apple-mobile-web-app-title" content="AnswerDone">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="csrf-token" content="">
 <script>
-  function hitUrl(variable) {
-      var url = "/remove-from-cart/" + variable + "/";
+  function hitUrl(base,variable) {
+      var url = "/remove-from-cart/" + base + "/"+ variable + "/";
       window.location.href = url;
   }
 </script>
 <script>
-  function addurl(variable) {
+  function addurl(category,variable) {
   
-      var url = "/add-to-cart/" + variable + "/";
+      var url = "/add-to-cart/" + category + "/" + variable + "/";
       window.location.href = url;
   }
 </script>

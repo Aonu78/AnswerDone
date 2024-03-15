@@ -85,25 +85,26 @@ class LoginView(View):
     def get(self, request):
         form = LoginForm()
         return render(request, 'registration/login.html', {'form': form})
-    def post(self, request):
-        if request.method=="POST":
 
-            username=request.POST['email']
-            userpassword=request.POST['pass1']
-            myuser=authenticate(username=username,password=userpassword)
+    def post(self, request):
+        if request.method == "POST":
+            print("post is working")
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            next_url = request.GET.get('next')  # Get the 'next' parameter from the POST data
+            print(username,password,next_url)
+            myuser = authenticate(username=username, password=password)
 
             if myuser is not None:
-                print("comming    1111")
-                login(request,myuser)
-                print("comming")
-
-                msg.success(request,"Login Success")
-                return render(request,'registration/login.html')
-
+                print("login is working")
+                login(request, myuser)
+                msg.success(request, "Login Success")
+                
+                # Redirect to the 'next' URL if present, or a default URL if not
+                return redirect(next_url or '/user/dashboard/')
             else:
-                msg.warning(request,"Something went wrong")
+                msg.warning(request, "Invalid username or password")
                 return redirect("login")
-
 
 # def forgot_password(request):
 #     return render(request, 'registration/forgot-password.html',{})

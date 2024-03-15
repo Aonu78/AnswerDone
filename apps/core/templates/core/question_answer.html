@@ -201,6 +201,11 @@
                                 placeholder: ' ',
                                 allowClear: true 
                             });
+
+                            $('#chapter_no').select2({
+                                placeholder: ' ',
+                                allowClear: true 
+                            });
                         });
                     </script>
                     <style>
@@ -274,7 +279,6 @@
             <section class="section-basisgegevens section-content-sellfiles">
                 <div class="entry-header-section">
 
-                    
                     <h2 class="title-header-section"></h2>
                 </div>
                 {% if messages %}
@@ -319,7 +323,16 @@
                                 <label for="exercises_radio">Practice Exercises</label>
                             </div>
                         </div>
-                    
+                        <div class="input-field search-field">
+                            <label for="number_of_questions" class="title-field">Chapter No</label>
+                            <select required name="chapter_no" id="chapter_no">
+                                <option value="" disabled selected></option>
+                                {% for i in numbers %}
+                                <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                                
+                            </select>
+                        </div>
                         <div class="input-field search-field">
                             <label for="number_of_questions" class="title-field">Question or Exercises No</label>
                             <select required name="question_no" id="question_no">
@@ -330,7 +343,10 @@
                                 
                             </select>
                         </div>
-                    
+                        <div class="input-field search-field" id="studyEducation-container">
+                            <label for="title" class="title-field"> Title</label>
+                            <input type="text" autocomplete="off" name="title" id="title" class="input-search init-field-trigger  make-drop-pane" placeholder="" >
+                        </div>
                         <div class="input-field search-field">
                             <label for="question" class="title-field">Question</label>
                             <textarea autocomplete="off" name="question" id="question" class="input-search init-field-trigger make-drop-pane" placeholder=""></textarea>

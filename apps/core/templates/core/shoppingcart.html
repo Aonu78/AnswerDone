@@ -105,26 +105,72 @@
                                 <h2 class="title-section title-element">Shopping cart</h2>
                                 <ul class="list-product-cart">
                                     {% for item in cart %}
+                                    {% if item.note %}
                                     <li class="list-product-item" id="cart-item-1-3464067">
                                         <div class="info-container">
                                             <div class="product-image">
-                                                <img src="{{item.product.image.url}}">
+                                                <img src="{{item.note.image.url}}">
                                             </div>
                                             <div class="product-info">
-                                                <label class="type-product">{{item.product.category}}</label>
-                                                <h4 class="product-name"><a href="{% url 'product_detail' item.product.category.slug item.product.slug %}">{{item.product.title}}</a></h4>
+                                                <label class="type-product">{{item.note.category}}</label>
+                                                <h4 class="product-name"><a href="">{{item.note.title}}</a></h4>
                                             </div>
                                             <div class="price-product">
-                                                <span itemprop="price">${{item.product.price}}</span>
+                                                <span itemprop="price">${{item.note.price}}</span>
                                                 {% comment %} <link itemprop="availability" href="http://schema.org/InStock"> {% endcomment %}
                                             </div>
                                             <div class="product-delete-wrap">
-                                               <a href="{% url "remove_from_cart" item.product.id %}"> <span class="cta-delete-product" data-content-type="1" data-content-id="{{item.product.id}}">
+                                               <a href="{% url "remove_from_cart" product_type=item.item_type product_id=item.id %}"> <span class="cta-delete-product" data-content-type="1" data-content-id="{{item.note.id}}">
                                                 <i class="head-icon-trash far fa-trash-alt"></i>
                                                 </span></a>
                                             </div>
                                         </div>
                                     </li>
+                                    {% endif %}
+                                    {% if item.question %}
+                                    <li class="list-product-item" id="cart-item-1-3464067">
+                                        <div class="info-container">
+                                            <div class="product-image">
+                                                <img src="{{item.question.product.image.url}}">
+                                            </div>
+                                            <div class="product-info">
+                                                <label class="type-product">{{item.question.category}}</label>
+                                                <h4 class="product-name"><a href="">{{item.question.title}}</a></h4>
+                                            </div>
+                                            <div class="price-product">
+                                                <span itemprop="price">${{item.question.price}}</span>
+                                                {% comment %} <link itemprop="availability" href="http://schema.org/InStock"> {% endcomment %}
+                                            </div>
+                                            <div class="product-delete-wrap">
+                                               <a href="{% url "remove_from_cart" product_type=item.item_type product_id=item.id %}"> <span class="cta-delete-product" data-content-type="1" data-content-id="{{item.question.id}}">
+                                                <i class="head-icon-trash far fa-trash-alt"></i>
+                                                </span></a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endif %}
+                                    {% if item.bundle %}
+                                    <li class="list-product-item" id="cart-item-1-3464067">
+                                        <div class="info-container">
+                                            <div class="product-image">
+                                                <img src="{% static 'statics/img/essentie_focus.png' %}">
+                                            </div>
+                                            <div class="product-info">
+                                                <label class="type-product">Package deal</label>
+                                                <h4 class="product-name"><a href="">{{item.bundle.title}}</a></h4>
+                                            </div>
+                                            <div class="price-product">
+                                                <span itemprop="price">${{item.bundle.price}}</span>
+                                                {% comment %} <link itemprop="availability" href="http://schema.org/InStock"> {% endcomment %}
+                                            </div>
+                                            <div class="product-delete-wrap">
+                                               <a href="{% url "remove_from_cart" product_type=item.item_type product_id=item.id %}"> <span class="cta-delete-product" data-content-type="1" data-content-id="{{item.bundle.id}}">
+                                                <i class="head-icon-trash far fa-trash-alt"></i>
+                                                </span></a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endif %}
                                     {% endfor %}
                                 </ul>
                                 <div class="table-price-wrapper">
@@ -151,13 +197,13 @@
                             <form class="payment-method " action="{% url "checkout" %}" method="post" id='myform'>
                                 {% csrf_token %}
                                 {{form.as_p}}
-                                <input type="hidden" id="paid_amount" name='paid_amount' value=''>
-                                <input type="hidden" id="tr_id" name='tr_id' value=''>
-                                <input type="hidden" id="tr_name" name='tr_name' value=''>
-                                <input type="hidden" id="tr_email" name='tr_email' value=''>
-                                <input type="hidden" id="tr_payer_id" name='tr_payer_id' value=''>
-                                <input type="hidden" id="tr_payid" name='tr_payid' value=''>
-                                <input type="hidden" id="tr_merchant_id" name='tr_merchant_id' value=''>
+                                <input type="hidden" id="paid_amount" name='paid_amount' value='47'>
+                                <input type="hidden" id="tr_id" name='tr_id' value='465645'>
+                                <input type="hidden" id="tr_name" name='tr_name' value='456'>
+                                <input type="hidden" id="tr_email" name='tr_email' value='abc@gmail.com'>
+                                <input type="hidden" id="tr_payer_id" name='tr_payer_id' value='134234233'>
+                                <input type="hidden" id="tr_payid" name='tr_payid' value='2342342'>
+                                <input type="hidden" id="tr_merchant_id" name='tr_merchant_id' value='25453434'>
                                 <div class="overlay">
                                     <div class="cv-spinner">
                                         <span class="spinner"></span>

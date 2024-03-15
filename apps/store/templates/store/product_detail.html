@@ -44,6 +44,10 @@
     .related-question-section{margin-top: 10px;}
     @media (max-width:485px){.qbq{top:unset}}
     @media (max-width:768px){.related-question-section{padding: 0 10px}}
+
+    .solution-for-problem{
+        color:#199be9 !important;
+    }
 </style>
 <script>
     window.addEventListener("load", function(){
@@ -254,7 +258,7 @@
                                 <div class="popup-content">
                                     <div class="view-product">
                                         <p>Preview {{products.show_pages}} out of {{products.num_pages}} pages</p>
-                                        <a href="{% url "add-to-cart" products.id %}" class="btn-fill-blue cta-buy header-buy-btn add-item-to-shoppingcart  cursor-pointer" data-type="document" data-id="{{products.id}}" data-upselling-bundle="" data-amp-location="Document page (header button)" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
+                                        <a href="{% url "add-to-cart" product_type='note' product_id=products.id %}" class="btn-fill-blue cta-buy header-buy-btn add-item-to-shoppingcart  cursor-pointer" data-type="document" data-id="{{products.id}}" data-upselling-bundle="" data-amp-location="Document page (header button)" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
                                         <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
                                         </a>
                                         <div class="image-view" id="preview-{{products.id}}">
@@ -267,7 +271,7 @@
                                     </div>
                                     <div class="info-product">
                                         <div class="cta-view-product">
-                                            <a href="{% url "add-to-cart" products.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart add-to-cart-qv-2707350-document cursor-pointer" data-id="{{products.id}}" data-type="document" data-upselling-bundle="" data-amp-location="Document page - mobile quickview" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
+                                            <a href="{% url "add-to-cart" product_type='note' product_id=products.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart add-to-cart-qv-2707350-document cursor-pointer" data-id="{{products.id}}" data-type="document" data-upselling-bundle="" data-amp-location="Document page - mobile quickview" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
                                             <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
                                             Add to cart
                                             </a>
@@ -278,204 +282,81 @@
                         </div>
                     </div>
                 </div>
+                {% if chapters %}
                 <div class="results-filter results-search-filter content-attention" id="content-page-recommendations">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding main-heading-border">
                         <h3>Intermediate Accounting Chapter(s) :</h3>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                         <div class="accordion">
+                            {% for chapter_no, chapter_data in chapters.items %}
                             <div class="accordion-item">
-                                <a class="faq-link">Chapter: 1</a>
+                                <a class="faq-link">Chapter: {{ chapter_no }}</a>
                                 <div class="content">
+                                    {% if chapter_data.Practice %}
                                     <ul class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
                                         <p style="font-weight: 700;margin-bottom: unset;">Practice Exercises:</p>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/determine-whether-the-following-statements-are-true-or-false-if">PE-1</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/match-the-numbered-statements-below-with-the-lettered-terms-an">PE-2</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/for-each-of-the-following-independent-situations-identify-the-relevant">PE-3</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/for-each-situation-listed-indicate-by-letter-the-appropriate-qualitative">PE-4</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/in-each-of-the-following-independent-situations-an-example-is">PE-5</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/for-each-of-the-following-items-identify-the-financial-statement">PE-6</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/in-each-of-the-following-independent-situations-an-example-is-given-requiring">PE-7</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/one-of-the-underlying-assumptions-of-the-accounting-model-is">PE-8</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/1-one-of-the-elements-on-a-financial-statement-is">PE-9</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/assume-that-you-just-inherited-1-million-you-are-aware">PE-10</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/emilio-valdez-worked-for-several-years-as-a-loan-analyst">PE-11</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/quality-enterprises-inc-issued-its-2010-financial-statements-on-february">PE-12</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-due-process-system-of-the-fasb-encourages-public-input">PE-13</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/fasb-statement-no-106-requires-companies-to-recognize-a-liability">PE-14</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/tom-obstinate-is-disgusted-by-all-of-the-emphasis-being">PE-15</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/for-more-than-three-decades-accounting-professionals-accounting-educators-and">PE-16</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/little-attempt-is-made-to-reconcile-the-accounting-standard-differences">PE-17</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-fasb-concluded-in-concepts-statement-no-1-that-investors">PE-18</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-cable-television-industry-is-facing-competition-from-companies-using">PE-19</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/conserv-corporation-a-computer-software-company-is-trying-to-determine">PE-20</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/financial-statements-in-the-united-states-rely-heavily-on-historical">PE-21</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/companies-regularly-obtain-money-through-the-issuance-of-bonds-the">PE-22</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/in-the-1970s-a-leader-in-the-accounting-profession-proposed">PE-23</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-existence-of-just-four-large-cpa-firms-that-service">PE-24</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/locate-the-2007-financial-statements-for-the-walt-disney">PE-25</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-following-information-comes-from-the-2006-financial-statements-of">PE-26</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/imagine-that-you-have-been-selected-to-compete-with-students">PE-27</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/to-help-you-become-familiar-with-the-accounting-open-concepts-statement">PE-28</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/accounting-standards-place-limits-on-the-set-of-allowable-alternative">PE-29</a>&nbsp;&nbsp;&nbsp;</li>
+                                        {% for question in chapter_data.Practice %}
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="{{ question.get_absolute_url }}">PE-{{ question.question_no }}</a>&nbsp;&nbsp;&nbsp;</li>
+                                        {% endfor %}
                                     </ul>
+                                    {% endif %}
+                                    {% if chapter_data.Questions %}
                                     <ul class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
                                         <p style="font-weight: 700;margin-bottom: unset;">Questions:</p>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/accounting-has-been-defined-as-a-service-activity-who-is">Q-1</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/how-does-the-fact-that-there-are-limited-resources-in">Q-2</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/accounting-is-sometimes-characterized-as-dealing-only-with-the-past">Q-3</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/distinguish-between-management-accounting-and-financial-accounting">Q-4</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-five-items-make-up-the-generalpurpose-financial-statements">Q-5</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/contrast-the-roles-of-an-accountant-and-an-auditor">Q-6</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/why-are-independent-audits-necessary">Q-7</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-conditions-led-to-the-establishment-of-accounting-standardsetting-bodies">Q-8</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/describe-the-structure-of-the-fasb-where-does-the-fasb">Q-9</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-are-the-differences-in-purpose-and-scope-of-the">Q-10</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-characteristics-of-the-standardsetting-process-are-designed-to-increase">Q-11</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/a-what-role-does-the-eitf-play-in-establishing-accounting">Q-12</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/how-does-the-sec-influence-the-setting-of-accounting-standards">Q-13</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-is-the-aicpa-the-aaa">Q-14</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/explain-the-relationship-between-financial-accounting-rules-and-tax-accounting">Q-15</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/why-is-standard-setting-such-a-difficult-and-complex-task">Q-16</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/according-to-the-fasbs-gaap-hierarchy-which-set-of-accounting">Q-17</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/why-are-differing-national-accounting-standards-converging-to-a-common">Q-18</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-is-the-iasb-what-is-the-sec-position-regarding">Q-19</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/list-and-explain-the-main-reasons-that-a-conceptual-framework">Q-20</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/identify-the-major-objectives-of-financial-reporting-as-specified-by">Q-21</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/one-objective-of-financial-reporting-is-understandability-understandable-to-whom">Q-22</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/why-is-it-so-difficult-to-measure-the-cost-effectiveness">Q-23</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/distinguish-between-the-qualities-of-relevance-and-reliability">Q-24</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/does-reliability-imply-absolute-accuracy-explain">Q-25</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/define-comparability">Q-26</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2">
-                                            <a href="/of-what-value-is-consistency-in-financial-reporting">Q-27</a>&nbsp;&nbsp;&nbsp;
-                                        </li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-is-the-current-numerical-materiality-standard-in-accounting">Q-28</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-is-conservatism-in-accounting-what-is-an-example-of">Q-29</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/identify-the-criteria-that-an-item-must-meet-to-qualify">Q-30</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/identify-and-describe-five-different-measurement-attributes">Q-31</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/briefly-describe-the-five-traditional-assumptions-that-influence-the-conceptual">Q-32</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-is-the-most-common-career-path-for-a-college">Q-33</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-user-careers-require-a-knowledge-of-intermediate-accounting-issues">Q-34</a>&nbsp;&nbsp;&nbsp;</li>
+                                        {% for question in chapter_data.Questions %}
+                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="{{ question.get_absolute_url }}">Q-{{ question.question_no }}</a>&nbsp;&nbsp;&nbsp;</li>
+                                        {% endfor %}
                                     </ul>
-                                </div>
-                                <a class="faq-link">Chapter: 2</a>
-                                <div class="content">
-                                    <ul class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
-                                        <p style="font-weight: 700;margin-bottom: unset;">Practice Exercises:</p>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-journal-entry-or-entries-necessary-to-record-the-following">PE-1</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-journal-entry-or-entries-necessary-to-record-the">PE-2</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-journal-entry-or-entries-necessary-to">PE-3</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-journal-entry-or-entries-necessary-to-record">PE-4</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-journal-entry-or-entries-necessary">PE-5</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-beginning-balance-in-the-cash-account-was-10000-during">PE-6</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-beginning-balance-in-the-accounts-payable-account-was-8000">PE-7</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/use-the-following-account-balance-information-to">PE-8</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/use-the-following-account-balance-information-to-construct">PE-9</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/prepare-two-income-statements-one-using-the-information-in-practice">PE-10</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/prepare-two-balance-sheets-one-using-the-information-in-practice">PE-11</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-adjusting-journal-entry-necessary">PE-12</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-adjusting-journal-entry-necessary-at-the-end-of">PE-13</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-adjusting-journal-entry-necessary-at-the">PE-14</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-adjusting-journal-entry-necessary-at-the-the-period-in">PE-15</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-adjusting-journal-entry-necessary-at-the-end">PE-16</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-closing-entry-or-entries-necessary-to">PE-17</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/make-the-closing-entry-or-entries-necessary-to-close-the">PE-18</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/georgia-supply-corporation-a-merchandising-firm-prepared-the-following-trial">PE-19</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/in-analyzing-the-accounts-of-sydney-corporation-the-adjusting-data">PE-20</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/upon-inspecting-the-books-and-records-for-wernli-company-for">PE-21</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/for-each-situation-reconstruct-the-adjusting-entry-that-was-made">PE-22</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/accounts-of-pioneer-heating-corporation-at-the-end-of-the">PE-23</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/below-is-the-trial-balance-for-boudreaux-company-as-of">PE-24</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/for-each-of-the-following-journal-entries-write-a-description">PE-25</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-following-accounts-were-taken-from-the-trial-balance-of">PE-26</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-following-data-were-obtained-from-an-analysis-of-the">PE-27</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/guidecom-consulting-company-initially-records-prepaid-items-as-assets-and">PE-28</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/an-accountant-for-jolley-inc-a-merchandising-enterprise-has-just">PE-29</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/dylans-taxidermy-corporation-reports-revenues-and-expenses-of-142300-and">PE-30</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/an-analysis-of-goulding-inc-disclosed-changes-in-account-balances">PE-31</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/spilker-aviation-inc-failed-to-make-yearend-adjustments-to-record">PE-32</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/selfish-gene-company-is-a-merchandising-firm-the-following-events">PE-33</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/using-the-format-provided-identify-for-each-account-1-whether">PE-34</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/on-december-31-trinkets-supply-company-noted-the-following-transactions">PE-35</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-accountant-for-save-more-company-made-the-following-adjusting">PE-36</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-bookkeeper-for-joes-hardware-co-records-all-revenue-and">PE-37</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/gee-enterprises-records-all-transactions-on-the-cash-basis-greg">PE-38</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/account-balances-taken-from-the-ledger-of-builders-supply-corporation">PE-39</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/data-for-adjustments-at-december-31-2011-are-as-follows">PE-40</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/account-balances-taken-from-the-ledger-of-high-flying-logistics">PE-41</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/the-following-account-balances-are-taken-from-the-general-ledger">PE-42</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/consider-the-following-account-of-a-veterinarian-attempting-to-hire">PE-43</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/explain-why-each-of-the-following-hypothetical-events-would-not">PE-44</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/jim-price-and-elaine-bijard-are-taking-an-accounting-systems">PE-45</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/alice-guth-operates-a-lowimpact-aerobics-studio-alice-has-been">PE-46</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/computers-have-drastically-altered-the-way-accounting-records-are-maintained">PE-47</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/julie-is-successful-in-her-position-as-a-consultant-for">PE-48</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2">
-                                            <a href="/locate-the-2006-financial-statements-for-lockheed-martin-corporation-on">PE-49</a>&nbsp;&nbsp;&nbsp;
-                                        </li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/some-accounting-students-feel-that-the-mechanics-of-accounting-journal">PE-50</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/to-help-you-become-familiar-with-the-accounting">PE-51</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/refer-back-to-the-section-of-the-chapter-entitled-preparing">PE-52</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/study-help/intermediate-accounting/beginning-with-chapter-2-each-chapter-in-this-text-will">PE-53</a>&nbsp;&nbsp;&nbsp;</li>
-                                    </ul>
-                                    <ul class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
-                                        <p style="font-weight: 700;margin-bottom: unset;">Questions:</p>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-types-of-reports-are-generated-from-the-accounting-system">Q-1</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-are-the-main-similarities-and-differences-between-a-manual">Q-2</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/distinguish-between-the-recording-and-reporting-phases-of-the-accounting">Q-3</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/list-and-describe-the-steps-in-the-accounting-process-why">Q-4</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/under-doubleentry-accounting-what-are-the-debitcredit-relationships-of-accounts">Q-5</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/distinguish-between-a-real-and-nominal-accounts-b-general-journal">Q-6</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/explain-the-nature-and-the-purpose-of-a-adjusting-entries">Q-7</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/as-beechnut-mining-companys-independent-certified-public-accountant-you-find">Q-8</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/give-three-common-examples-of-contra-accounts-explain-why-contra">Q-9</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/payment-of-insurance-in-advance-may-be-recorded-in-either">Q-10</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/describe-the-nature-and-purpose-of-a-work-sheet">Q-11</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-effect-if-any-does-the-use-of-a-work">Q-12</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/from-the-following-list-of-accounts-determine-which-ones-should">Q-13</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/distinguish-between-accrual-and-cashbasis-accounting">Q-14</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/is-greater-accuracy-achieved-in-financial-statements-prepared-from-doubleentry">Q-15</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/what-are-the-major-advantages-of-computers-as-compared-with">Q-16</a>&nbsp;&nbsp;&nbsp;</li>
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="/one-of-your-clients-overheard-a-computer-manufacturer-sales-representative">Q-17</a>&nbsp;&nbsp;&nbsp;</li>
-                                    </ul>
+                                    {% endif %}
                                 </div>
                             </div>
+                            {% endfor %}
+                            
                         </div>
                     </div>
-                </div>
+                </div> {% endif %}
+                {% if ratings %}
                 <div id="reviewblock" class="ratings-product space-entry-content">
                     <div class="top-reviews-area">
-                        <h2 class="title-rating title-rating-mobile">7&nbsp;
+                        <h2 class="title-rating title-rating-mobile">{{count_rating}}&nbsp;
                             reviews
                         </h2>
                         <ul class="star-rates star-rates">
+                            {% for value in "12345" %}
+                            {% if value|add:"0" <= average_rating %}
                             <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
-                            <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
-                            <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
+                            {% else %}
                             <li><i class="star-review cp-star star-grey fas fa-star"></i></li>
-                            <li><i class="star-review cp-star star-grey fas fa-star"></i></li>
+                            {% endif %}
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="ratings-wrapper">
                         <div class="ratings-item">
                             <div class="row-wrap">
                                 <div class="single-rating-wrap">
+                                    {% for rate in ratings %}
                                     <div class="rating-wrap rating-wrap-left">
-                                        <div class="image-rater"><img src="/avatars/default_avatar.png" onerror="this.onerror=null;this.src='https://www.stuvia.com/hosted-imgs/default_avatar.png';" alt="review-writer-avatar"></div>
+                                        {% if rate.user.image %}
+                                        <div class="image-rater"><img src="{{rate.user.image.url}}" alt="review-writer-avatar"></div>
+                                        {% else %}
+                                        <img loading="lazy" src="{% static 'statics/img/user_icon.png' %}" class="photo-seller" alt="avatar-seller">
+                                        {% endif %}
                                         <div class="desc-rater">
                                             <ul class="star-rates star-rates-4385773">
+                                                {% for value in "12345" %}
+                                                {% if value|add:"0" <= rate.rating %}
                                                 <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
-                                                <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
-                                                <li><i class="star-review cp-star star-gold fas fa-star"></i></li>
-                                                <li><i class="star-review cp-star star-grey fas fa-star"></i></li>
-                                                <li><i class="star-review cp-star star-grey fas fa-star"></i></li>
+                                                {% else %}
+                                                <li><i class="star-review cp-star star-gray fas fa-star"></i></li>
+                                                {% endif %}
+                                                {% endfor %}
                                             </ul>
-                                            <p class="info-rater">By: <span class="name-rater no-a-link-js" title="User maxwj page" data-a-link="/user/maxwj">maxwj</span> • 1 year ago</p>
+                                            <p class="info-rater">By: <span class="name-rater no-a-link-js" title="User maxwj page" data-a-link="#">{{rate.user}}</span> • {{rate.created_at}}</p>
                                         </div>
                                     </div>
-                                    <div class="rating-wrap rating-wrap-right">
-                                    </div>
+                                    {% endfor %}
                                 </div>
                                 <p class="text-paragraph review-tp-4385773" data-review-id="4385773"></p>
                             </div>
@@ -484,6 +365,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
             </div>
             <aside class="widget-entry-product space-entry-content">
                 <div class="buy-section widget-entry-item desktop">
@@ -494,11 +376,12 @@
                         <form>
                             {% for value in "12345" %}
                             {% if value|add:"0" <= average_rating %}
-                            <span class="star1 selected" data-value="{{ value }}">★</span>
+                            <i class="star-review cp-star star-gold fas fa-star"></i>
                             {% else %}
-                            <span class="star1" data-value="{{ value }}">★</span>
+                            <i class="star-review cp-star star-grey fas fa-star"></i>
                             {% endif %}
                             {% endfor %}
+                            ({{count_rating}})
                         </form>
                         <script>            
                             document.addEventListener('DOMContentLoaded', function() {
@@ -567,7 +450,7 @@
                         {% endcomment %}
                     </div>
                     <div class="ctaof-product ">
-                        <a href="{% url "add-to-cart" products.id %}" class="btn-fill-yellow cta-buy add-item-to-shoppingcart cursor-pointer" data-id="{{products.id}}" data-upselling-bundle="" data-type="document" data-amp-location="Document page" data-user-status="yes" data-country-seller="214" data-price="1100" data-currency="USD" data-language="en" data-downloads="4" data-views="53" data-rating="0.00" data-content-contained-amount="182">
+                        <a href="{% url "add-to-cart" product_type='note' product_id=products.id %}" class="btn-fill-yellow cta-buy add-item-to-shoppingcart cursor-pointer" data-id="{{products.id}}" data-upselling-bundle="" data-type="document" data-amp-location="Document page" data-user-status="yes" data-country-seller="214" data-price="1100" data-currency="USD" data-language="en" data-downloads="4" data-views="53" data-rating="0.00" data-content-contained-amount="182">
                         <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
                         </a>
                         {% comment %} <a href="#" class="add-wishlist ajax-add-wishlist button-add-wishlist-{{products.id}}" data-id="{{products.id}}" data-type="1"><i class="far fa-heart buyblock-icon"></i>&nbsp; Add to wishlist</a>
@@ -648,22 +531,6 @@
                         </li>
                     </ul>
                 </div>
-                {% comment %} <div id="schoolinfo" class="productfor-section widget-entry-item">
-                    <h3 class="title-section-sidebar">Rate that Docs</h3>
-                    <form method="post" action="{% url 'rate_product' products.id %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="rating" id="ratingInput" value="0">
-                        <span class="star" data-value="1">★</span>
-                        <span class="star" data-value="2">★</span>
-                        <span class="star" data-value="3">★</span>
-                        <span class="star" data-value="4">★</span>
-                        <span class="star" data-value="5">★</span>
-                        <br>
-                        <label for="description">Description:</label>
-                        <textarea id="description" name="description" rows="4" cols="50" style="height: 100;font-size: large;"></textarea><br>
-                        <input id="ratingForm" type="submit" value="Submit" class='ratingbtn'>                    
-                    </form>
-                </div> {% endcomment %}
             </aside>
             <div class="results-filter results-search-filter content-attention" id="content-page-recommendations">
                 <div class="recommendation-title" data-docids="2198912:1,2108464:1,2118974:1,3586378:1" data-numberofrecoms="4" data-recomsvalid="old recommendation">
@@ -728,7 +595,7 @@
                                     <span class="title-preview hover-act">Quick View</span>
                                 </div>
                             </span>
-                            <span class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" onclick="addurl('{{product.id}}')">
+                            <span class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" onclick="addurl('note', {{product.id}})">
                             <i class="add-to-cart-icon far fa-shopping-cart fa-flip-horizontal"></i>
                             </span>
                         </a>
@@ -737,10 +604,10 @@
                             <span class="open">i</span>
                             <span class="close">x</span>
                             </span>
-                            <span class="cart-wrapper wrapper add-item-to-shoppingcart recommended-item" data-id="{{product.id}}" onclick="addurl('{{product.id}}')">
+                            <span class="cart-wrapper wrapper add-item-to-shoppingcart recommended-item" data-id="{{product.id}}" onclick="addurl('note', {{product.id}})">
                             <i class="far fa-shopping-cart fa-flip-horizontal"></i>
                             </span>
-                            <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.title}}" class="goto-wrapper wrapper recommended-item" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="{{product.title}}" data-is-link="true">
+                            <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.title}}" class="goto-wrapper wrapper recommended-item" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="{{product.title}}" data-is-link="true" onclick="changeurllocation('{% url 'product_detail' product.category.slug product.slug %}')">
                             <i class="fas fa-long-arrow-right"></i>
                             </a>
                         </div>
@@ -756,7 +623,7 @@
                                     <div class="popup-content">
                                         <div class="view-product">
                                             <p>Preview {{product.show_pages}} out of {{product.num_pages}} pages</p>
-                                            <a href="{% url "add-to-cart" product.id %}" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="" data-amp-location=" page (header button)" data-user-status="yes" data-country-seller="214" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
+                                            <a href="{% url "add-to-cart" product_type='note' product_id=product.id %}" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="" data-amp-location=" page (header button)" data-user-status="yes" data-country-seller="214" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
                                             <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
                                             </a>
                                             <div class="image-view" id="preview-{{product.id}}">
@@ -794,7 +661,7 @@
                                                     <span itemprop="price">${{product.price}}</span>
                                                     <link itemprop="availability" href="http://schema.org/InStock">
                                                 </div>
-                                                <a href="{% url "add-to-cart" product.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document recommended-item" data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="yes" data-upselling-bundle="" data-country-seller="214" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="false" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
+                                                <a href="{% url "add-to-cart" product_type='note' product_id=product.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document recommended-item" data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="yes" data-upselling-bundle="" data-country-seller="214" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="false" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
                                                 <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
                                                 Add to cart
                                                 </a>
@@ -862,7 +729,7 @@
                 </div>
             </div>
             <div class="mob-buy-right">
-                <span class="btn-fill-yellow mob-cta-buy add-item-to-shoppingcart" onclick='addurl({{products.id}})'>
+                <span class="btn-fill-yellow mob-cta-buy add-item-to-shoppingcart" onclick="addurl('note', {{products.id}})">
                 <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
                 </span>
             </div>

@@ -10,7 +10,7 @@ class CopyrightRequest(admin.ModelAdmin):
     list_display = ('username', 'email', 'status')
 
 class ReqQ_n_A(admin.ModelAdmin):
-    list_display = ('product','question', 'short_answer','user','question_type','question_no','user')
+    list_display = ('title','short_answer','user','question_type','question_no','price','user')
 
 admin.site.register(ChargePrice)
 admin.site.register(ServiceCosts)

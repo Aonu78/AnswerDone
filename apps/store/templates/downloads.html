@@ -2,6 +2,11 @@
 {% extends "core/base.html" %}
 {% load static %}
 {% block content %}
+<style>
+    .show-less {
+        -webkit-line-clamp: 3 !important;
+    }
+</style>
 <link rel="stylesheet" href="{% static 'statics/css/74c8e7dfbc-wishlistpage_css.css' %}">
 
 {% comment %} <link rel="stylesheet" href="{% static 'statics/css/74c8e7dfbc-wishlistpage_css.css' %}"> {% endcomment %}
@@ -17,7 +22,9 @@
                 </section>
                 <section class="section-book-lists section-book-lists-wishlist section-item">
                     <div id="user-wishlist-content" class="listing-grid">
-                        {% for item in order_items  %}                                
+                        {% for item in order_items  %}
+
+                        {% if item.doc_type == 'product' %}                                
                         <div class="listgrid-item row-wishlist row-wishlist-3236146-1">
                             <div class="grid-list">
                                 <div class="icon-preview">
@@ -28,20 +35,24 @@
                                     {% endif %}
                                 </div>
                                 <div class="desc-preview">
-                                    <h4 class="title-preview"><a href="{% url 'purchased_product' item.product.category.slug item.product.slug %}">{{item.product.title}} </a></h4>
+                                    <h4 class="title-preview"><a href="{% url 'purchased_product' item.content_object.category.slug item.content_object.slug %}">{{item.content_object.title}} </a></h4> 
                                     <div class="excerpt-desc">
-                                        <p>{{item.product.description}}</p>
+                                        <p calss="show-less">{{item.content_object.description}}</p>
                                         <div class="information-item">
                                             <ul class="details">
-                                                <li class="info-author-img"><img class="user-image" src="{{item.product.image.url}}"></li>
+                                                {% if item.content_object.product.user.image %}
+                                                    <li class="info-author-img"><img class="user-image" src="{{item.content_object.product.user.image.url}}"></li>
+                                                    {% else %}
+                                                    <li class="info-author-img"><img class="user-image" src="{% static '/statics/img/user_icon.png' %}"></li>
+                                                    {% endif %}
+                                                {% comment %} <li class="info-author-img"><img class="user-image" src="{{item.content_object.image.url}}"></li> {% endcomment %}
                                                 <li class="info-author right">By </li>
-                                                <li class="info-author"><span class="author-name"> {{item.product.user}} </span></li>
+                                                <li class="info-author"><span class="author-name"> {{item.content_object.user}} </span></li>
                                                 <li class="bold-dot"> • </li>
-                                                <li class="info-author-institution">  </li>
-                                                <li class="bold-dot"> • </li>
-                                                <li class="info-category-objectType info-category"> {{item.product.category}} </li>
+                                                
+                                                <li class="info-category-objectType info-category"> {{item.content_object.category}} </li>
                                                 <li class="dot"> • </li>
-                                                <li class="count-pagina">{{item.product.num_pages}}
+                                                <li class="count-pagina">{{item.content_object.num_pages}}
                                                     pages
                                                     •&nbsp;
                                                 </li>
@@ -49,9 +60,9 @@
                                                     <ul class="star-rates">
                                                         {% for value in "12345" %}
                                                         {% if value|add:"0" <= item.average_rating %}
-                                                            <span class="star1 selected" data-value="{{ value }}">★</span>
+                                                        <li><i class="star-review star-gold fas fa-star"></i></li>
                                                         {% else %}
-                                                            <span class="star1" data-value="{{ value }}">★</span>
+                                                        <li><i class="star-review star-grey fas fa-star"></i></li>
                                                         {% endif %}
                                                     {% endfor %}                                                    
                                                     </ul>
@@ -59,19 +70,147 @@
                                                 <li class="dot"> • </li>
                                                 <li class="info-category-amount-reviews"> ({{item.average_rating}}) </li>
                                                 <li class="dot"> • </li>
-                                                <li class="info-category-price-item"> $ {{item.product.price}}</li>
+                                                <li class="info-category-price-item"> $ {{item.content_object.price}}</li>
                                                 <li class="dot"> • </li>
                                                 {% if item.committed %}
-                                                <li class="info-category-price-item"><a><span style="color:#199be9" onclick='openModal({{item.product.id}},"{{item.product.title}}")'>Write Review</span></a></li>
+                                                <li class="info-category-price-item"><a><span style="color:#199be9" onclick='openModal({{item.content_object.id}},"{{item.content_object.title}}")'>Write Review</span></a></li>
                                                 {% endif %}
                                             </ul>
                                         </div>
                                     </div>
-                                </div>
-                                
+                                    
+                                </div>                                
                             </div>
-                            
                         </div>
+                        {% endif %}
+ 
+                        {% if item.doc_type == 'question_answer' %}                             
+                        <div class="listgrid-item row-wishlist row-wishlist-3236146-1">
+                            <div class="grid-list">
+                                <div class="icon-preview">
+                                    {% if item.product.image %}
+                                    <img loading="lazy" src="{{item.product.image.url}}" class="lozad image-boek item-image">
+                                    {% else %}
+                                    <img loading="lazy" src=" {% static 'statics/img/essentie_focus.png' %}" class="lozad image-boek item-image">
+                                    {% endif %}
+                                </div>
+                                <div class="desc-preview">
+                                    <h4 class="title-preview"><a href="{% url "question_purchased" item.content_object.product.category.slug item.content_object.slug %}">{{item.content_object.title}} </a></h4>
+                                    <div class="excerpt-desc">
+                                        <p class="show-less">{{item.cleaned_text|safe}}</p>
+                                        <div class="information-item">
+                                            <ul class="details">
+                                                {% if item.content_object.product.user.image %}
+                                                    <li class="info-author-img"><img class="user-image" src="{{item.content_object.product.user.image.url}}"></li>
+                                                    {% else %}
+                                                    <li class="info-author-img"><img class="user-image" src="{% static '/statics/img/user_icon.png' %}"></li>
+                                                    {% endif %}
+                                                {% comment %} <li class="info-author-img"><img class="user-image" src="{{item.content_object.product.image.url}}"></li> {% endcomment %}
+                                                <li class="info-author right">By </li>
+                                                <li class="info-author"><span class="author-name"> {{item.content_object.user}} </span></li>
+                                                <li class="bold-dot"> • </li>
+                                                <div class="ratings">
+                                                    <ul class="star-rates">
+                                                        {% for value in "12345" %}
+                                                        {% if value|add:"0" <= item.average_rating %}
+                                                        <li><i class="star-review star-gold fas fa-star"></i></li>
+                                                        {% else %}
+                                                        <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                        {% endif %}
+                                                    {% endfor %}                                                    
+                                                    </ul>
+                                                </div>
+                                                <li class="dot"> • </li>
+                                                <li class="info-category-amount-reviews"> ({{item.average_rating}}) </li>
+                                                <li class="dot"> • </li>
+                                                <li class="info-category-price-item"> $ {{item.content_object.price}}</li>
+                                                <li class="dot"> • </li>
+                                                {% if item.committed %}
+                                                <li class="info-category-price-item"><a><span style="color:#199be9" onclick='openModal1({{item.content_object.id}},"{{item.content_object.title}}")'>Write Review</span></a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                </div>                                
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if item.doc_type == 'bundle' %}
+                            {% for product in item.content_object.product.all %}
+                            <div class="listgrid-item row-wishlist row-wishlist-3236146-1">
+                                <div class="grid-list">
+                                    <div class="icon-preview">
+                                        {% if product.image %}
+                                        <img loading="lazy" src="{{product.image.url}}" class="lozad image-boek item-image">
+                                        {% else %}
+                                        <img loading="lazy" src=" {% static 'statics/img/essentie_focus.png' %}" class="lozad image-boek item-image">
+                                        {% endif %}
+                                    </div>
+                                    <div class="desc-preview">
+                                        <h4 class="title-preview"><a href="{% url 'purchased_product' product.category.slug product.slug %}">{{product.title}} </a></h4> 
+                                        <div class="excerpt-desc">
+                                            <p calss="show-less">{{product.description}}</p>
+                                            <div class="information-item">
+                                                <ul class="details">
+                                                    {% if product.user.image %}
+                                                    <li class="info-author-img"><img class="user-image" src="{{product.user.image.url}}"></li>
+                                                    {% else %}
+                                                    <li class="info-author-img"><img class="user-image" src="{% static '/statics/img/user_icon.png' %}"></li>
+                                                    {% endif %}
+                                                    <li class="info-author right">By </li>
+                                                    <li class="info-author"><span class="author-name"> {{product.user}} </span></li>
+                                                    <li class="bold-dot"> • </li>
+                                                    <li class="info-category-objectType info-category"> {{product.category}} </li>
+                                                    <li class="dot"> • </li>
+                                                    <li class="count-pagina">{{product.num_pages}}
+                                                        pages
+                                                        •&nbsp;
+                                                    </li>
+                                                    <div class="ratings">
+                                                        <ul class="star-rates">
+                                                            {% for value in "12345" %}
+                                                    {% for product_id, ratings_dict in product_ratings.items %}
+                                                        {% if product_id == product.id %}
+                                                            {% if value|add:"0" <= ratings_dict.average_rating %}
+                                                                <li><i class="star-review star-gold fas fa-star"></i></li>
+                                                            {% else %}
+                                                                <li><i class="star-review star-grey fas fa-star"></i></li>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endfor %}
+                                                                                                          
+                                                        </ul>
+                                                    </div>
+                                                    <li class="dot"> • </li>
+                                                    {% for product_id, ratings_dict in product_ratings.items %}
+                                                        {% if product_id == product.id %}
+                                                        <li class="info-category-amount-reviews"> ({{ratings_dict.count_rating}}) </li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <li class="dot"> • </li>
+                                                    <li class="info-category-price-item"> $ {{product.price}}</li>
+                                                    <li class="dot"> • </li>
+                                                    {% for product_id, ratings_dict in product_ratings.items %}
+                                                        {% if product_id == product.id %}
+                                                            {% if ratings_dict.committed %}
+                                                            <li class="info-category-price-item"><a><span style="color:#199be9" onclick='openModal({{product.id}},"{{product.title}}")'>Write Review</span></a></li>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>                                
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+
                         {% endfor %}
                     </div>
                 </section>
@@ -242,6 +381,12 @@
             const targetModal = document.getElementById('modalOverlay');
             document.getElementById('model_title').innerText = title;
             document.getElementById('product_id').action = '/rate-product/'+modalId+'/';
+            targetModal.style.display = 'block';
+          }
+          function openModal1(modalId, title) {
+            const targetModal = document.getElementById('modalOverlay');
+            document.getElementById('model_title').innerText = title;
+            document.getElementById('product_id').action = '/rate-answer/'+modalId+'/';
             targetModal.style.display = 'block';
           }
           

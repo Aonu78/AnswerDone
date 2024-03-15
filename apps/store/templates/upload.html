@@ -168,8 +168,13 @@
                             </select>
                         </div>
                         <div class="input-field search-field" style="width: -webkit-fill-available;">
+                            <div style="display:flex;">
                             <label for="course" class="title-field"> Course Code*
                             </label>
+                            <div id="back-button" style="display:block;">
+                                <a href="{% url "add_course" %}" style="width: max-content;"><i class="fa fa-long-arrow-right"></i>If Not Then Add</a>
+                            </div>
+                            </div>
                             <select required class="select2-dropdown-link js-states form-control select2-hidden-accessible" name="course" id="course">
                                 <option value="" disabled selected></option>
                                 {% for cat in course %}
@@ -210,12 +215,12 @@
                             <textarea type="text" autocomplete="off"  name="description" id="description" value="" required class="input-search init-field-trigger  make-drop-pane" placeholder=""></textarea>
                         </div> 
                         <div class="input-field search-field" >
-                            <label for="image" class="title-field">Featured Image*
+                            <label for="image" class="title-field">Featured Image
                             </label>
                             <input type="file" name="image" class="input-search init-field-trigger  make-drop-pane" required style="width: -webkit-fill-available;" accept="image/*"/>
                         </div>
                         <div class="input-field search-field" >
-                            <label for="image" class="title-field">PDF file
+                            <label for="image" class="title-field">PDF file*
                             </label>
                             {% if form.file.errors %}
                             <ul class="errorlist">
@@ -224,7 +229,7 @@
                                 {% endfor %}
                             </ul>
                         {% endif %}
-                            <input type="file" name="file" class="input-search init-field-trigger  make-drop-pane" style="width: -webkit-fill-available;" accept=".pdf"/>
+                            <input type="file" required name="file" class="input-search init-field-trigger  make-drop-pane" style="width: -webkit-fill-available;" accept=".pdf"/>
                         </div>
                         <div class="input-field search-field" >
                             <label for="show_pages" class="title-field">Number of Pages to Show as Free

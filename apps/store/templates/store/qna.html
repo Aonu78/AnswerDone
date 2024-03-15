@@ -78,6 +78,9 @@ function incrementDislike(pk) {
     .show-less {
         -webkit-line-clamp: 2;
     }
+    .show-less-small {
+        -webkit-line-clamp: 1;
+    }
     .wrapper .banner-image-props {
         background-size: cover;
         background-position: center -7px !important;
@@ -112,11 +115,19 @@ function incrementDislike(pk) {
     display: none;
 }
 .selling-box .grid-list .desc-preview{
-    width:100% !important;
+    width:90% !important;
 }
 @media screen and (max-width: 980px) {
 .grid-list .desc-preview .excerpt-desc, .grid-list .desc-preview .info-desc{
     margin-left:0px !important;
+}
+.desc-preview .content-title, .desc-preview .excerpt-desc p, .desc-preview h4 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4 !important;
+    word-break: break-word;
 }
 }
 </style>
@@ -168,12 +179,19 @@ function incrementDislike(pk) {
                     {% if query %}<h3 id="searhquery1">Page {{ latest_products.number }} out of {{ latest_products.paginator.count }} results for {{query}}</h3>   {% endif %}       
                 </div>{% endif %}
                 <div class="listing-grid">
+                    
                     {% for product in latest_products %}
                     <div class="listgrid-item selling-box before-you-leave-amplitude-click first-row" id="" data-type="content click" style="    margin: 5px 0px;">
-                        <a title="{{product.question}}" class="grid-list log-amplitude-js search-result-link recommended-item" data-click-location="Item" data-click-type="Question" data-click-title="{{product.question}}" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="true" rel="nofollow">
+                        <a href="{% url 'question_detail' product.product.category.slug product.slug %}" title="{{product.title}}" class="grid-list log-amplitude-js search-result-link recommended-item" data-click-location="Item" data-click-type="Question" data-click-title="{{product.question}}" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="true" rel="nofollow">
                             <div class="desc-preview">
-                                <span class="content-title"> {{product.question|safe}} </span>
-                                <div class="info-desc search-info-desc">
+                                <span class="content-title" style="color:#5b6080"> {{product.title|safe}} </span>
+                                {% comment %} <span class="answer"> {{ product.question|safe }} </span> {% endcomment %}
+                                
+                                <div class="excerpt-desc">
+                                    <p id="answer-{{product.id}}" class="answer">{{product.question|safe}}</p>
+                                    {% comment %} <p id="toggle-{{product.id}}" class="toggle-link show-less" onclick="toggleContent('{{product.id}}')" style='color: #199be9;'>Show more +</p> {% endcomment %}
+                                </div>
+                                <div class="info-desc search-info-desc" style="    float: right;">
                                     <div class="downloads">
                                         <span class="count-downloads"><h2>{{product.category}}</h2></span>
                                     </div>
@@ -186,10 +204,8 @@ function incrementDislike(pk) {
                                         <span class="count-downloads"><h2 id="dislike-count-{{product.id}}">{{product.dislike}}</h2>x &nbsp;Dislike</span>
                                     </div>
                                 </div>
-                                <div class="excerpt-desc">
-                                    <p id="answer-{{product.id}}" class="answer">{{product.answer|safe}}</p>
-                                    <p id="toggle-{{product.id}}" class="toggle-link show-less" onclick="toggleContent('{{product.id}}')" style='color: #199be9;'>Show more +</p>
-                                </div>
+                                <span class="content-title show-less-small" style="color:#5b6080;font-size: small;"> {{ request.scheme }}://{{ request.get_host }}{% url 'question_detail' product.product.category.slug product.slug %} </span>
+                                <span class="content-title"> {{product.title|safe}} </span>
                             </div>
                             {% comment %} <span class="quickview-doc recommended-item" data-id="{{product.id}}" data-type="1" data-loaded="false" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="Question and Answer" data-is-link="false">
                                 <div class="cta-preview desktop ">
