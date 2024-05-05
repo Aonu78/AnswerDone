@@ -37,7 +37,7 @@
                                 <div class="desc-preview">
                                     <h4 class="title-preview"><a href="{% url 'purchased_product' item.content_object.category.slug item.content_object.slug %}">{{item.content_object.title}} </a></h4> 
                                     <div class="excerpt-desc">
-                                        <p calss="show-less">{{item.content_object.description}}</p>
+                                        <p calss="show-less">{{item.content_object.description|safe}}</p>
                                         <div class="information-item">
                                             <ul class="details">
                                                 {% if item.content_object.product.user.image %}
@@ -70,7 +70,11 @@
                                                 <li class="dot"> • </li>
                                                 <li class="info-category-amount-reviews"> ({{item.average_rating}}) </li>
                                                 <li class="dot"> • </li>
+                                                {% if product.price is not None and product.price != 0.0 %}
                                                 <li class="info-category-price-item"> $ {{item.content_object.price}}</li>
+                                                        {% else %}
+                                                        <li class="info-category-price-item"> Free</li>
+                                                        {% endif %}
                                                 <li class="dot"> • </li>
                                                 {% if item.committed %}
                                                 <li class="info-category-price-item"><a><span style="color:#199be9" onclick='openModal({{item.content_object.id}},"{{item.content_object.title}}")'>Write Review</span></a></li>
@@ -151,7 +155,7 @@
                                     <div class="desc-preview">
                                         <h4 class="title-preview"><a href="{% url 'purchased_product' product.category.slug product.slug %}">{{product.title}} </a></h4> 
                                         <div class="excerpt-desc">
-                                            <p calss="show-less">{{product.description}}</p>
+                                            <p calss="show-less">{{product.description|safe}}</p>
                                             <div class="information-item">
                                                 <ul class="details">
                                                     {% if product.user.image %}
@@ -250,6 +254,41 @@
                         </div>
                     </div>
                 </section>
+                <!-- nav number -->
+<div id="page" class="wrapper content-page" style="">
+    <article class="site-article content-attention " style="justify-content: center;">
+        <div id="content" class="section-results ">
+            <section class="section-content-wrapper section-listing-filters has-overlay">
+
+                
+                <div class="listing-filters-grid" id="main-section">
+                    <nav class="navigation-section">
+                        <ul class="list-navigation">
+                            {% if products.has_previous %}
+                            
+                            <li class="nav-item"><a href="{{ request.path }}?page=1" aria-label="First" class="link-on back-item"><i class="fal fa-angle-left"></i><i class="fal fa-angle-left"></i></a></li>
+                            <li class="nav-item"><a href="{{ request.path }}?page={{ products.previous_page_number }}" aria-label="Previous" class="link-on back-item"><i class="fal fa-angle-left"></i></a></li>
+                            {% endif %}
+                            
+                            {% for page in products.paginator.page_range %}
+                                {% if products.number == page %}
+                                <li class="nav-item"><a href="{{ request.path }}?page={{ page }}" class="current pagination-item" aria-label="Page {{ page }}">{{ page }}</a></li>
+                                {% else %}
+                                <li class="nav-item"><a href="{{ request.path }}?page={{ page }}" class="pagination-item" aria-label="Page {{ page }}">{{ page }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if products.has_next %}
+                            <li class="nav-item"><a href="{{ request.path }}?page={{ products.next_page_number }}" aria-label="Next" class="link-on next-item"><i class="fal fa-angle-right"></i></a></li>
+                            <li class="nav-item"><a href="{{ request.path }}?page={{ products.paginator.num_pages }}" aria-label="Last" class="link-on next-item"><i class="fal fa-angle-right"></i><i class="fal fa-angle-right"></i></a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </section>
+        </div>
+    </article>
+</div>
             </div>
         </article>
     </div>
@@ -394,6 +433,7 @@
             document.getElementById('modalOverlay').style.display = 'none';
           }          
     </script>
+    
     <script defer="" type="text/javascript" src=" {% static 'statics/js/1d32c2cbb2-app.js' %}"></script>
     <script defer="" type="text/javascript" src=" {% static 'statics/4d94a262ca-wishlistpage.js' %}"></script>
 

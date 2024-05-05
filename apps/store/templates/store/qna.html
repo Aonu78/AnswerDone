@@ -177,7 +177,12 @@ function incrementDislike(pk) {
                 <div class="recommendation-title" data-docids="2198912:1,2108464:1,2118974:1,3586378:1" data-numberofrecoms="4" data-recomsvalid="old recommendation">
                     <h3 id="searhquery">Suggestions based on the Question and Answer that you are currently viewing</h3>
                     {% if query %}<h3 id="searhquery1">Page {{ latest_products.number }} out of {{ latest_products.paginator.count }} results for {{query}}</h3>   {% endif %}       
-                </div>{% endif %}
+                </div>
+                {% else %}
+                <div class="recommendation-title" data-docids="2198912:1,2108464:1,2118974:1,3586378:1" data-numberofrecoms="4" data-recomsvalid="old recommendation">
+                    <h3>No Results Found</h3>
+                </div>
+                {% endif %}
                 <div class="listing-grid">
                     
                     {% for product in latest_products %}
@@ -196,13 +201,13 @@ function incrementDislike(pk) {
                                         <span class="count-downloads"><h2>{{product.category}}</h2></span>
                                     </div>
                                     <span class="prices"></span>
-                                    <div class="downloads">
+                                    {% comment %} <div class="downloads">
                                         <span class="count-downloads"><h2 id="like-count-{{product.id}}">{{product.like}}</h2>x &nbsp;Like</span>
                                     </div>
                                     <span class="prices"></span>
                                     <div class="downloads">
                                         <span class="count-downloads"><h2 id="dislike-count-{{product.id}}">{{product.dislike}}</h2>x &nbsp;Dislike</span>
-                                    </div>
+                                    </div> {% endcomment %}
                                 </div>
                                 <span class="content-title show-less-small" style="color:#5b6080;font-size: small;"> {{ request.scheme }}://{{ request.get_host }}{% url 'question_detail' product.product.category.slug product.slug %} </span>
                                 <span class="content-title"> {{product.title|safe}} </span>
@@ -212,17 +217,17 @@ function incrementDislike(pk) {
                                     <i class="fa fa-thumbs-down"></i>
                                 </div>
                             </span> {% endcomment %}
-                            <span onclick="incrementDislike({{product.pk}})" class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" style="color: red;margin-right: 45px;">
+                            {% comment %} <span onclick="incrementDislike({{product.pk}})" class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" style="color: red;margin-right: 45px;">
                             <i class="add-to-cart-icon fa fa-thumbs-down fa-flip-horizontal"></i>
                             </span>
                             <span onclick="incrementLike({{product.id}})" class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}">
                                 <i class="add-to-cart-icon fa fa-thumbs-up fa-flip-horizontal"></i>
-                                </span>
+                                </span> {% endcomment %}
                             {% comment %} <span class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" onclick="addurl('{{product.id}}')">
                                 <i class="add-to-cart-icon fa fa-thumbs-up fa-flip-horizontal"></i>
                                 </span> {% endcomment %}
                         </a>
-                        <div class="list-cta mobile">
+                        {% comment %} <div class="list-cta mobile">
                             
                             <a onclick="incrementDislike({{product.pk}})" title="{{product.question}}" class="goto-wrapper wrapper recommended-item" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="{{product.question}}" data-is-link="true" style="color: red;">
                             <i class="fa fa-thumbs-down fa-flip-horizontal" style="color: red;"></i>
@@ -230,7 +235,7 @@ function incrementDislike(pk) {
                             <a onclick="incrementLike({{product.id}})" title="{{product.question}}" class="goto-wrapper wrapper recommended-item" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="{{product.question}}" data-is-link="true">
                                 <i class="fa fa-thumbs-up fa-flip-horizontal" style="color:#58c18e;"></i>
                                 </a>
-                        </div>
+                        </div> {% endcomment %}
                     </div>
                     {% endfor %}
                 </div>

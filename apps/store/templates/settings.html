@@ -3,7 +3,9 @@
 
 {% block content %}
 <link rel="preload " href="{% static 'statics/js/c8444127b6-settingspage.js'%}" as="script">
-        
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" 
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
+crossorigin="anonymous"></script>
         <link rel="stylesheet" href="{% static 'statics/css/3b7bc560f0-settingspage_css.css' %}">
         <div id="app" data-country="214" class="">
             <div id="page" class="wrapper content-page">
@@ -11,7 +13,7 @@
                     <div id="main-section" class="section-wrapper content-attention">
                         <section class="section-entry-header">
                             <h1 class="title-section">Profile Settings</h1>
-                            {% comment %} <a href="#" target="_blank" class="cta-view-profile"><i class="far fa-eye"></i>View profile</a> {% endcomment %}
+                            <a href="{% url "user_profile" profile.user %}" target="_blank" class="cta-view-profile"><i class="far fa-eye"></i>View profile</a>
                         </section>
                         <section class="section-entry-content">
                             <aside class="sidebar-content">
@@ -53,22 +55,22 @@
                                     </div>
                                 </div>
                                 <!-- Include this script at the bottom of your HTML body -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var submitButton = document.getElementById("about_btn");
-        submitButton.addEventListener("click", function(event) {
-            event.preventDefault();
-            document.getElementById("form-about-me").submit();
-        });
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        var submitButton = document.getElementById("save-about-me");
-        submitButton.addEventListener("click", function(event) {
-            event.preventDefault();
-            document.getElementById("form-about-me").submit();
-        });
-    });
-</script>
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function() {
+                                            var submitButton = document.getElementById("about_btn");
+                                            submitButton.addEventListener("click", function(event) {
+                                                event.preventDefault();
+                                                document.getElementById("form-about-me").submit();
+                                            });
+                                        });
+                                        document.addEventListener("DOMContentLoaded", function() {
+                                            var submitButton = document.getElementById("save-about-me");
+                                            submitButton.addEventListener("click", function(event) {
+                                                event.preventDefault();
+                                                document.getElementById("form-about-me").submit();
+                                            });
+                                        });
+                                    </script>
 
                                 <form action="{% url "settings_edit" %}" id="form-about-me" method="post">
                                     {% csrf_token %}
@@ -83,11 +85,11 @@
                                         <div id="form-personal-data" class="form-data form-personal-data">
                                             <div class="input-field">
                                                 <label for="firstname">First Name</label>
-                                                <input type="text" name="firstname" id="firstname" value="{{profile.firstname}}" placeholder="s.g: Jhon" readonly="">
+                                                <input type="text" name="firstname" id="firstname" value="{{profile.firstname}}" placeholder="" readonly="">
                                             </div>
                                             <div class="input-field">
                                                 <label for="lastname">Last Name</label>
-                                                <input type="text" name="lastname" id="lastname" value="{{profile.lastname}}" placeholder="s.g: Deo" readonly="">
+                                                <input type="text" name="lastname" id="lastname" value="{{profile.lastname}}" placeholder="" readonly="">
                                             </div>
                                             <div class="input-field">
                                                 <label for="dob">Date of Birth ({{profile.dob}})</label>
@@ -101,7 +103,7 @@
                                     </div>
                                     <div class="list-collect-data list-collect-salesprofile">
                                         <div class="entry-header-collect">
-                                            <h3 class="title-list-collect">Education</h3>
+                                            <h3 class="title-list-collect">Education & Details</h3>
                                             <div class="cta-action-data" data-form="form-sales-profile">
                                                 <button class="cta-action-active" data-action="modify">Change</button>
                                                 <button id='save-about-me' class="save-about-me" data-type="sellerinfo">Save</button>
@@ -114,16 +116,28 @@
                                             </div>
                                             <div class="input-field">
                                                 <label for="institution">Institution</label>
-                                                <input type="text" name="institution" id="institution" value="{{profile.institution}}" readonly="" placeholder="Institution">
+                                                <input type="text" name="institution" id="institution" value="{{profile.institution}}" readonly="" placeholder="">
                                             </div>
                                             <div class="input-field">
                                                 <label for="education">Education</label>
-                                                <input type="text" name="education" id="education" value="{{profile.education}}" readonly="" placeholder="Education">
+                                                <input type="text" name="education" id="education" value="{{profile.education}}" readonly="" placeholder="">
                                             </div>
                                             <div class="input-field">
                                                 <label for="academicyear">Academic year</label>
                                                 <input type="text" name="academicyear" id="academicyear" value="{{profile.academicyear}}" readonly="">
                                             </div>
+                                            <div class="entry-header-collect" style="margin-top:35px;">
+                                                <h3 class="title-list-collect">Seller profile page</h3>
+                                            </div>
+                                            <div class="input-field">
+                                                <label for="input_title-store">Title of your shop</label>
+                                                <input type="text" name="shoptitle" id="shoptitle" value="{{profile.shoptitle}}" readonly="">
+                                            </div>
+                                            <div class="input-field">
+                                                <label for="input_describe-store">Description of your store</label>
+                                                <textarea name="shopdescription" id="shopdescription" readonly="">{{profile.shopdescription|safe}}</textarea>
+                                            </div>
+                                            
                                         </div>
                                         <div id="input_sellerinfo-error" class="error-message"></div>
                                     </div>
@@ -143,21 +157,21 @@
                                     </div>
                                 </div>
                                 <div class="list-profile-data">
-                                    <div class="cta-action-data" data-form="form-username-data">
-                                        <button class="cta-action-active" data-action="modify">Change</button>
+                                    <div id="work-button" class="cta-action-data cta-action--active" data-form="form-username-data">
+                                        <button id="change-username" class="cta-action-active" data-action="modify">Change</button>
                                         <button id="save-username">Save</button>
                                     </div>
                                     <div id="form-username-data" class="form-data form-username-data">
                                         <div class="input-field">
                                             <label for="input_username">Username</label>
                                             <input type="text" name="input_username" id="input_username" value="{{user.username}}" placeholder="Letters and numbers only" readonly="">
-                                            <div id="input_username-error" class="error-message"></div>
+                                            <div id="input_username-error" class="error-message">Unable to Change</div>
                                             {% csrf_token %}
                                             <input type="hidden" id="user_id" value="{{user.id}}">
                                         </div>
                                     </div>
                                 </div>
-                                <script>
+                                {% comment %} <script>
                                     $(document).on("click", "#save-username", function() {
                                         console.log("clciking...");
                                         var newUsername = $("#input_username").val(); 
@@ -181,7 +195,7 @@
                                             }
                                         });
                                     })
-                                </script>
+                                </script> {% endcomment %}
 
                                 <div class="list-profile-data">
                                     <div id="form-delete-user" class="form-data form-delete-user">
@@ -239,10 +253,14 @@
             });
             document.addEventListener("DOMContentLoaded", function() {
                 var button = document.getElementById("header-cart");
+                try{
                 button.addEventListener("click", function() {
                     // Toggle the 'active' class on the button
                     button.classList.toggle("active");
-                });
+                });}
+                catch{
+
+                }
             });
             </script>
         <script defer="" type="text/javascript" src="{% static 'statics/js/c38bfd2f53-app.js'%}"></script>

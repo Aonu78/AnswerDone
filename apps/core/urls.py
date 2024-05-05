@@ -2,20 +2,28 @@ from django.urls import path
 from . import views
 from django.views.generic.base import TemplateView
 from django.contrib.sitemaps.views import sitemap
-from .sitemaps import DynamicSitemap,StaticSitemap
+from .sitemaps import DynamicSitemap,StaticSitemap,DynamicSitemap_MCQ
 from django.conf import settings  
 from django.conf.urls.static import static 
+from django.conf.urls import handler404
+from django.shortcuts import render, redirect
 
+def custom_404_view(request, exception=None):
+    return render(request, '404.html', status=404)
+
+# handler404 = custom_404_view
 
 sitemaps = {
     'static': StaticSitemap,
     'dynamic': DynamicSitemap,
+    'mcq': DynamicSitemap_MCQ,
 }
 
 urlpatterns = [
 
     path('',views.index,name='index'), # done
     path('admin/core/question_answer/add/',views.question_answer,name='question_answer'), # done
+    path('admin/store/product/add/',views.product_add_admin,name='product_add_admin'), # done
     path('question_answer/add/',views.question_answer_add,name='question_answer_add'), # done
     # path('contact/',views.conatactpage,name='contactpage'),#skip
     path('upload/image/', views.upload_image, name='upload_image'),

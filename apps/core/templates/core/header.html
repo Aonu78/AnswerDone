@@ -12,10 +12,14 @@
             const previewList = document.querySelector('.user-preview.preview-list');
         
             navOption.addEventListener('click', function() {
+                try{
                 if (previewList.classList.contains('active')) {
                     previewList.classList.remove('active');
                 } else {
                     previewList.classList.add('active');
+                }}
+                catch{
+
                 }
             });
             var fancyboxContainer = document.getElementById('fancybox-container-3');
@@ -63,6 +67,18 @@
         opacity: 1;
         visibility: visible;
         }
+        .avatar-btn-img {
+            width: 60px;
+            height: 60px;
+            padding: 4px;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            border: 2px solid #d1ebfb;
+            object-fit: cover;
+            object-position: top center;
+        }
+
     </style>
     <div class="fancybox-container fancybox-is-open fancybox-can-swipe" role="dialog" tabindex="-1" id="fancybox-container-1" style="transition-duration: 366ms;">
         <div class="fancybox-bg"></div>
@@ -194,14 +210,15 @@
                             <div class="column-flex user-preview-wrapper">
                                 <ul class="inner-col2 left-wrapper">
                                     <li class="pvlist-item"><a href="{% url "dashboard" %}" class="mp-new-header"><i class="fal fa-home-lg-alt"></i><label>Dashboard</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
-                                    <li class="pvlist-item"><a href="{% url "user_uploads" %}" class="mp-new-header"><i class="fal fa-file-alt"></i><label>Uploads</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
+                                    <li class="pvlist-item"><a href="{% url "user_uploads" %}" class="mp-new-header"><i class="fal fa-file-alt"></i><label>My Uploads</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
+                                    <li class="pvlist-item"><a href="{% url "uploads" %}" class="mp-new-header"><i class="fa fa-upload"></i><label>Upload Docs</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
                                     <li class="pvlist-item"><a href="{% url "bundles" %}" class="mp-new-header"><i class="far fa-books"></i><label>Bundles</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
                                     <li class="pvlist-item"><a href="{% url "downloads" %}" class="mp-new-header"><i class="fal fa-cloud-download"></i><label>Downloads</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
                                 </ul>
                                 <ul class="inner-col2 right-wrapper">
                                     <li class="pvlist-item"><a href="{% url "wallet" %}" class="mp-new-header"><i class="far fa-wallet"></i><label>Wallet</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
                                     <li class="pvlist-item"><a href="{% url "reviews" %}" class="mp-new-header"><i class="far fa-star"></i><label>Reviews</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
-
+                                    <li class="pvlist-item"><a href="{% url "messages" %}" class="mp-new-header"><i class="far fa-pencil"></i><label>Messages</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
                                     <li class="pvlist-item"><a href="{% url "profile" %}" class="mp-new-header"><i class="fal fa-cog"></i><label>Profile Settings</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
                                     <li class="pvlist-item"><a href="{% url "logout" %}" class="mp-new-header"><i class="far fa-long-arrow-alt-right"></i><label>Logout</label></a><i class="fas fa-angle-right mobile header-preview-angle"></i></li>
                                 </ul>
@@ -214,6 +231,14 @@
                         </span>
                         </span>
                         {% endif %}    
+                    </nav>
+                    <nav id="message-alert-notification" class="nav-notif header-alert-icons has-preview desktop" style="display:none;">    
+                        <div class="love-menu has-preview header-alert-icons " bis_skin_checked="1">
+                            <a href="{% url "messages" %}" class="notif-indcator">
+                                <i class="far fa-bell"></i>
+                                <span id="message-alert-notification-count" class="wishlist-count-notif count-notif"></span>
+                            </a>
+                        </div>
                     </nav>
                     {% if cart_product != 0 %}                
                     <nav id="header-cart" class="nav-cart has-preview">
@@ -318,14 +343,19 @@
             </div>
         </div>
     </div>
+    <style>
+        .qna-box{
+            
+        }
+    </style>
     <a id="callqna" href="{% url "qna" %}" onclick="callqna()">
-    <nav class="nav-cart has-preview" style="right: 1px;position: absolute;margin-right: 12px;">
-        <span class="cart-now" style="border: none;
+    <nav class="nav-cart has-preview qna-box" style="right: 1px;position: absolute;margin-right: 12px;">
+        <span class="cart-now qna-cart" style="border: none;
         background: #199be9;">
             <img src="{% static 'statics/img/qna.png' %}" style="width: 25px;
             margin-right: 17px;">
         <label>
-            <span class="desktop" style="    color: white;"> Question & Answer</span>
+            <span class="desktop" style="    color: white;">TextBook Solutions</span>
         </label>
     </span>
     </nav>
@@ -334,7 +364,7 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function () {
-            console.log('jQuery is working!');
+            //console.log('jQuery is working!');
         });
         
         $(document).ready(function () {
@@ -348,13 +378,13 @@
                 if (st > lastScrollTop) {
                     // Scroll down
                     if (st > 500) {
-                        console.log(st);
+                        //console.log(st);
                         $('#hidinclas').removeClass('hidden');
                     }
                 } else {
                     // Scroll up
                     if (st < 500) {
-                        console.log(st);
+                        //console.log(st);
                         $('#hidinclas').addClass('hidden');
                     }
                 }
@@ -396,7 +426,11 @@
                                 <ul class="list-menu">
                                     {% for nav_prod in nav_products %}
                                     <a href="{% url 'product_detail' nav_prod.category.slug nav_prod.slug %}" class="book-header-item header-cat-link">
-                                        <img loading="lazy" alt="{{nav_prod.title}}" src="{{nav_prod.image.url}}" class="suggestion-image">
+                                        {% if nav_prod.image %}
+                                            <img loading="lazy" alt="{{nav_prod.title}}" src="{{ nav_prod.image.url }}" class="suggestion-image">
+                                        {% else %}
+                                            <img src="{% static 'statics/img/essentie_focus.png' %}" alt="Placeholder Image">
+                                        {% endif %}
                                         <p>
                                             <span class="one-line-text-header">{{nav_prod.title}}</span>
                                             <label class="book-header">{{ nav_prod.description|truncatechars:25 }}
@@ -436,7 +470,7 @@
                         <img src="{% static 'statics/img/qna.png' %}" style="width: 25px;
                         margin-right: 10px;">
                     <label>
-                        <span class="desktop" style="    color: white;"> Question & Answer</span>
+                        <span class="desktop" style="color: white;">TextBook Solutions</span>
                     </label>
                     
                 </nav></a>

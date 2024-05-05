@@ -256,7 +256,7 @@
                                         {% if product.num_pages %}
                                             • {{product.num_pages}}
                                         pages{% endif %}
-                                        <span class="text-geupdate">• {{product.created_at}}</span>
+                                        <span class="text-geupdate">• uploaded {{product.created_at|timesince}} ago</span>
                                         </span>
                                     </li>
                                     <li class="infodetail-item flex"></li>
@@ -267,7 +267,7 @@
                                     </li> {% endcomment %}
                                     <div class="text-excerpt toggle-text" data-more="+ Meer" data-less="- Minder">
                                         <span class="text-container">
-                                        {{product.description}}
+                                        {{product.description|safe}}
                                         </span>
                                     </div>
                                     <li class="barrier"></li>
@@ -291,7 +291,13 @@
                                         </div>
                                     </li>
                                     <li class="infodetail-item">
-                                        <span class="text-price">${{product.price}}</span>
+                                        {% if product.dummy_file %}
+                                            {% if product.price is not None and product.price != 0.0 %}
+                                                <span class="text-price">${{product.price}}</span>
+                                            {% else %}
+                                                <span class="text-price">Free</span>
+                                            {% endif %}
+                                        {% endif %}
                                     </li>
                                     <li class="infodetail-item">
                                         <span class="text-verkocht">{{product.purchased}}x sold</span>
@@ -312,9 +318,18 @@
                                 <i class="preview-icon fal fa-eye"></i>
                                 <span class="tooltip-preview">Quick View</span>
                             </button>
-                            <button class="price-sidebar add-item-to-shoppingcart " data-id="{{product.id}}" data-type="document" data-upselling-bundle="" data-country-seller="999" data-amp-location="Search Page Result" data-user-status="no" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17">
+                            {% if product.dummy_file %}
+                            {% if product.price is not None and product.price != 0.0 %}
+                            <button class="price-sidebar add-item-to-shoppingcart " data-type="document" data-upselling-bundle="" data-country-seller="999" data-amp-location="Search Page Result" data-user-status="no" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17">
                             <a href="{% url "add-to-cart" product_type='note' product_id=product.id %}">    <i class="add-to-cart-icon far fa-shopping-cart fa-flip-horizontal"></i></a>
                             </button>
+                            {% else %}
+                            <button onclick="addurl_pur('note', {{product.id}},'{{product.file.url}}')" class="price-sidebar add-item-to-shoppingcart " data-type="document" data-upselling-bundle="" data-country-seller="999" data-amp-location="Search Page Result" data-user-status="no" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17">
+                            <a>    <i class="add-to-cart-icon far fa-download fa-flip-horizontal"></i></a>
+                            </button>
+                            {% endif %}
+                            {% endif %}
+                            
                         </div>
                         {% if product.dummy_file %}
                         
@@ -328,10 +343,21 @@
                                 <div class="popup-quickview inner-popup">
                                     <div class="popup-content">
                                         <div class="view-product">
+                                            {% if product.dummy_file %}
                                             <p>Preview {{product.show_pages}} out of {{product.num_pages}} pages</p>
+
+                                            {% if product.price is not None and product.price != 0.0 %}
                                             <a href="{% url "add-to-cart" product_type='note' product_id=product.id %}" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="250020" data-amp-location=" page (header button)" data-user-status="no" data-country-seller="999" data-price="$8.49" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17" rel="nofollow">
-                                            <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                                                <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
                                             </a>
+                                            {% else %}
+                                            
+                                            <a onclick="addurl_pur('note', {{product.id}},'{{product.file.url}}')" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="250020" data-amp-location=" page (header button)" data-user-status="no" data-country-seller="999" data-price="$8.49" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17" rel="nofollow">
+                                                <i class="far fa-download fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to Save
+                                            </a>
+                                            {% endif %}
+                                            {% endif %}
+                                            
                                             <div class="image-view" id="preview-{{product.id}}">
                                             </div>
                                         </div>
@@ -362,16 +388,31 @@
                                             <span class="time-since-unit tsu-{{product.id}}"></span>
                                             ago {{product.updated_at}}
                                             </span>
-                                            <p class="text-entry-product">{{product.description}}</p>
+                                            <p class="text-entry-product">{{product.description|safe}}</p>
                                             <div class="cta-view-product">
                                                 <div class="currencyof-product">
+                                                    {% if product.dummy_file %}
+                                                    {% if product.price is not None and product.price != 0.0 %}
                                                     <span itemprop="price">${{product.price}}</span>
+                                                    {% else %}
+                                                    <span itemprop="price">Free</span>
+                                                    {% endif %}
+                                                    {% endif %}
                                                     <link itemprop="availability" href="http://schema.org/InStock">
                                                 </div>
-                                                <a href="{% url "add-to-cart" product_type='note' product_id=product.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document " data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="no" data-upselling-bundle="250020" data-country-seller="999" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17" rel="nofollow">
+                                                {% if product.dummy_file %}
+                                            {% if product.price is not None and product.price != 0.0 %}
+                                            <a href="{% url "add-to-cart" product_type='note' product_id=product.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document " data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="no" data-upselling-bundle="250020" data-country-seller="999" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17" rel="nofollow">
                                                 <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
                                                 Add to cart
                                                 </a>
+                                            {% else %}
+                                            <a onclick="addurl_pur('note', {{product.id}},'{{product.file.url}}')" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document " data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="no" data-upselling-bundle="250020" data-country-seller="999" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="1" data-views="9" data-rating="0.00" data-content-contained-amount="17" rel="nofollow">
+                                                <i class="far fa-download fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to Save
+                                            </a>
+                                            {% endif %}
+                                            {% endif %}
+                                            
                                             </div>
                                             <div class="show-more-quickview">
                                                 <a href="{% url 'product_detail' product.category.slug product.slug %}" class=" " rel="nofollow">
@@ -399,24 +440,6 @@
                 
                 <div class="listing-filters-grid" id="main-section">
                     <nav class="navigation-section">
-
-                        {% comment %} <ul class="list-navigation">
-                            <li class="nav-item">
-                                <a href="{% if products.has_previous %}{{ request.path }}?page={{ products.previous_page_number }}{% else %}{{ request.path }}{% endif %}" class="link-on back-item" data-page="1" aria-label="Previous page"><i class="fal fa-angle-left"></i></a>
-                            </li>
-                            {% for page_num in products.paginator.page_range %}
-                            <li class="nav-item">
-                                {% if products.number == page_num %}
-                                <a href="{{ request.path }}?page={{ page_num }}" class="current pagination-item">{{ page_num }}</a>
-                                {% else %}
-                                <a href="{{ request.path }}?page={{ page_num }}" class="pagination-item">{{ page_num }}</a>
-                                {% endif %}
-                            </li>
-                            {% endfor %}
-                            <li class="nav-item">
-                                <a href="{{ request.path }}?page={{ products.paginator.last }}" class="link-on next-item" data-page="{{ products.paginator.last }}" rel="nofollow" aria-label="Next Page"><i class="fal fa-angle-right"></i></a>
-                            </li>
-                        </ul> {% endcomment %}
                         <ul class="list-navigation">
                             {% if products.has_previous %}
                             

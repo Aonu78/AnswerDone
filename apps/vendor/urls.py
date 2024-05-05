@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_view
 from .forms import PasswordChangeForm,SetPasswordForm
 from django.contrib.auth.views import LoginView as BaseLoginView
-from .api import UserUpdateView, get_suggestions, get_search_result_count, get_institution_dropdown_content,settings_edit,create_bundle
+from .api import UserUpdateView, get_suggestions, get_search_result_count, get_institution_dropdown_content,settings_edit,create_bundle, SendMessageView, receive_message, message_seen, message_alert_notification,profile_user_image, TitleURLViewSet
 from . import views
 from django.http import HttpResponseRedirect
 
@@ -28,6 +28,13 @@ urlpatterns = [
     path('ajax-get-search-result-count/', get_search_result_count, name='get_search_result_count'),
     path('ajax-get-institution-dropdown-content/', get_institution_dropdown_content, name='get_institution_dropdown_content'),
     path('ajax-mvc/create-bundle-action/', create_bundle, name='create-bundle-action'),
+    path('api/send-message/', SendMessageView.as_view(), name='send_message'),
+    path('api/message-reply/', receive_message, name='message_reply'),
+    path('api/message-seen/', message_seen, name='message_seen'),
+    path('api/profile-user-image/', profile_user_image, name='profile_user_image'),
+    path('api/message-seen-count/', message_alert_notification, name='message_alert_notification'),
+    path('api/latest_articles/', views.LatestArticlesAPIView.as_view(), name='latest-articles-api'),
+
     # path('settings/edit/', settings_edit, name='settings_edit'),
 
     path('activate/<slug:uidb64>/<slug:token>',views.ActivateAccount.as_view(),name='activate'), #done

@@ -193,4 +193,61 @@
             Actions(actionsEls);
         }
     });
+    window.addEventListener('load', function () {
+        var toolbarHTML = `
+        <div id="toolbar">
+            <form id="changelist-search">
+                <div>
+                    <label for="searchbar"><img src="/static/admin/img/search.svg" alt="Search"></label>
+                    <input type="text" size="40" name="q" value="" id="searchbar" autofocus="">
+                </div>
+            </form>
+        </div>
+        `;
+        var content = document.getElementById('content');
+        var currentUrl = window.location.href;
+        var regex = /\/admin\/store\/product\/\d+\/change\//;
+
+        if (currentUrl.includes('/admin/store/product/') && !regex.test(currentUrl)) {
+            var toolbar = document.createElement('div');
+            toolbar.innerHTML = toolbarHTML;
+            content.insertBefore(toolbar, content.firstChild);
+
+            document.getElementById("searchbar").addEventListener("input", filterTable);
+
+        }
+    });
+    function filterTable() {
+        var input, filter, table, tr, th, td, i, txtValue;
+        input = document.getElementById("searchbar");
+        filter = input.value.toUpperCase();
+        tr = document.querySelectorAll('#result_list tbody tr');
+    
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td");
+            th = tr[i].getElementsByTagName("th");
+            var matchFound = false;
+            for (var j = 0; j < td.length; j++) {
+                txtValue = td[j].textContent || td[j].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    matchFound = true;
+                    break; 
+                }
+            }
+            if (!matchFound) {
+                for (var k = 0; k < th.length; k++) {
+                    txtValue = th[k].textContent || th[k].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        matchFound = true;
+                        break; 
+                    }
+                }
+            }
+            if (matchFound) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
 }

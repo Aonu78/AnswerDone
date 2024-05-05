@@ -22,7 +22,7 @@ import decimal
 from django.utils.decorators import method_decorator 
 from ..store.models import Product, Institute
 from ..store.models import Category as store_category
-from ..core.models import ChargePrice
+from ..core.models import ChargePrice, Latest_Articles
 import threading 
 from email.message import EmailMessage
 # from django.core.mail import EmailMessage
@@ -34,7 +34,10 @@ import smtplib
 import threading
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+from rest_framework import generics
+from .serializers import LatestArticlesSerializer
 class EmailThread(threading.Thread):
     def __init__(self, email_message):
         self.email_message = email_message
@@ -42,10 +45,13 @@ class EmailThread(threading.Thread):
 
     def run(self):
         with smtplib.SMTP(email_logins.SERVER, 587) as server:
+            # print("Enter Email")
             server.starttls()
+            # print("Enter starlit")
             server.login(email_logins.EMAIL, email_logins.PASS)
+            # print("Enter login")
             server.sendmail('support@answerdone.com', self.email_message['To'], self.email_message.as_string())
-
+            # print("Email sended to User")
 
 
 class ActivateAccount(View):
@@ -55,31 +61,13 @@ class ActivateAccount(View):
             user=User.objects.get(pk=uid)
         except Exception as identifier:
             user=None
-        print(generate_token.check_token(user,token))
         if user is not None and generate_token.check_token(user,token):
             user.is_active = True
             user.save()
-            print("*******************************")
-            print(user)
+            
             msg.info(request,"Account activated successfully")
-            return redirect('register')
-        print("Enfing......................")
+            return redirect('login')
         return render('registration/activate_fail.html')
-# def register(request):
-#     if request.method == 'POST':
-#         # print(request)
-#         username = request.POST
-#         print("Username received:", username)
-#         form = UserCreationForm(request.POST)
-#         # print(form)
-#         if form.is_valid():
-#             user = form.save()
-#             login(request, user)
-#             vendor = Users.objects.create(name=user.username,created_by=user)
-#             return redirect('frontpage')
-#     else:
-#         form = UserCreationForm()
-#     return render(request, 'vendor/register.html',{'form':form})
 
 class LoginView(View):
     def get(self, request):
@@ -88,26 +76,30 @@ class LoginView(View):
 
     def post(self, request):
         if request.method == "POST":
-            print("post is working")
+            # print("post is working")
             username = request.POST.get('username')
             password = request.POST.get('password')
-            next_url = request.GET.get('next')  # Get the 'next' parameter from the POST data
-            print(username,password,next_url)
-            myuser = authenticate(username=username, password=password)
-
+            next_url = request.GET.get('next')  
+            # print(username,password,next_url)
+            if '@' in username:
+                try:
+                    user = User.objects.get(email=username)
+                    validate_email(username)
+                    myuser = authenticate(username=user.username, password=password)
+                except ValidationError:
+                    myuser = authenticate(username=username, password=password)
+            else:
+                myuser = authenticate(username=username, password=password)
             if myuser is not None:
-                print("login is working")
-                login(request, myuser)
-                msg.success(request, "Login Success")
-                
-                # Redirect to the 'next' URL if present, or a default URL if not
-                return redirect(next_url or '/user/dashboard/')
+                if myuser.is_superuser:
+                    msg.error(request, "Superusers are not allowed to login.")
+                else:
+                    login(request, myuser)
+                    msg.success(request, "Login Success")
+                    return redirect(next_url or '/dashboard/')
             else:
                 msg.warning(request, "Invalid username or password")
                 return redirect("login")
-
-# def forgot_password(request):
-#     return render(request, 'registration/forgot-password.html',{})
 
 
 class RegistrationView(View):
@@ -115,19 +107,6 @@ class RegistrationView(View):
         form = RegistrationForm()
         return render(request, 'registration/register.html', {'form': form})
     
-    # def post(self, request):
-    #     form = RegistrationForm(request.POST)
-    #     print(form)
-    #     if form.is_valid():
-    #         user = form.save()
-    #         auth_login(request, user)
-            
-    #         msg.success(request, "Congratulations! Registration Successful!")
-    #     else:
-    #         msg.error(request, "Registration failed. Please correct the errors below.")
-    #     return render(request, 'registration/register.html', {'form': form})
-    
-    # @csrf_exempt
     def post(self, request):
         if request.method == "POST":
             form = RegistrationForm(request.POST)
@@ -138,22 +117,23 @@ class RegistrationView(View):
                 confirm_password = form.cleaned_data["password2"]
                 
                 if password != confirm_password:
-                    print("Passwords do not match")
+                    # print("Passwords do not match")
                     msg.warning(request, "Passwords do not match")
                     return redirect("register")
                 
                 try:    
                     if User.objects.get(email=email):
-                        print("Email already taken")
+                        # print("Email already taken")
                         msg.warning(request, "Email already taken")
                         return redirect("register")
                 except User.DoesNotExist:
+                    # print("Creating New User")
                     user = User.objects.create_user(username=username, email=email, password=password)
                     user.is_active=False
                     user.save()  
                     Userprofile.objects.create(user=user)
                     current_site = get_current_site(request)
-
+                    # print("Creating New Profile")
                     html_content=render_to_string("registration/activate.html",{
                         "user":user,
                         "domain":current_site,
@@ -161,7 +141,7 @@ class RegistrationView(View):
                         "token":generate_token.make_token(user),
                         
                     })
-                    print(html_content)
+                    # print(html_content)
 
                     email_message = MIMEMultipart()
                     email_message["From"] = "support@answerdone.com"
@@ -169,14 +149,14 @@ class RegistrationView(View):
                     email_message["Subject"] = "Activate your store account"
                     html_part = MIMEText(html_content, "html")
                     email_message.attach(html_part)
-
+                    # print("Creating Email Attaching")
                     email_thread = EmailThread(email_message)
                     email_thread.start()
                     # with smtplib.SMTP(email_logins.SERVER, 587) as server:
                     #     server.starttls()
                     #     server.login(email_logins.EMAIL, email_logins.PASS)
                     #     server.sendmail('support@answerdone.com', email, email_message.as_string())
-
+                    # print("Activate your account by clicking the link in your mailbox")
                     msg.success(request, "Activate your account by clicking the link in your mailbox")
                     return redirect("register")
         else:
@@ -192,11 +172,11 @@ class RequestEmailReset(View):
     def post(self,request):
         email = request.POST['email']
         user=User.objects.filter(email=email)
-        print(user)
+        # print(user)
         # try:
         if user.exists:
             current_site = get_current_site(request)
-            print("commin...")
+            # print("commin...")
             message=render_to_string("password_reset_email.html",{
                 "user":user,
                 "domain":current_site,
@@ -212,10 +192,14 @@ class RequestEmailReset(View):
             email_thread = EmailThread(email_message)
             email_thread.start()
         
-            print("#################################")
+            # print("#################################")
             msg.success(request, "Reset your account by clicking the link in your mailbox")
             return redirect("forgot_password")
             # return render(request,"account/password_reset_done.html")
         else:
             msg.warning(request,"Invalid Email")
             return redirect("register")
+
+class LatestArticlesAPIView(generics.ListAPIView):
+    queryset = Latest_Articles.objects.all()
+    serializer_class = LatestArticlesSerializer

@@ -23,10 +23,11 @@ urlpatterns = [
     path('rate-product/<int:product_id>/', views.rate_product, name='rate_product'),
     path('rate-answer/<int:product_id>/', views.rate_answer, name='answer'),
 
+    path('add-to-purchased/<str:product_type>/<int:product_id>/',views.add_to_purchased, name='add-to-purchased'), #done
     path('add-to-cart/<str:product_type>/<int:product_id>/',views.add_to_cart, name='add-to-cart'), #done
     path('remove-from-cart/<str:product_type>/<int:product_id>/',views.remove_from_cart, name='remove_from_cart'), #done
     
-    path('user/dashboard/', views.dashboard, name='dashboard'), #done
+    path('dashboard/', views.dashboard, name='dashboard'), #done
     path('user/courses/', views.courses, name='courses'), #skip
     path('user/uploads/', views.uploads, name='uploads'), #done
     path('uploads/', views.user_uploads, name='user_uploads'), #done
@@ -37,12 +38,14 @@ urlpatterns = [
     path('user/product/delete/<int:pk>', views.delete_uploads, name='delete_uploads'),#done
     path('user/add-institute/', views.add_institute, name='add-institute'), #done
     path('user/add-course/', views.add_course, name='add_course'), #done
+    path('user/add-category/', views.add_category, name='add_category'), #done
     path('downloads/', views.downloads, name='downloads'), #done
     path('user/wallet/', views.wallet, name='wallet'), #done
     path('user/reviews/', views.reviews, name='reviews'),
-    path('user/messages/', views.messages, name='messages'),
+    path('messages/', views.messages, name='messages'),
     path('user/wishlist/', views.wishlist, name='wishlist'),#skip
     path('user/profile/', views.profile, name='profile'), #done
+    path('user/profile/<str:id>/', views.user_profile, name='user_profile'), #done
     path('profile_pic/edit/', views.settings_profile, name='settings_profile'), #done
     path('settings/edit/', views.settings_profile, name='settings_edit'), #done
 

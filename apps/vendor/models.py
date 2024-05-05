@@ -17,22 +17,25 @@ STATUS_CHOICES = (
 
 class Userprofile(models.Model):
     user = models.ForeignKey(User, verbose_name="User", on_delete=models.CASCADE)
-    firstname = models.CharField(max_length=150, verbose_name="first_name", blank=True)
-    lastname = models.CharField(max_length=150, verbose_name="last_name", blank=True)
+    firstname = models.CharField(max_length=150, verbose_name="first_name", blank=True,null=True)
+    lastname = models.CharField(max_length=150, verbose_name="last_name", blank=True,null=True)
     dob = models.DateField(verbose_name="dob", blank=True, null=True, default='2000-01-01')
-    image = models.ImageField(upload_to='uploads/profile/', blank=True)
+    image = models.ImageField(upload_to='uploads/profile/', blank=True,null=True,)
     usertype = models.CharField(max_length=50, choices=STATUS_CHOICES, default='TUTOR')
-    Address = models.CharField(max_length=150, verbose_name="Address",blank=True)
-    city = models.CharField(max_length=150, verbose_name="City",blank=True)
-    zipcode = models.CharField(max_length=150, verbose_name="Zip_Code",blank=True)
-    state = models.CharField(max_length=150, verbose_name="State",blank=True)
-    country = models.CharField(max_length=150, verbose_name="country",blank=True)
-    institution = models.CharField(max_length=150, verbose_name="institution",blank=True)
-    education = models.CharField(max_length=150, verbose_name="education",blank=True)
-    academicyear   = models.CharField(max_length=150, verbose_name="academic_year",blank=True)
-    shoptitle = models.CharField(max_length=150, verbose_name="shop_title", blank=True)
-    shopdescription = models.TextField(blank=True, verbose_name="shop_description")
+    Address = models.CharField(max_length=150, verbose_name="Address",blank=True,null=True,)
+    city = models.CharField(max_length=150, verbose_name="City",blank=True,null=True,)
+    zipcode = models.CharField(max_length=150, verbose_name="Zip_Code",blank=True,null=True,)
+    state = models.CharField(max_length=150, verbose_name="State",blank=True,null=True,)
+    country = models.CharField(max_length=150, verbose_name="country",blank=True,null=True,)
+    institution = models.CharField(max_length=150, verbose_name="institution",blank=True,null=True,)
+    education = models.CharField(max_length=150, verbose_name="education",blank=True,null=True,)
+    academicyear   = models.CharField(max_length=150, verbose_name="academic_year",blank=True,null=True,)
+    shoptitle = models.CharField(max_length=150, verbose_name="shop_title", blank=True,null=True,)
+    shopdescription = models.TextField(blank=True, verbose_name="shop_description",null=True,)
     
+    class Meta:
+        verbose_name_plural = "Profiles Data"
+
     def __str__(self):
         return str(self.user)
 
@@ -63,7 +66,8 @@ class Order(models.Model):
     tr_merchant_id = models.CharField(max_length=255,null=True)
     created_by = models.ForeignKey(User, related_name='orders', on_delete=models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True,null=True)
-
+    class Meta:
+        verbose_name_plural = "All Orders"
     def __str__(self):
         return str(self.created_by)
 
@@ -74,7 +78,9 @@ class OrderItem(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
     price = models.FloatField()
     quantity = models.IntegerField(default=1)
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name_plural = "All Order Units"
     def __str__(self):
         return str(self.content_object)
     
@@ -85,9 +91,35 @@ class Rating(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
     created_at = models.DateTimeField(auto_now_add=True,null=True)
+    class Meta:
+        verbose_name_plural = "Doc Ratings"
 
 class Rating_QA(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     description = models.TextField(null=True)
     question = models.ForeignKey(Question_Answer, on_delete=models.CASCADE)
     rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    class Meta:
+        verbose_name_plural = "Q-A Rating"
+
+class Subject(models.Model):
+    title = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name_plural = "Message Subject"
+
+    def __str__(self):
+        return self.title
+    
+
+class Message(models.Model):
+    sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, related_name='messages', on_delete=models.CASCADE)
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+    class Meta:
+        verbose_name_plural = "All Messages"
+    def __str__(self):
+        return f'{self.sender.username} to {self.receiver.username}: {self.message}'

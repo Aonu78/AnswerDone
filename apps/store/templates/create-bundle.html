@@ -21,48 +21,19 @@
     });
     
 </script>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" 
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
+        crossorigin="anonymous"></script>
 <link rel="stylesheet" href=" {% static "statics/css/d0e1e987c8-createbundle_css.css" %} ">      
 <link rel="preload " href="{% static "statics/js/5c6ba62ce4-createbundle.js" %}" as="script">
 <div id="page" class="wrapper content-page">
     <article id="content" class="content-wrapper page-create-bundle">
         <div id="main-section" class="section-wrapper content-attention">
             <section class="section-entry-header">
-                <h1>Create a package deal</h1>
+                <h1>Create a Set Deal</h1>
                 <p class="top-description">A package deal enables you to cluster several documents and sell them for a single price. This is useful, for example, when at the end of the semester you want to sell your lecture notes as one bundle.</p>
             </section>
             <section class="section-entry-createbundle">
-                <div class="block-entry-section block-your-upload">
-                    <h2 class="title-section-block">Select your uploads</h2>
-                    <div class="upload-form filter-document-practicequest">
-                        <div class="input-field search-field">
-                            <label class="title-field" for="search-document-practicequest">Search for documents</label>
-                            <input type="search" id="search-document-practicequest" class="search-uploads" placeholder="Search...">
-                        </div>
-                    </div>
-                    <div class="listing-upload-wrapper">
-                        <div class="user-uploads-list listing-your-upload">
-                            {% for product in products %}
-                            <div class="listing-item upload-item-1_{{product.id}} upload-block-group-0">
-                                <figure class="thumbnail-item">
-                                    {% if product.image %}
-                                    <img src="{{product.image.url}}" alt="{{product.title}}">
-                                    {% else %}
-                                    <img src="{% static 'statics/img/essentie_focus.png' %}" alt="{{product.title}}">
-                                    {% endif %}  
-                                </figure>
-                                <div class="content-item">
-                                    <span class="type-document">{{product.category}}</span>
-                                    <h3 class="title-listing">{{product.title}}</h3>
-                                    <button class="cta-you-upload add-to-bundle" data-key="1_{{product.id}}" data-title="{{product.title}}" data-type="{{product.category}}" data-price="{{product.price}}">
-                                    <i class="fa" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
                 <div class="block-entry-section block-bundle-information">
                     <h2 class="title-section-block">Package deal information</h2>
                     <input type="hidden" name='charge_earn' id='charge_earn' value='{{charge_earn}}'>
@@ -121,6 +92,38 @@
                         </div>
                     </div>
                 </div>
+                <div class="block-entry-section block-your-upload">
+                    <h2 class="title-section-block">Select your uploads</h2>
+                    <div class="upload-form filter-document-practicequest">
+                        <div class="input-field search-field">
+                            <label class="title-field" for="search-document-practicequest">Search for documents</label>
+                            <input type="search" id="search-document-practicequest" class="search-uploads" placeholder="Search...">
+                        </div>
+                    </div>
+                    <div class="listing-upload-wrapper">
+                        <div class="user-uploads-list listing-your-upload">
+                            {% for product in products %}
+                            <div class="listing-item upload-item-1_{{product.id}} upload-block-group-0">
+                                <figure class="thumbnail-item">
+                                    {% if product.image %}
+                                    <img src="{{product.image.url}}" alt="{{product.title}}">
+                                    {% else %}
+                                    <img src="{% static 'statics/img/essentie_focus.png' %}" alt="{{product.title}}">
+                                    {% endif %}  
+                                </figure>
+                                <div class="content-item">
+                                    <span class="type-document">{{product.category}}</span>
+                                    <h3 class="title-listing">{{product.title}}</h3>
+                                    <button class="cta-you-upload add-to-bundle" data-key="1_{{product.id}}" data-title="{{product.title}}" data-type="{{product.category}}" data-price="{{product.price}}">
+                                    <i class="fa" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
             </section>
         </div>
     </article>
@@ -172,6 +175,6 @@
         updateEarnings();
     });
 </script>
-<script defer="" type="text/javascript" src="{% static 'statics/js/1d32c2cbb2-app.js' %}"></script>        
 <script defer="" type="text/javascript" src="{% static "statics/js/5c6ba62ce4-createbundle.js" %}"></script>
+<script defer="" type="text/javascript" src="{% static 'statics/js/1d32c2cbb2-app.js' %}"></script>        
 {% endblock content %}

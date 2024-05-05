@@ -115,12 +115,16 @@ font-size: 1em;
                                 <div class="listgrid-item row-wishlist row-wishlist-3236146-1">
                                     <div class="grid-list">
                                         <div class="icon-preview">
-                                            <img loading="lazy" src="{{product.image.url}}" class="lozad image-boek item-image">
+                                            {% if product.image %}
+                                            <img src="{{product.image.url}}" class="lozad image-boek item-image" alt="{{product.title}}">
+                                            {% else %}
+                                            <img src="{% static 'statics/img/essentie_focus.png' %}" class="lozad image-boek item-image" alt="{{product.title}}">
+                                            {% endif %}
                                         </div>
                                         <div class="desc-preview">
                                             <h4 class="title-preview"><a href="{% url 'product_detail' product.category.slug product.slug %}">{{product.title}}  </a></h4>
                                             <div class="excerpt-desc">
-                                                <p>{{product.description}}</p>
+                                                <p>{{product.description|safe}}</p>
                                                 <div class="information-item">
                                                     <ul class="details">
                                                         <li class="bold-dot"> • </li>
@@ -132,7 +136,7 @@ font-size: 1em;
                                                             pages
                                                             •&nbsp;
                                                         </li>
-                                                        <div class="ratings">
+                                                        {% comment %} <div class="ratings">
                                                             <ul class="star-rates">
                                                                 <li><i class="star-review star-grey fas fa-star"></i></li>
                                                                 <li><i class="star-review star-grey fas fa-star"></i></li>
@@ -140,11 +144,15 @@ font-size: 1em;
                                                                 <li><i class="star-review star-grey fas fa-star"></i></li>
                                                                 <li><i class="star-review star-grey fas fa-star"></i></li>
                                                             </ul>
-                                                        </div>
+                                                        </div> {% endcomment %}
                                                         <li class="dot"> • </li>
                                                         <li class="info-category-amount-reviews"> ({{product.purchased}}) </li>
                                                         <li class="dot"> • </li>
+                                                        {% if product.price is not None and product.price != 0.0 %}
                                                         <li class="info-category-price-item"> $ {{product.price}}</li>
+                                                        {% else %}
+                                                        <li class="info-category-price-item"> Free</li>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
                                             </div>
@@ -177,6 +185,58 @@ font-size: 1em;
                     </div>
                 </article>
             </div>
+        </div>
+        <div id="page" class="wrapper content-page" style="">
+            <article class="site-article content-attention " style="justify-content: center;">
+                <div id="content" class="section-results ">
+                    <section class="section-content-wrapper section-listing-filters has-overlay">
+        
+                        
+                        <div class="listing-filters-grid" id="main-section">
+                            <nav class="navigation-section">
+        
+                                {% comment %} <ul class="list-navigation">
+                                    <li class="nav-item">
+                                        <a href="{% if products.has_previous %}{{ request.path }}?page={{ products.previous_page_number }}{% else %}{{ request.path }}{% endif %}" class="link-on back-item" data-page="1" aria-label="Previous page"><i class="fal fa-angle-left"></i></a>
+                                    </li>
+                                    {% for page_num in products.paginator.page_range %}
+                                    <li class="nav-item">
+                                        {% if products.number == page_num %}
+                                        <a href="{{ request.path }}?page={{ page_num }}" class="current pagination-item">{{ page_num }}</a>
+                                        {% else %}
+                                        <a href="{{ request.path }}?page={{ page_num }}" class="pagination-item">{{ page_num }}</a>
+                                        {% endif %}
+                                    </li>
+                                    {% endfor %}
+                                    <li class="nav-item">
+                                        <a href="{{ request.path }}?page={{ products.paginator.last }}" class="link-on next-item" data-page="{{ products.paginator.last }}" rel="nofollow" aria-label="Next Page"><i class="fal fa-angle-right"></i></a>
+                                    </li>
+                                </ul> {% endcomment %}
+                                <ul class="list-navigation">
+                                    {% if products.has_previous %}
+                                    
+                                    <li class="nav-item"><a href="{{ request.path }}?page=1" aria-label="First" class="link-on back-item"><i class="fal fa-angle-left"></i><i class="fal fa-angle-left"></i></a></li>
+                                    <li class="nav-item"><a href="{{ request.path }}?page={{ products.previous_page_number }}" aria-label="Previous" class="link-on back-item"><i class="fal fa-angle-left"></i></a></li>
+                                    {% endif %}
+                                    
+                                    {% for page in products.paginator.page_range %}
+                                        {% if products.number == page %}
+                                        <li class="nav-item"><a href="{{ request.path }}?page={{ page }}" class="current pagination-item" aria-label="Page {{ page }}">{{ page }}</a></li>
+                                        {% else %}
+                                        <li class="nav-item"><a href="{{ request.path }}?page={{ page }}" class="pagination-item" aria-label="Page {{ page }}">{{ page }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    
+                                    {% if products.has_next %}
+                                    <li class="nav-item"><a href="{{ request.path }}?page={{ products.next_page_number }}" aria-label="Next" class="link-on next-item"><i class="fal fa-angle-right"></i></a></li>
+                                    <li class="nav-item"><a href="{{ request.path }}?page={{ products.paginator.num_pages }}" aria-label="Last" class="link-on next-item"><i class="fal fa-angle-right"></i><i class="fal fa-angle-right"></i></a></li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </section>
+                </div>
+            </article>
         </div>
         <script defer="" type="text/javascript" src=" {% static 'statics/js/1d32c2cbb2-app.js' %}"></script>
         <script defer="" type="text/javascript" src=" {% static 'statics/js/4d94a262ca-wishlistpage.js' %}"></script>

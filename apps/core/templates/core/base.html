@@ -52,6 +52,17 @@
       var url = "/add-to-cart/" + category + "/" + variable + "/";
       window.location.href = url;
   }
+
+  function addurl_pur(category, variable, download_url) {
+    var firstUrl = "https://answerdone.com/add-to-purchased/" + category + "/" + variable + "/";
+    var fileUrl = "https://answerdone.com" + download_url;
+    window.open(fileUrl, '_blank');
+
+    setTimeout(function() {
+        window.open(firstUrl);
+    }, 1000); // 1000 milliseconds = 1 second
+}
+
 </script>
 <style>
   .fa-chevron-upward {
@@ -90,28 +101,7 @@
       modal.style.position = "fixed";
     }
     
-    // When the DOM content is fully loaded
-    document.addEventListener("DOMContentLoaded", function() {
-      // Get the button that opens the modal
-      var btn = document.getElementById("myBtn");
-      
-      // Get the <span> element that closes the modal
-      var closeBtn = document.getElementById("closemodelbtn");
-      
-      // Get the modal
-      var modal = document.getElementById("myModal");
-      
-      // When the user clicks the button, open the modal
-      btn.addEventListener("click", function() {
-        modal.style.display = "block";
-      });
-      
-      // When the user clicks on <span> (x), close the modal
-      closeBtn.addEventListener("click", function() {
-        console.log("************")
-        modal.style.display = "none";
-      });
-    });
+    
       </script>
 <style>
   ::-webkit-scrollbar {
@@ -162,6 +152,7 @@
     
             
                             <script defer="" type="text/javascript" src="{% static 'statics/js/3334ef34b3-indexpage.js' %}"></script>
+                            <script defer="" type="text/javascript" src="{% static 'statics/js/custom.js' %}"></script>
                     <script defer="" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
     
   </body>

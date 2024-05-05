@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="preload " href="{% static 'statics/css/5f1aff9ab4-register_login_css.css' %}" as="style">
-        <link rel="preload " href="{% static 'statics/js/4e28eca106-register.js' %}" as="script">
+        {% comment %} <link rel="preload " href="{% static 'statics/js/4e28eca106-register.js' %}" as="script"> {% endcomment %}
 
         <!-- Favicon -->
         <link rel="apple-touch-icon" href="{% static 'statics/img/apple-touch-icon-76x76.png' %}">
@@ -64,18 +64,33 @@
                 </div>
             </div>
         </div>
-        
+        <input type="hidden" id="user_name_check" name="user_name_check" value="{{ request.user }}">
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("loginForm").addEventListener("submit", function(event) {
             event.preventDefault();
+            function getCSRFToken() {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        if (cookie.substring(0, 10) === 'csrftoken=') {
+                            cookieValue = decodeURIComponent(cookie.substring(10));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
             var formData = new FormData(this);
             console.log(window.location.pathname)
             fetch(this.action, {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRFToken': '{{ csrf_token }}' 
+                    'X-CSRFToken': "{{csrf_token}}"
                 }
             })
             .then(response => {
@@ -83,38 +98,27 @@
                 if (response.redirected) {
                     document.querySelector('.modal.modal-register.active').classList.remove('active');
                     if (!window.parent.location.href.includes('/accounts/login/')) {
-                        window.parent.location.reload();
+                        //window.parent.location.reload();
+                        window.parent.location.href = "/dashboard/";
                     }
-                    console.log("***************")
-                    //}
-                    //else{
-                    console.log("$$$$$$$$$$$$$$$4")
-                    //}
-                    var currentUrl = window.location.href;
-                    var searchParams = new URLSearchParams(currentUrl);
-                    var nextUrl = searchParams.get('next');
-                    console.log(nextUrl)
-                    console.log(nextUrl)
-                    console.log(nextUrl)
-                    console.log(nextUrl)
-                    console.log(nextUrl)
-                    console.log(nextUrl)
-                    console.log(nextUrl)
-                    console.log(nextUrl)
-                    console.log(nextUrl)
-                    console.log(nextUrl)
-                    console.log(nextUrl)
-                    // Get the current URL
-                    var fullUrl = window.location.href;
-                    console.log("Full URL:", fullUrl);
-                    var url = new URL(fullUrl);
+                    var userName = document.getElementById("user_name_check").value;
+                    if (userName) {
+                        window.location.href = "/dashboard/";
+                    }
+                    else{
+                        var currentUrl = window.location.href;
+                        var searchParams = new URLSearchParams(currentUrl);
+                        var nextUrl = searchParams.get('next');
+                        
+                        var fullUrl = window.location.href;
+                        console.log("Full URL:", fullUrl);
+                        var url = new URL(fullUrl);
 
-                    // Get the value of the 'next' parameter
-                    var nextUrl = url.searchParams.get('next');
+                        var nextUrl = url.searchParams.get('next');
 
-                    console.log("Next URL:", nextUrl);
-                    window.location.href = nextUrl || '/accounts/login/';                    
-                    
+                        console.log("Next URL:", nextUrl);
+                        window.location.href = nextUrl || '/accounts/login/';                    
+                    }
                 } else {
                     document.getElementById('connect-error').style.display = 'block'
                 }

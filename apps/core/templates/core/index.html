@@ -1,10 +1,30 @@
 {% extends "core/base.html" %}
 {% load static %}
 {% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="{% static 'statics/css/style.css' %}">
+<style>
+.select2-selection {
+    position: relative;
+    width: 300px !important;
+    height: -webkit-fill-available !important;
+}
+.select2-dropdown{
+    width: 300px !important;
+}
+</style>
 {% comment %} ################## {% endcomment %}
 {% comment %} include Heder here {% endcomment %}
 {% comment %} ################## {% endcomment %}  
+
+{% if messages %}
+    <ul class="alert-success">
+        {% for message in messages %}
+            <li class="success">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 <div class="wrapper" id="indexpage-wrapper">
     <!-- Banner Section-->
     <div class="new-banner-section banner-image-props homepage-banner-all">
@@ -18,9 +38,11 @@
 
             <section class="searchbar-autocomplete-container" data-select2-id="5">
 
-                <div class="dropdown-filter desktop" id="dropdown-filter" data-loaded="false" data-select2-id="dropdown-filter">
-                    <select id="institutionsDropdown" class="filter-content filter-dropdown select2-hidden-accessible" data-select2-id="institutionsDropdown" tabindex="-1" aria-hidden="true">
-                        <option value="">Search by Category</option>
+                <div class="dropdown-filter desktop" id="dropdown-filter" data-loaded="false" data-select2-id="dropdown-filter" width="300px">
+                    <select id="institutionsDropdown1" id="by_type" name="by_type">
+                        <option value="all">All</option>
+                        <option value="book">TextBook Solutons</option>
+                        <option value="doc">Documents</option>
                     </select>
                         <i class="fas fa-chevron-down onload-chevron"></i>
                         {% comment %} <div class="hidden-block"></div> {% endcomment %}
@@ -33,10 +55,24 @@
                         </button>
                         <i class="far fa-times remove-input big"></i>
                         <input type="text" name="s" data-current-index="" class="searchbar" id="big-searchbar" autocomplete="off" placeholder="Search for courses, books, exams, or assignments" data-location="index">
-                        <input type="hidden" name="instellingfilter" value="" class="institution-filter">
-                        <input type="hidden" name="origin" value="homepage">
+                        <input type="hidden" id="by_type_hidden" name="by_type" value="all">
                     </form>
-
+                    <script>
+                        // Get the select element and hidden input field
+                        const selectElement = document.getElementById('institutionsDropdown1');
+                        const hiddenInputElement = document.getElementById('by_type_hidden');
+                    
+                        // Initialize Select2 on the select element
+                        $(selectElement).select2();
+                    
+                        // Add event listener for 'change' event on select2
+                        $(selectElement).on('select2:select', function (e) {
+                            // Update the value of the hidden input field
+                            hiddenInputElement.value = e.params.data.id;
+                            // Log the selected value to the console
+                            console.log('Selected value:', e.params.data.id);
+                        });
+                    </script>
                     <section class="searchbar-content" style="display: none;">
                         <div class="searchbar-content-container-link">
                             <a class="search-link no-a-link-js"><span id="search-term"></span> <span class="search-result-count"></span></a>
@@ -59,7 +95,7 @@
         <div class="container">
             <div class="section5-content overview-search-container">
                 <div class="summary-book-titel">
-                    <h3 class="heading3">Latest Summaries</h3>
+                    <h3 class="heading3">Latest Text Book Solutions</h3>
                 </div>
                 <div class="all-summary-book">
                     <div class="category-section index-books-sections">
@@ -69,11 +105,53 @@
                                 <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{ product.title }}" rel="nofollow">
                                     <div class="book-inner-container">
                                         <div class="book-img-container">
-                                            {% if product.image %}
+                                        {% if product.image %}
                                             <img loading="lazy" width="155" height="255" src="{{ product.image.url }}">
-                                            {% else %}
+                                        {% else %}
                                             <img src="{% static 'statics/img/essentie_focus.png' %}" alt="Placeholder Image">
-                                            {% endif %}                                        </div>
+                                        {% endif %}
+                                      
+                                        </div>
+                                        <div class="book-info-container">
+                                            <div class="book-info-title"><span>{{product.title}}</span></div>
+                                            <div class="book-info-author" title="{{product.description}}">
+                                                <p>{{product.description|safe}}</p>
+                                            </div>
+                                            {% comment %} <div class="book-info-num-docs"><span>298 Documents</span></div> {% endcomment %}
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- summary book Section End-->
+        <!-- summary book Section -->
+    <div class="section-5 populairbooks">
+        <div class="container">
+            <div class="section5-content overview-search-container">
+                <div class="summary-book-titel">
+                    <h3 class="heading3">Latest Documents</h3>
+                </div>
+                <div class="all-summary-book">
+                    <div class="category-section index-books-sections">
+                        <div class="row user-tabs owl-carousel owl-theme index-textbooks-wrapper" id="index-textbooks-wrapper-books">
+                            {% for product in books %}
+                            <div class="book-container">
+                                <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{ product.title }}" rel="nofollow">
+                                    <div class="book-inner-container">
+                                        <div class="book-img-container">
+                                        {% if product.image %}
+                                            <img loading="lazy" width="155" height="255" src="{{ product.image.url }}">
+                                        {% else %}
+                                            <img src="{% static 'statics/img/essentie_focus.png' %}" alt="Placeholder Image">
+                                        {% endif %}
+                                      
+                                        </div>
                                         <div class="book-info-container">
                                             <div class="book-info-title"><span>{{product.title}}</span></div>
                                             <div class="book-info-author" title="{{product.description}}">
@@ -182,6 +260,7 @@
     </div>
     <!-- find Section End -->
     <style>
+
         .counter{
         color: #199be9;
         font-family: 'Open Sans', sans-serif;
@@ -273,8 +352,12 @@
                     }
                 });
             });
+            //$('#institutionsDropdown1').select2({
+            //    placeholder: ' ',
+            //    allowClear: true 
+            //});
         });
-            
+        
     </script>
     <div class="container">
         <div class="row">

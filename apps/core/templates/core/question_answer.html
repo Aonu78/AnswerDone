@@ -1,7 +1,40 @@
 {% load static %}
 <html lang="en"><head>
-    <title> </title>
+    <title>Admin Upload Questions and Answer | AnswerDone </title>
     <meta charset="utf-8">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'statics/img/apple-touch-icon.png' %}">
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'statics/img/favicon-32x32.png' %}">
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'statics/img/favicon-16x16.png' %}">
+<link rel="manifest" href="{% static 'statics/img/site.webmanifest' %}">
+<link rel="mask-icon" href="{% static 'statics/img/safari-pinned-tab.svg' %}" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
+<link rel="canonical" href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}" />
+<link rel="alternate" href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}" hreflang="x-default"/>
+
+<meta name="description" content="{{description}}">
+<meta property="fb:app_id" content="">
+<meta property="og:site_name" content="AnswerDone">
+<meta property="og:title" content="{{title}}">
+<meta property="og:type" content="website">
+<meta property="og:description" content="{{description}}">
+<meta property="og:image" content="{% static 'statics/img/favicon.png' %}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+<meta name="twitter:widgets:csp" content="on">
+<meta name="twitter:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+<meta name="twitter:description" content="{{description}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{title}}">
+<meta name="twitter:site" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}">
+<meta name="twitter:image" content="{% static 'statics/img/favicon.png' %}">
+<meta name="apple-mobile-web-app-title" content="AnswerDone">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="csrf-token" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
@@ -206,6 +239,10 @@
                                 placeholder: ' ',
                                 allowClear: true 
                             });
+                            $('#question_type').select2({
+                                placeholder: ' ',
+                                allowClear: true 
+                            });
                         });
                     </script>
                     <style>
@@ -250,11 +287,11 @@
             </section>
 
                             <div class="wrapper-upload-page">
-                    <h3>Question Answer</h3>
+                    <h3>Question Answer Related To Books</h3>
                 </div>
             
             <div class="wrapper-center mobile">
-                <a href="/" class="logo-wrapper">
+                <a href="/admin/core/question_answer/" class="logo-wrapper">
                                             <img loading="lazy" src="{% static '/statics/img/logo-2.png' %}" alt="mobile-logo" class="image-pasif">
                                     </a>
 
@@ -305,7 +342,7 @@
                     <form action="{% url 'question_answer_add' %}" method="POST" class="form-basisgegevens" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="input-field search-field" style="width: -webkit-fill-available;">
-                            <label for="course" class="title-field"> Doc Name*
+                            <label for="course" class="title-field">Books Name*
                             </label>
                             <select required class="select2-dropdown-link js-states form-control select2-hidden-accessible" name="product" id="product">
                                 <option value="" disabled selected></option>
@@ -313,15 +350,6 @@
                                 <option value={{ cat.id }}>{{ cat.title }}</option>
                                 {% endfor %}
                             </select>
-                        </div>
-                        <div class="input-field search-field">
-                            <label for="question_type" class="title-field">Question Type</label>
-                            <div class="radio-buttons">
-                                <input type="radio" id="questions_radio" name="question_type" value="Questions">
-                                <label for="questions_radio">Questions</label>
-                                <input type="radio" id="exercises_radio" name="question_type" value="Practice">
-                                <label for="exercises_radio">Practice Exercises</label>
-                            </div>
                         </div>
                         <div class="input-field search-field">
                             <label for="number_of_questions" class="title-field">Chapter No</label>
@@ -333,6 +361,17 @@
                                 
                             </select>
                         </div>
+                        <div class="input-field search-field">
+                            <label for="question_type" class="title-field">Question Type</label>
+                            <select required name="question_type" id="question_type">
+                                <option value="" disabled selected></option>
+                                {% for item in qa_types %}
+                                <option value="{{ item.id }}">{{ item.title }}</option>
+                                {% endfor %}
+                                
+                            </select>
+                        </div>
+                        
                         <div class="input-field search-field">
                             <label for="number_of_questions" class="title-field">Question or Exercises No</label>
                             <select required name="question_no" id="question_no">
@@ -369,9 +408,9 @@
                                     <div class="field-price">
                                         <label for="price" class="title-field">Price*</label>
                                         <div class="input-number">
-                                            <button type="button" class="decrease-number" data-step-size="0.10" data-min-price="0.00" aria-label="Decrease Number"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                                            <input name="price" id="your-price" type="number" min="0" step="0.01" data-dot-or-comma="dot" value="1.0">
-                                            <button type="button" class="increase-number" data-step-size="0.50" data-min-price="0.00" aria-label="Increase Number"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                            {% comment %} <button type="button" class="decrease-number" data-step-size="0.10" data-min-price="0.00" aria-label="Decrease Number"><i class="fa fa-minus" aria-hidden="true"></i></button> {% endcomment %}
+                                            <input name="qa_price" id="your-price" type="number" min="0" step="0.01" data-dot-or-comma="dot" value="{{qnaprice.price}}" readonly>
+                                            {% comment %} <button type="button" class="increase-number" data-step-size="0.50" data-min-price="0.00" aria-label="Increase Number"><i class="fa fa-plus" aria-hidden="true"></i></button> {% endcomment %}
                                         </div>
                                     </div>
                                 </div>

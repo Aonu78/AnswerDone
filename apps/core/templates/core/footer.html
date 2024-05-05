@@ -35,6 +35,17 @@
                 </ul>
             </div>
         </section>
+
+        <section class="column-flex footer-column">
+            <div class="inner-column" bis_skin_checked="1">
+                <a class="article-class amp-js" title="Latest Articles" data-name="Latest Articles" bis_skin_checked="1">
+                    <h3 class="serif-font">Latest Articles</h3>
+                </a>
+                <ul id="latest-articles">
+                </ul>
+            </div>
+        </section>
+        
         <section class="copyright-coloumn column-flex">
             <div class="inner-column inner-copy inner-col3">
                 <img loading="lazy" class="answerdone-logo-small" src="{% static 'statics/img/logo-3.png' %}" alt="small-logo">
@@ -47,3 +58,65 @@
         </section>
     </div>
 </footer>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/api/latest_articles/')
+            .then(response => response.json())
+            .then(data => {
+                const articlesList = document.getElementById('latest-articles');
+                articlesList.innerHTML = ''; // Clear existing list items
+                data.forEach(article => {
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('list-style');
+                    const link = document.createElement('a');
+                    link.href = article.url;
+                    link.textContent = article.title;
+                    listItem.appendChild(link);
+                    articlesList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error fetching latest articles:', error));
+    });
+</script>
+<style>
+    @media screen and (max-width: 980px) {
+        #message-alert-notification {
+            display: none !important;
+        }
+    }
+    
+</style>
+<script>
+    function getMessageAlertCount() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/api/message-seen-count/', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                try{
+                var response = JSON.parse(xhr.responseText);
+                var count = response.count;
+                if (count > 0) {
+                    document.getElementById('message-alert-notification').style.display = 'block';
+                    document.getElementById('message-alert-notification-count').textContent = count;
+                } else {
+                    document.getElementById('message-alert-notification').style.display = 'none';
+                }}
+                catch{
+
+                }
+                //console.log('Unread message count:', count);
+            } else {
+                //console.error('Error:', xhr.status);
+            }
+        };
+        xhr.onerror = function() {
+            console.error('Request failed');
+        };
+        xhr.send();
+    }
+    window.onload = function() {
+        getMessageAlertCount();
+    };
+        
+</script>

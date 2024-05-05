@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-4k*qnnawt-lrvr!cmvd!f#^ais9koe34@s6v(ts8%mbb-jvnwl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 SESSION_COOKIE_AGE = 86400
 CART_SESSION_ID = 'cart'
@@ -58,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'vendor.middleware.AdminStaffRedirectMiddleware',
 ]
 
 CSP_MIDDLEWARE_CLASSES = (
@@ -131,9 +132,16 @@ USE_I18N = True
 
 USE_TZ = True
 import os
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# STATIC_ROOT = "static"
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # MEDIA_URL = 'media/'
 # MEDIA_ROOT = BASE_DIR / 'media'
@@ -151,9 +159,7 @@ EMAIL_HOST_USER = 'support@answerdone.com'
 EMAIL_HOST_PASSWORD = 'V{t5=jyB=Y{p'
 DEFAULT_FROM_EMAIL = 'support@answerdone.com'  # Optional: specify the default sender email
 
-STATICFILES_DIRS=[
-    BASE_DIR / 'static'
-]
+
 STATICFILES_MIME_TYPES = {
     'js': 'application/javascript',
 }

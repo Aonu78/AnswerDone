@@ -225,14 +225,20 @@
                         {% endif %}
                     </div>
                     <div class="content-description">
-                        <p id="content-description" class="infoof-product">{{products.description}}</p>
+                        <p id="content-description" class="infoof-product">{{products.description|safe}}</p>
                         {% comment %} <span class="show-more " data-extra-text="ckup."  id="content-page-show">[Show more]</span> {% endcomment %}
                     </div>
                 </div>
                 <div id="contentviewer" class="preview-product space-entry-content">
-                    <div class="caption-preview-product">
+                    <div class="caption-preview-product" style="">
+                        
                         <p>Preview {{products.show_pages}} out of {{products.num_pages}} &nbsp;pages</p>
+                        {% if request.user ==  products.user%}
+                        <p> <a href="{% url "edit_product" products.id %}">Edit</a> </p>
+                        {% endif %}
+                        
                     </div>
+                    
                     <div class="object-preview-wrapper">
                         <div id="pdf_preview" class="pdf-wrapper">
                             <a href="#" class="btn-fill-blue preview-doc-class quickview-doc" data-id="2707350" data-type="1" data-loaded="false">
@@ -241,10 +247,17 @@
                             <input type="hidden" id="iframe_src_doc" value="" class="active">
                             <div class="iframe-doc iframe-doc-wrap bart-blue-version" data-preview-count="4">
                                 {% if products.dummy_file %}
+                                
                                 <object data="{{ products.dummy_file.url }}" id="document-preview" class="document-preview-iframe"></object> 
                                 {% endif %}
                             </div>
-                            <div class="preview-doc preview-doc-class"><img src="{{products.image.url}}" alt="mobile-preview"></div>
+                            <div class="preview-doc preview-doc-class">
+                                {% if product.image %}
+                                <img src="{{product.image.url}}" alt="mobile-preview-{{product.title}}">
+                                {% else %}
+                                <img src="{% static 'statics/img/essentie_focus.png' %}" alt="mobile-preview-{{product.title}}">
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                     <ul class="share-preview-product">
@@ -257,24 +270,44 @@
                             <div class="popup-quickview inner-popup">
                                 <div class="popup-content">
                                     <div class="view-product">
-                                        <p>Preview {{products.show_pages}} out of {{products.num_pages}} pages</p>
+                                        <p>Preview {{products.show_pages}} out of {{products.num_pages}} pages</p>                                        
+                                        {% if product.dummy_file %}
+                                        {% if product_price > 0.0 %}
                                         <a href="{% url "add-to-cart" product_type='note' product_id=products.id %}" class="btn-fill-blue cta-buy header-buy-btn add-item-to-shoppingcart  cursor-pointer" data-type="document" data-id="{{products.id}}" data-upselling-bundle="" data-amp-location="Document page (header button)" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
-                                        <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
-                                        </a>
+                                            <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                                            </a>
+                                        {% else %}
+
+                                        <a onclick="addurl_pur('note', {{product.id}},'{{product.file.url}}')" class="btn-fill-blue cta-buy header-buy-btn add-item-to-shoppingcart  cursor-pointer" data-type="document" data-id="{{products.id}}" data-upselling-bundle="" data-amp-location="Document page (header button)" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
+                                            <i class="far fa-download fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to Save
+                                            </a>
+                                        {% endif %}
+                                        {% endif %}
+                                        
                                         <div class="image-view" id="preview-{{products.id}}">
                                             {% comment %} ************************************* {% endcomment %}
                                             {% if products.dummy_file %}
-                                            <object data="{{ products.dummy_file.url }}" id="document-preview" class="document-preview-iframe"></object> 
+                                            <object data="{{ products.dummy_file.url }}" id="document-preview" class="document-preview-iframe" style="margin-top: -55px;"></object> 
                                             {% endif %}
                                             {% comment %} ************************************* {% endcomment %}
                                         </div>
                                     </div>
                                     <div class="info-product">
                                         <div class="cta-view-product">
+                                            
+                                            {% if product_price > 0.0 %}
                                             <a href="{% url "add-to-cart" product_type='note' product_id=products.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart add-to-cart-qv-2707350-document cursor-pointer" data-id="{{products.id}}" data-type="document" data-upselling-bundle="" data-amp-location="Document page - mobile quickview" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
-                                            <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
-                                            Add to cart
-                                            </a>
+                                                <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
+                                                Add to cart
+                                                </a>
+                                            {% else %}
+                                            {% if product.file %}
+                                            <a onclick="addurl_pur('note', {{product.id}},'{{product.file.url}}')" class="btn-fill-blue cta-buy add-item-to-shoppingcart add-to-cart-qv-2707350-document cursor-pointer" data-id="{{products.id}}" data-type="document" data-upselling-bundle="" data-amp-location="Document page - mobile quickview" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
+                                                <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
+                                                Add to Save
+                                                </a>
+                                                {% endif %}
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -285,34 +318,32 @@
                 {% if chapters %}
                 <div class="results-filter results-search-filter content-attention" id="content-page-recommendations">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding main-heading-border">
-                        <h3>Intermediate Accounting Chapter(s) :</h3>
+                        <h3>{{title}}</h3>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                         <div class="accordion">
-                            {% for chapter_no, chapter_data in chapters.items %}
-                            <div class="accordion-item">
-                                <a class="faq-link">Chapter: {{ chapter_no }}</a>
-                                <div class="content">
-                                    {% if chapter_data.Practice %}
-                                    <ul class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
-                                        <p style="font-weight: 700;margin-bottom: unset;">Practice Exercises:</p>
-                                        {% for question in chapter_data.Practice %}
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="{{ question.get_absolute_url }}">PE-{{ question.question_no }}</a>&nbsp;&nbsp;&nbsp;</li>
-                                        {% endfor %}
-                                    </ul>
-                                    {% endif %}
-                                    {% if chapter_data.Questions %}
-                                    <ul class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
-                                        <p style="font-weight: 700;margin-bottom: unset;">Questions:</p>
-                                        {% for question in chapter_data.Questions %}
-                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2"><a href="{{ question.get_absolute_url }}">Q-{{ question.question_no }}</a>&nbsp;&nbsp;&nbsp;</li>
-                                        {% endfor %}
-                                    </ul>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            {% endfor %}
                             
+                            {% for chapter_no, chapter_data in chapters.items %}
+                                <div class="accordion-item">
+                                    <a class="faq-link">Chapter: {{ chapter_no }}</a>
+                                    <div class="content">
+                                        {% for qa_type, questions in chapter_data.items %}
+                                            {% if questions %}
+                                                <ul class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
+                                                    <p style="font-weight: 700; margin-bottom: unset;">{{ qa_type }}:</p>
+                                                    {% for question in questions %}
+                                                        <li class="solution-for-problem col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                                                            <a href="{{ question.get_absolute_url }}">{{ qa_type|slice:":1" }}-{{ question.question_no }}</a>
+                                                            &nbsp;&nbsp;&nbsp;
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+
                         </div>
                     </div>
                 </div> {% endif %}
@@ -387,7 +418,7 @@
                             document.addEventListener('DOMContentLoaded', function() {
                                 const stars = document.querySelectorAll('.star');
                                 const ratingInput = document.getElementById('ratingInput');
-                                const ratingForm = document.getElementById('ratingForm');
+                                //const ratingForm = document.getElementById('ratingForm');
                             
                                 stars.forEach(function(star) {
                                     star.addEventListener('click', function() {
@@ -407,16 +438,16 @@
                                     
                                 });
                             
-                                ratingForm.addEventListener('submit', function(event) {
-                                    console.log('Submitting');
-                                    event.preventDefault();
-                                    submitForm();
-                                });
+                                //ratingForm.addEventListener('submit', function(event) {
+                                //    console.log('Submitting');
+                                //    event.preventDefault();
+                                //    submitForm();
+                                //});
                             
-                                function submitForm() {
-                                    console.log('Submitting form');
-                                    ratingForm.submit(); 
-                                }
+                                //function submitForm() {
+                                //    console.log('Submitting form');
+                                //    ratingForm.submit(); 
+                                //}
                             });
                             
                         </script>            
@@ -444,17 +475,30 @@
                         </style>
                     </div>
                     <div class="currencyof-product">
-                        <span itemprop="price" content="{{products.id}}-document">${{products.price}}</span>
+                       {% if product_price > 0.0 %}
+        <span itemprop="price" content="{{ product.id }}-document">${{ product_price }}</span>
+    {% else %}
+        <span itemprop="price" content="{{ product.id }}-document">Free</span>
+    {% endif %}
                         {% comment %} 
                         <link itemprop="availability" href="http://schema.org/InStock">
                         {% endcomment %}
                     </div>
                     <div class="ctaof-product ">
+                        {% if product_price > 0.0 %}
                         <a href="{% url "add-to-cart" product_type='note' product_id=products.id %}" class="btn-fill-yellow cta-buy add-item-to-shoppingcart cursor-pointer" data-id="{{products.id}}" data-upselling-bundle="" data-type="document" data-amp-location="Document page" data-user-status="yes" data-country-seller="214" data-price="1100" data-currency="USD" data-language="en" data-downloads="4" data-views="53" data-rating="0.00" data-content-contained-amount="182">
-                        <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
-                        </a>
-                        {% comment %} <a href="#" class="add-wishlist ajax-add-wishlist button-add-wishlist-{{products.id}}" data-id="{{products.id}}" data-type="1"><i class="far fa-heart buyblock-icon"></i>&nbsp; Add to wishlist</a>
-                        <a href="#" class="add-wishlist ajax-delete-wishlist button-delete-wishlist-{{products.id}} display-none" data-id="{{products.id}}" data-type="1"><i class="fas fa-heart buyblock-icon"></i>&nbsp; Remove from wishlist</a> {% endcomment %}
+                            <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                            </a>
+                        {% else %}
+                       
+                        <a onclick="addurl_pur('note', {{product.id}},'{{product.file.url}}')" class="btn-fill-yellow cta-buy add-item-to-shoppingcart cursor-pointer" data-id="{{products.id}}" data-upselling-bundle="" data-type="document" data-amp-location="Document page" data-user-status="yes" data-country-seller="214" data-price="1100" data-currency="USD" data-language="en" data-downloads="4" data-views="53" data-rating="0.00" data-content-contained-amount="182">
+                            <i class="far fa-download fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to Save
+                            </a>
+                            
+                        {% endif %}
+                        
+                        {% comment %} <a href="#" class="add-wishlist ajax-add-wishlist button-add-wishlist-{{products.id}}" data-id="{{products.id}}" data-type="1"><i class="far fa-download buyblock-icon"></i>&nbsp; Add to wishlist</a>
+                        <a href="#" class="add-wishlist ajax-delete-wishlist button-delete-wishlist-{{products.id}} display-none" data-id="{{products.id}}" data-type="1"><i class="fas fa-download buyblock-icon"></i>&nbsp; Remove from wishlist</a> {% endcomment %}
                     </div>
                     <ul class="guarantee-section">
                         <li>100% satisfaction guarantee</li>
@@ -467,7 +511,8 @@
                         <li class=""><i class="far fa-cloud-download icon-stats"></i>&nbsp;{{products.purchased}}</li>
                     </ul>
                 </div>
-                <div class="desktop mb-20">
+                
+                <div class="desktop mb-20" style="display:block">
                     <div id="sellerinfo" class="seller-section widget-entry-item">
                         <div class="title-section-wrapper">
                             <h3 class="title-section-sidebar"></h3>
@@ -482,23 +527,20 @@
                                 {% endif %}
                             </div>
                             <div class="seller-inform">
-                                <span class="name-seller"><a title="Seller page" href="#" class="">{{products.user.username}}</a></span>
+                                <span class="name-seller"><a title="Seller page" href="{% url "user_profile" profile.user %}" class="">{{products.user.username}}</a></span>
                                 <label>
-                                    {% if time_since_registration %}
-                                    {% if time_since_registration < 365 %}
-                                    <p>Member for {{ time_since_registration }} day{{ time_since_registration|pluralize }}</p>
-                                    {% else %}
-                                    <p>Member for {{ time_since_registration }} year{{ time_since_registration|pluralize }}</p>
-                                    {% endif %}
-                                    {% else %}
-                                    <p>Registration date unknown</p>
-                                    {% endif %}
+                                    <p>{{ time_since_registration }}</p>
                                 </label>
                                 <label>
                                 {{count_products}} Total documents 
                                 </label>
                             </div>
                         </div>
+                        <a href="{% url "messages" %}?sendto={{profile.user}}" title="Send message to Seller" class="cta-widget-arrow">
+                            <label class="cursor-pointer" style="color: #199be9;">
+                                <i class="far fa-envelope"> </i> &nbsp;Send Message
+                            </label> <i class="far fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
                 <div id="contentinfo" class="document-section widget-entry-item">
@@ -562,13 +604,17 @@
                                         </form>
                                         <span class="count-rates">({{product.average_rating}})</span>
                                     </div>
+                                    {% if product.price > 0.0 %}
                                     <span class="prices">${{product.price}}</span>
+                                    {% else %}
+                                    <span class="prices">Free</span>
+                                    {% endif %}
                                     <div class="downloads">
                                         <span class="count-downloads">{{product.purchased}}x &nbsp;sold</span>
                                     </div>
                                 </div>
                                 <div class="excerpt-desc">
-                                    <p>{{product.description}}
+                                    <p>{{product.description|safe}}
                                     </p>
                                     <div class="information-booken">
                                         <div class="cta-detail desktop">
@@ -595,18 +641,36 @@
                                     <span class="title-preview hover-act">Quick View</span>
                                 </div>
                             </span>
+                            {% if product.price > 0.0 %}
                             <span class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" onclick="addurl('note', {{product.id}})">
                             <i class="add-to-cart-icon far fa-shopping-cart fa-flip-horizontal"></i>
                             </span>
+                            {% else %}
+                            {% if product.file %}
+                            <span class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" onclick="addurl_pur('note', {{product.id}},'{{product.file.url}}')">
+                                <i class="add-to-cart-icon far fa-download fa-flip-horizontal"></i>
+                                </span>
+                                {% endif %}
+                            {% endif %}
+                            
                         </a>
                         <div class="list-cta mobile">
                             <span class="info-wrapper wrapper">
                             <span class="open">i</span>
                             <span class="close">x</span>
                             </span>
+                            {% if product.price > 0.0 %}
                             <span class="cart-wrapper wrapper add-item-to-shoppingcart recommended-item" data-id="{{product.id}}" onclick="addurl('note', {{product.id}})">
                             <i class="far fa-shopping-cart fa-flip-horizontal"></i>
                             </span>
+                            {% else %}
+                            {% if product.file %}
+                            <span class="cart-wrapper wrapper add-item-to-shoppingcart recommended-item" data-id="{{product.id}}" onclick="addurl_pur('note', {{product.id}},'{{product.file.url}}')">
+                                <i class="far fa-download fa-flip-horizontal"></i>
+                                </span>
+                                {% endif %}
+                            {% endif %}
+                            
                             <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.title}}" class="goto-wrapper wrapper recommended-item" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="{{product.title}}" data-is-link="true" onclick="changeurllocation('{% url 'product_detail' product.category.slug product.slug %}')">
                             <i class="fas fa-long-arrow-right"></i>
                             </a>
@@ -623,9 +687,18 @@
                                     <div class="popup-content">
                                         <div class="view-product">
                                             <p>Preview {{product.show_pages}} out of {{product.num_pages}} pages</p>
-                                            <a href="{% url "add-to-cart" product_type='note' product_id=product.id %}" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="" data-amp-location=" page (header button)" data-user-status="yes" data-country-seller="214" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
-                                            <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
-                                            </a>
+                                            {% if product.dummy_file %}
+                                            {% if product_price > 0.0 %}
+                                            <a href="{% url "add-to-cart" product_type='note' product_id=product.id %}" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="" data-amp-location=" page (header button)" data-user-status="yes" data-country-seller="214" data-price="${{product_price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
+                                                <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                                                </a>
+                                            {% else %}
+                                            <a onclick="addurl_pur('note', {{product.id}},'{{product.file.url}}')" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="" data-amp-location=" page (header button)" data-user-status="yes" data-country-seller="214" data-price="${{product_price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
+                                                <i class="far fa-download fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to Save
+                                                </a>
+                                            {% endif %}
+                                            {% endif %}
+                                            
                                             <div class="image-view" id="preview-{{product.id}}">
                                                 {% comment %} ***************************** {% endcomment %}
                                             </div>
@@ -654,22 +727,36 @@
                                             ago {{product.updated_at}}
                                             </span>
                                             <p class="text-entry-product">
-                                                {{product.description}}
+                                                {{product.description|safe}}
                                             </p>
                                             <div class="cta-view-product">
                                                 <div class="currencyof-product">
-                                                    <span itemprop="price">${{product.price}}</span>
+                                                    {% if product_price > 0.0 %}
+                                                    <span itemprop="price">${{product_price}}</span>
+                                                    {% else %}
+                                                    <span itemprop="price">Free</span>
+                                                    {% endif %}
                                                     <link itemprop="availability" href="http://schema.org/InStock">
                                                 </div>
-                                                <a href="{% url "add-to-cart" product_type='note' product_id=product.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document recommended-item" data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="yes" data-upselling-bundle="" data-country-seller="214" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="false" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
-                                                <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
-                                                Add to cart
-                                                </a>
+                                                {% if product.dummy_file %}
+                                                {% if product_price > 0.0 %}
+                                                <a href="{% url "add-to-cart" product_type='note' product_id=product.id %}" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document recommended-item" data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="yes" data-upselling-bundle="" data-country-seller="214" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="false" data-price="${{product_price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
+                                                    <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
+                                                    Add to cart
+                                                    </a>
+                                                {% else %}
+                                                <a onclick="addurl_pur('note', {{product.id}},'{{product.file.url}}')" class="btn-fill-blue cta-buy add-item-to-shoppingcart cursor-pointer cta-view-product-buy add-to-cart-qv-{{product.id}}-document recommended-item" data-id="{{product.id}}" data-type="document" data-amp-location=" Quickview " data-user-status="yes" data-upselling-bundle="" data-country-seller="214" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="historical transactions" data-is-link="false" data-price="${{product_price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
+                                                    <i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;
+                                                    Add to Save
+                                                    </a>
+                                                {% endif %}
+                                                {% endif %}
+                                                
                                                 <a href="#" class="add-wishlist ajax-add-wishlist button-add-wishlist-{{product.id}} cursor-pointer" data-id="{{product.id}}" data-type="1">
-                                                <i class="far fa-heart"></i>
+                                                <i class="far fa-download"></i>
                                                 </a>
                                                 <a href="#" class="delete-wishlist ajax-delete-wishlist button-delete-wishlist-{{product.id}} cursor-pointer" data-id="{{product.id}}" data-type="1">
-                                                <i class="fas fa-heart"></i>
+                                                <i class="fas fa-download"></i>
                                                 </a>
                                             </div>
                                             <div class="show-more-quickview">
@@ -711,7 +798,11 @@
         <div class="mobile-buy-bar">
             <div class="mob-buy-left">
                 <div class="mob-buy-price">
-                    <span itemprop="price" content="2707350-document">${{products.price}}</span>
+                    {% if product_price > 0.0 %}
+                    <span itemprop="price" content="{{product.id}}-document">${{products.price}}</span>
+                    {% else %}
+                    <span itemprop="price" content="{{product.id}}-document">Free</span>
+                    {% endif %}
                     <span class="mob-buy-downloads ">&nbsp;{{products.purchased}}x &nbsp;sold</span>
                 </div>
                 <div class="mob-buy-rating">
@@ -729,9 +820,18 @@
                 </div>
             </div>
             <div class="mob-buy-right">
+                {% if product_price > 0.0 %}
                 <span class="btn-fill-yellow mob-cta-buy add-item-to-shoppingcart" onclick="addurl('note', {{products.id}})">
-                <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
-                </span>
+                    <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
+                    </span>
+                {% else %}
+                {% if product.file %}
+                <span class="btn-fill-yellow mob-cta-buy add-item-to-shoppingcart" onclick="addurl_pur('note', {{product.id}},'{{product.file.url}}')">
+                    <i class="far fa-download fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to Save
+                    </span>
+                    {% endif %}
+                {% endif %}
+                
             </div>
         </div>
     </div>

@@ -2,7 +2,8 @@
 {% load static %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'statics/css/6097ac6aa8-walletpage_css.css' %}">
-        
+<link rel="stylesheet" href="{% static 'statics/css/2417dbe620-contentpages_css.css' %}">
+
 {% comment %} <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"> {% endcomment %}
 
         <div id="app" data-country="214" class="">
@@ -21,6 +22,16 @@
                             }
                             input{
                                 border: 2px solid #d1ebfb;
+                            }
+                            .grid-list .icon-preview img.image-boek{
+                                height: 70px;
+                                width: 56px;
+                            }
+                            .selling-box .grid-list .desc-preview .excerpt-desc, .selling-box .grid-list .desc-preview .info-desc{
+                                margin-left: 0;
+                            }
+                            .p-4{
+                                padding: 10px;
                             }
                         </style>
 
@@ -53,7 +64,11 @@
                                 <div class="listing-item ballance-item-dekstop">
                                     <h3 class="title-ballance">Balance</h3>
                                     <span class="value-ballance">${{order_earn}}</span>
-                                    <span class="value-ballance"> <input type="number" max="{{order_earn}}" id='amount_withdraw1' name='amount_withdraw' style="text-align: end;width: 110px;"> </span>
+                                    {% if  order_earn > 40 %}
+                                    <span class="value-ballance"> 
+                                        <input type="number" max="{{order_earn}}" id='amount_withdraw1' name='amount_withdraw' style="text-align: end;width: 110px;"> 
+                                    </span>
+                                    {% endif %}
                                     <button type='submit' id='payout-ballance1' class="payout-ballance btn-disabled">
                                     Withdraw Money
                                     </button>
@@ -64,12 +79,12 @@
                                 <div class="listing-item ballance-item-mobile" style="justify-content: space-between;">
                                     <div class="form-group">
                                       <label for="username">UserName:</label>
-                                      <input type="text" style="width: -webkit-fill-available;"
+                                      <input required type="text" style="width: -webkit-fill-available;"
                                         class="form-control paddingcls" name="username" id="username" aria-describedby="helpId" placeholder="e.g: Jhon Deo">
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Email:</label>
-                                        <input type="text" style="width: -webkit-fill-available;"
+                                        <input required type="text" style="width: -webkit-fill-available;"
                                           class="form-control paddingcls" name="email" id="email" aria-describedby="helpId" placeholder="abc@xyz.com">
                                       </div>
                                       <div class="form-group">
@@ -89,7 +104,11 @@
                                 </div>
                                 <div class="listing-item ballance-item-mobile">
                                     <h3 class="title-ballance">Withdraw</h3>
-                                    <span class="value-ballance"> <input type="number" max="{{order_earn}}" id='amount_withdraw2' name='amount_withdraw' style="text-align: end;width: 110px;"> </span>
+                                    {% if  order_earn > 40 %}
+                                    <span class="value-ballance"> 
+                                        <input type="number" max="{{order_earn}}" id='amount_withdraw2' name='amount_withdraw' style="text-align: end;width: 110px;"> 
+                                    </span>
+                                    {% endif %}
                                 </div>
                                 <div class="listing-item ballance-item-mobile last-listing ">
                                     <button type='submit' id='payout-ballance2' class="payout-ballance btn-disabled">
@@ -100,50 +119,50 @@
                             </div>
                         </section>
                     
-                        {% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> {% endcomment %}
-                        <script>
+                            {% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> {% endcomment %}
+                            <script>
                             // Get references to the input fields and buttons
-var input1 = document.getElementById('amount_withdraw1');
-var input2 = document.getElementById('amount_withdraw2');
-var button1 = document.getElementById('payout-ballance1');
-var button2 = document.getElementById('payout-ballance2');
+                                var input1 = document.getElementById('amount_withdraw1');
+                                var input2 = document.getElementById('amount_withdraw2');
+                                var button1 = document.getElementById('payout-ballance1');
+                                var button2 = document.getElementById('payout-ballance2');
 
-// Attach event listener to the input field 1
-input1.addEventListener('input', function() {
-    var inputValue = parseFloat(this.value);
-    // Update value of input field 2 to match input field 1
-    input2.value = inputValue;
-    // Call function to handle button state for button 1
-    handleButtonState(button1, inputValue);
-    // Call function to handle button state for button 2
-    handleButtonState(button2, inputValue);
-});
+                                // Attach event listener to the input field 1
+                                input1.addEventListener('input', function() {
+                                    var inputValue = parseFloat(this.value);
+                                    // Update value of input field 2 to match input field 1
+                                    input2.value = inputValue;
+                                    // Call function to handle button state for button 1
+                                    handleButtonState(button1, inputValue);
+                                    // Call function to handle button state for button 2
+                                    handleButtonState(button2, inputValue);
+                                });
 
-// Attach event listener to the input field 2
-input2.addEventListener('input', function() {
-    var inputValue = parseFloat(this.value);
-    // Update value of input field 1 to match input field 2
-    input1.value = inputValue;
-    // Call function to handle button state for button 1
-    handleButtonState(button1, inputValue);
-    // Call function to handle button state for button 2
-    handleButtonState(button2, inputValue);
-});
+                                // Attach event listener to the input field 2
+                                input2.addEventListener('input', function() {
+                                    var inputValue = parseFloat(this.value);
+                                    // Update value of input field 1 to match input field 2
+                                    input1.value = inputValue;
+                                    // Call function to handle button state for button 1
+                                    handleButtonState(button1, inputValue);
+                                    // Call function to handle button state for button 2
+                                    handleButtonState(button2, inputValue);
+                                });
 
-// Function to handle enabling/disabling and adding/removing btn-disabled class for buttons
-function handleButtonState(button, inputValue) {
-    // If input value is less than 10 or NaN, disable the button and add btn-disabled class
-    if (inputValue < 10 || isNaN(inputValue)) {
-        button.disabled = true;
-        button.classList.add('btn-disabled');
-    } else {
-        // If input value is greater than or equal to 10, enable the button and remove btn-disabled class
-        button.disabled = false;
-        button.classList.remove('btn-disabled');
-    }
-}
+                                // Function to handle enabling/disabling and adding/removing btn-disabled class for buttons
+                                function handleButtonState(button, inputValue) {
+                                    // If input value is less than 10 or NaN, disable the button and add btn-disabled class
+                                    if (inputValue < 40 || isNaN(inputValue)) {
+                                        button.disabled = true;
+                                        button.classList.add('btn-disabled');
+                                    } else {
+                                        // If input value is greater than or equal to 10, enable the button and remove btn-disabled class
+                                        button.disabled = false;
+                                        button.classList.remove('btn-disabled');
+                                    }
+                                }
 
-                        </script>
+                            </script>
                         {% if withdraw_table %}
                         <section class="section-wallet-stuvia">
                             <style>
@@ -184,7 +203,67 @@ function handleButtonState(button, inputValue) {
                                 </table>
                             </div> 
                         </section> 
-                        {% endif %}   
+                        {% endif %} 
+                        {% if order_items %}
+                        <div class="results-filter results-search-filter content-attention" id="content-page-recommendations">
+                            <div class="recommendation-title" data-docids="2198912:1,2108464:1,2118974:1,3586378:1" data-numberofrecoms="4" data-recomsvalid="old recommendation">
+                                <h3>All your Earning track & Source</h3>
+                            </div>
+                            <div class="listing-grid">
+                                {% for order_item in order_items %}
+                                <div class="listgrid-item selling-box before-you-leave-amplitude-click first-row" id="" data-type="content click">
+                                    <a title="{{ order_item.content_object.title }}" class="grid-list log-amplitude-js search-result-link recommended-item" style="justify-content: space-between;">
+                                        
+                                        <div class="desc-preview">
+                                            <span class="content-title" style="width: -webkit-fill-available;"> {{ order_item.content_object.title }}</span>
+                                            <div class="excerpt-desc">
+                                                <p>{{ order_item.content_object.description|safe  }}</p>
+                                            </div>
+                                        </div>
+                                        <span class="p-4">
+                                            <strong>{{ order_item.content_object.price }}</strong>
+                                        </span>
+                                    </a>
+                                    
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div id="page" class="wrapper content-page" style="">
+                            <article class="site-article content-attention " style="justify-content: center;">
+                                <div id="content" class="section-results ">
+                                    <section class="section-content-wrapper section-listing-filters has-overlay">
+                        
+                                        
+                                        <div class="listing-filters-grid" id="main-section">
+                                            <nav class="navigation-section">
+                                                <ul class="list-navigation">
+                                                    {% if order_items.has_previous %}
+                                                    
+                                                    <li class="nav-item"><a href="{{ request.path }}?page=1" aria-label="First" class="link-on back-item"><i class="fal fa-angle-left"></i><i class="fal fa-angle-left"></i></a></li>
+                                                    <li class="nav-item"><a href="{{ request.path }}?page={{ order_items.previous_page_number }}" aria-label="Previous" class="link-on back-item"><i class="fal fa-angle-left"></i></a></li>
+                                                    {% endif %}
+                                                    
+                                                    {% for page in order_items.paginator.page_range %}
+                                                        {% if order_items.number == page %}
+                                                        <li class="nav-item"><a href="{{ request.path }}?page={{ page }}" class="current pagination-item" aria-label="Page {{ page }}">{{ page }}</a></li>
+                                                        {% else %}
+                                                        <li class="nav-item"><a href="{{ request.path }}?page={{ page }}" class="pagination-item" aria-label="Page {{ page }}">{{ page }}</a></li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    
+                                                    {% if order_items.has_next %}
+                                                    <li class="nav-item"><a href="{{ request.path }}?page={{ order_items.next_page_number }}" aria-label="Next" class="link-on next-item"><i class="fal fa-angle-right"></i></a></li>
+                                                    <li class="nav-item"><a href="{{ request.path }}?page={{ order_items.paginator.num_pages }}" aria-label="Last" class="link-on next-item"><i class="fal fa-angle-right"></i><i class="fal fa-angle-right"></i></a></li>
+                                                    {% endif %}
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </section>
+                                </div>
+                            </article>
+                        </div>
+                        {% endif %}
                         <div class="empty-state-page pitch-block">
                             <div class="make-summaries">
                                 <section class="section-content-swapblock section-content-startsell section-content-swapblock-reverse">

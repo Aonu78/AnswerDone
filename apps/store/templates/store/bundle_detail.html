@@ -29,9 +29,9 @@
                         <h2 class="typeof-product">Package deal</h2>
                         <h1 class="titleof-product">{{products.title}}</h1>
                         <div class="content-description">
-                            <p id="content-description" class="infoof-product">{{products.description}}
+                            <p id="content-description" class="infoof-product">{{products.description|safe}}
                             </p>
-                            <span class="show-more display-none" data-extra-text="{{products.description}}" id="content-page-show">[Show more]</span>
+                            <span class="show-more display-none" data-extra-text="{{products.description|safe}}" id="content-page-show">[Show more]</span>
                         </div>
                         <input type="hidden" id="SEARCH_MORE" value="Show more" class="active">
                         <input type="hidden" id="SEARCH_LESS" value="Show less">
@@ -85,7 +85,7 @@
                                             </div>
                                         </div>
                                         <div class="excerpt-desc">
-                                            <p>{{product.description}}...</p>
+                                            <p>{{product.description|safe}}...</p>
                                         </div>
                                     </div>
                                     <div class="quickview-doc" data-id="{{product.id}}" data-type="1" data-loaded="false">
@@ -148,7 +148,7 @@
                                                         <span class="time-since-unit tsu-{{product.id}}"></span>
                                                         ago
                                                         </span>
-                                                        <p class="text-entry-product">{{product.description}}...</p>
+                                                        <p class="text-entry-product">{{product.description|safe}}...</p>
                                                         <div class="cta-view-product">
                                                             <div class="currencyof-product">
                                                                 <span itemprop="price">${{product.price}}</span>

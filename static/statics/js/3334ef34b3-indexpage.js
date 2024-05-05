@@ -3015,6 +3015,21 @@
 						e.html(t), $("#index-textbooks-wrapper").addClass("add-class-populairbooks")
 					}
 				})
+			}, 1e3);
+			var e = $("#index-textbooks-wrapper-books");
+			e.html('<div class="spinner-container"><i class="fas fa-circle-notch fa-spin"></i></div>'), Object(n.a)(function() {
+				$.ajax({
+					type: "POST",
+					url: Object(A.createOneDomainUrl)("/ajax-mvc/index-books-search"),
+					data: {
+						csrf: $("body").data("token"),
+						s: $("#popular-books-search").val()
+					},
+					cache: !1,
+					success: function(t) {
+						e.html(t), $("#index-textbooks-wrapper-books").addClass("add-class-populairbooks")
+					}
+				})
 			}, 1e3)
 		}
 		S.prototype.tick = function(t, e) {
@@ -3029,6 +3044,10 @@
 		$(document).ready(function() {
 			$("#popular-books-select").select2({
 				dropdownCssClass: "homepage-books-select2"
+			});
+			$('#institutionsDropdown1').select2({
+				placeholder: ' ',
+				allowClear: true 
 			});
 			var t, e, i = null,
 				n = $("#institutionsDropdown"),
@@ -3046,6 +3065,7 @@
 							return $("#SELECT2_NO_RESULTS").val()
 						}
 					},
+					
 					ajax: {
 						url: Object(A.createOneDomainUrl)("/ajax-get-institution-dropdown-content"),
 						dataType: "json",
@@ -3062,7 +3082,8 @@
 							}
 						}
 					}
-				})).data("select2").$dropdown.addClass("created-dropdown"), i.data("select2").$dropdown.find(".select2-search.select2-search--dropdown").append('<i class="fa fa-search search-icon-i search-filter-part"></i><i class="far fa-times remove-input search-filter-part"></i>').trigger("change")), $(document).on("click", ".remove-input", function(t) {
+				}))
+				.data("select2").$dropdown.addClass("created-dropdown"), i.data("select2").$dropdown.find(".select2-search.select2-search--dropdown").append('<i class="fa fa-search search-icon-i search-filter-part"></i><i class="far fa-times remove-input search-filter-part"></i>').trigger("change")), $(document).on("click", ".remove-input", function(t) {
 					var e;
 					null !== i && $(this).hasClass("search-filter-part") && (t.stopPropagation(), t = !0, 0 < (e = i).length) && ($(".dropdown-arrow").css("display", "block"), $(e).select2("close"), $(e).val(null).trigger("change"), t) && $(".institution-filter").val("")
 				}), n.on("select2:selecting", function(t) {
@@ -3082,6 +3103,9 @@
 				}), $(document).on("change", "#popular-books-select", function() {
 					var i = $("#index-textbooks-wrapper"),
 						n = (i.html('<div class="spinner-container"><i class="fas fa-circle-notch fa-spin"></i></div>'), $("#popular-books-select option:selected"));
+					var ia = $("#index-textbooks-wrapper-books"),
+						na = (ia.html('<div class="spinner-container"><i class="fas fa-circle-notch fa-spin"></i></div>'), $("#popular-books-select option:selected"));
+
 					$.ajax({
 						type: "POST",
 						url: Object(A.createOneDomainUrl)("/ajax-mvc/textbook-homepage"),
@@ -3095,10 +3119,31 @@
 							var t = i.find(".no-results-div p").text(),
 								e = i.find(".no-results-div a.button").text(),
 								t = t.replace("[*TERM*]", n.text());
-							i.find(".no-results-div a.button").text(e + " '" + n.text() + "'"), i.find(".no-results-div p").text(t), i.find(".no-results-div a.button").attr("href", Object(A.createOneDomainUrl)("/search?s=" + n.text())).append('<i class="fa fa-angle-right"></i>'), $("#index-textbooks-wrapper").addClass("add-class-populairbooks")
+							i.find(".no-results-div a.button").text(e + " '" + n.text() + "'"), i.find(".no-results-div p").text(t), i.find(".no-results-div a.button").attr("href", Object(A.createOneDomainUrl)("/search?s=" + n.text())).append('<i class="fa fa-angle-right"></i>'), $("#index-textbooks-wrapper").addClass("add-class-populairbooks"), $("#index-textbooks-wrapper-books").addClass("add-class-populairbooks")
 						}
 					})
-				}), $(document).on("keyup", "#popular-books-search", function(t) {
+				}),$(document).on("change", "#popular-books-select", function() {
+					var ia = $("#index-textbooks-wrapper-books"),
+						na = (ia.html('<div class="spinner-container"><i class="fas fa-circle-notch fa-spin"></i></div>'), $("#popular-books-select option:selected"));
+
+					$.ajax({
+						type: "POST",
+						url: Object(A.createOneDomainUrl)("/ajax-mvc/textbook-homepage"),
+						data: {
+							csrf: $("body").data("token"),
+							category: na.val()
+						},
+						cache: !1,
+						success: function(t) {
+							i.html(t);
+							var t = i.find(".no-results-div p").text(),
+								e = i.find(".no-results-div a.button").text(),
+								t = t.replace("[*TERM*]", na.text());
+							i.find(".no-results-div a.button").text(e + " '" + na.text() + "'"), i.find(".no-results-div p").text(t), i.find(".no-results-div a.button").attr("href", Object(A.createOneDomainUrl)("/search?s=" + na.text())).append('<i class="fa fa-angle-right"></i>'), $("#index-textbooks-wrapper").addClass("add-class-populairbooks"), $("#index-textbooks-wrapper-books").addClass("add-class-populairbooks")
+						}
+					})
+				}),  
+				$(document).on("keyup", "#popular-books-search", function(t) {
 					(3 < $(this).val().length || "Enter" === t.key || 0 === $(this).val().length) && T()
 				}), $(document).on("click", "#popular-books-submit", "click", function() {
 					1 < $("#popular-books-search").val().length && T()
@@ -3159,6 +3204,58 @@
 						}
 					}
 				}), $("#index-textbooks-wrapper").owlCarousel({
+					loop: !0,
+					autoplay: !0,
+					autoplayTimeout: 2500,
+					autoplayHoverPause: !0,
+					infinite: !0,
+					center: !0,
+					autoWidth: !0,
+					margin: 10,
+					dots: !1,
+					nav: !0,
+					lazyLoad: !0,
+					onRefreshed: B(),
+					onInitialized: B(),
+					responsive: {
+						0: {
+							items: 1
+						},
+						500: {
+							items: 3
+						},
+						700: {
+							items: 3
+						},
+						750: {
+							items: 2
+						},
+						767: {
+							items: 1
+						},
+						800: {
+							items: 4
+						},
+						900: {
+							items: 4
+						},
+						1e3: {
+							items: 4
+						},
+						1100: {
+							items: 5
+						},
+						1300: {
+							item: 6
+						},
+						1600: {
+							items: 7
+						},
+						1800: {
+							items: 8
+						}
+					}
+				}),$("#index-textbooks-wrapper-books").owlCarousel({
 					loop: !0,
 					autoplay: !0,
 					autoplayTimeout: 2500,
@@ -3327,7 +3424,7 @@
 						x = F[C].getAttribute("data-period");
 					_ && new S(F[C], JSON.parse(_), x, D, b)
 				}
-			amplitude.getInstance().logEvent("Homepage Viewed")
+			//amplitude.getInstance().logEvent("Homepage Viewed")
 		})
 	},
 	84: function(t, e, i) {

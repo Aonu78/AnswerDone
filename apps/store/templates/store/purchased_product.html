@@ -44,7 +44,7 @@
                         {% endif %}
                     </div>
                     <div class="content-description">
-                        <p id="content-description" class="infoof-product">{{products.description}}</p>
+                        <p id="content-description" class="infoof-product">{{products.description|safe}}</p>
                         {% comment %} <span class="show-more " data-extra-text="ckup."  id="content-page-show">[Show more]</span> {% endcomment %}
                     </div>
                 </div>
@@ -63,7 +63,13 @@
                                 <object data="{{ products.file.url }}" id="document-preview" class="document-preview-iframe"></object> 
                                 {% endif %}
                             </div>
-                            <div class="preview-doc preview-doc-class"><img src="{{products.image.url}}" alt="mobile-preview"></div>
+                            <div class="preview-doc preview-doc-class">
+                                {% if product.image %}
+                                <img src="{{product.image.url}}" alt="{{product.title}}">
+                                {% else %}
+                                <img src="{% static 'statics/img/essentie_focus.png' %}" alt="{{product.title}}">
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                     <ul class="share-preview-product">
@@ -77,9 +83,10 @@
                                 <div class="popup-content">
                                     <div class="view-product">
                                         <p>Preview {{products.show_pages}} out of {{products.num_pages}} pages</p>
-                                        <a href="{% url "add-to-cart" product_type='note' product_id=products.id %}" class="btn-fill-blue cta-buy header-buy-btn add-item-to-shoppingcart  cursor-pointer" data-type="document" data-id="{{products.id}}" data-upselling-bundle="" data-amp-location="Document page (header button)" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
-                                        <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
-                                        </a>
+                                        {% if products.file %}
+                                        <a href="{{products.file.url}}" class="btn-fill-blue cta-buy header-buy-btn add-item-to-shoppingcart  cursor-pointer" data-type="document" data-id="{{products.id}}" data-upselling-bundle="" data-amp-location="Document page (header button)" data-user-status="yes" data-country-seller="214" data-price="{{products.price}}" data-currency="USD" data-language="en" data-downloads="4" data-views="" data-rating="0.00" data-content-contained-amount="182">
+                                        <i class="far fa-download fa-flip-horizontal buyblock-icon"></i>&nbsp; Download
+                                        </a>{% endif %}
                                         <div class="image-view" id="preview-{{products.id}}">
                                             {% comment %} ************************************* {% endcomment %}
                                             {% if products.file %}
@@ -124,6 +131,12 @@
         color: gold;
     }
 </style>
+{% if products.file %}
+<div class="ctaof-product ">
+    <a href="{{ products.file.url }}" class="btn-fill-yellow cta-buy add-item-to-shoppingcart cursor-pointer" data-id="{{products.id}}" data-upselling-bundle="" data-type="document" data-amp-location="Document page" data-user-status="yes" data-country-seller="214" data-price="1100" data-currency="USD" data-language="en" data-downloads="4" data-views="53" data-rating="0.00" data-content-contained-amount="182">
+        <i class="far fa-download fa-flip-horizontal buyblock-icon"></i>&nbsp; Download
+        </a>
+</div>{% endif %}
                     <ul class="guarantee-section">
                         <li>100% satisfaction guarantee</li>
                         <li>Immediately available after payment</li>
@@ -150,24 +163,20 @@
                                 {% endif %}
                             </div>
                             <div class="seller-inform">
-                                <span class="name-seller"><a title="Seller page" href="#" class="">{{products.user.username}}</a></span>
+                                <span class="name-seller"><a title="Seller page" href="{% url "user_profile" profile.user %}" class="">{{products.user.username}}</a></span>
                                 <label>
-                                    {% if time_since_registration %}
-    {% if time_since_registration < 365 %}
-        <p>Member for {{ time_since_registration }} day{{ time_since_registration|pluralize }}</p>
-    {% else %}
-        <p>Member for {{ time_since_registration }} year{{ time_since_registration|pluralize }}</p>
-    {% endif %}
-{% else %}
-    <p>Registration date unknown</p>
-{% endif %}
-
+                                    <p>{{ time_since_registration }}</p>
                                 </label>
                                 <label>
                                 {{count_products}} Total documents 
                                 </label>
                             </div>
                         </div>
+                        <a href="{% url "messages" %}?sendto={{profile.user}}" title="Send message to Seller" class="cta-widget-arrow">
+                            <label class="cursor-pointer" style="color: #199be9;">
+                                <i class="far fa-envelope"> </i> &nbsp;Send Message
+                            </label> <i class="far fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
                 <div id="contentinfo" class="document-section widget-entry-item">
@@ -237,13 +246,17 @@
                                         </ul>
                                         <span class="count-rates">({{product.count_rating}})</span>
                                     </div>
+                                    {% if product.price > 0.0 %}
                                     <span class="prices">${{product.price}}</span>
+                                    {% else %}
+                                    <span class="prices">Free</span>
+                                    {% endif %}
                                     <div class="downloads">
                                         <span class="count-downloads">{{product.purchased}}x &nbsp;sold</span>
                                     </div>
                                 </div>
                                 <div class="excerpt-desc">
-                                    <p>{{product.description}}
+                                    <p>{{product.description|safe}}
                                     </p>
                                     <div class="information-booken">
                                         <div class="cta-detail desktop">
@@ -271,9 +284,17 @@
                                 </div>
                             </span>
                             
+                            {% if product.price > 0.0 %}
                             <span class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" onclick="addurl('note', {{product.id}})">
                             <i class="add-to-cart-icon far fa-shopping-cart fa-flip-horizontal"></i>
                             </span>
+                            {% else %}
+                            {% if product.file %}
+                            <span class="cta-cart desktop add-item-to-shoppingcart shoppingcart-circle recommended-item" data-id="{{product.id}}" onclick="addurl_pur('note', {{product.id}},'{{product.file.url}}')">
+                                <i class="add-to-cart-icon far fa-download fa-flip-horizontal"></i>
+                                </span>
+                                {% endif %}
+                            {% endif %}
                         </a>
                         <div class="list-cta mobile">
                         
@@ -282,9 +303,17 @@
                                 <span class="close">x</span>
                             </span>
                             
+                            {% if product.price > 0.0 %}
                             <span class="cart-wrapper wrapper add-item-to-shoppingcart recommended-item" data-id="{{product.id}}" onclick="addurl('note', {{product.id}})">
                             <i class="far fa-shopping-cart fa-flip-horizontal"></i>
                             </span>
+                            {% else %}
+                            {% if product.file %}
+                            <span class="cart-wrapper wrapper add-item-to-shoppingcart recommended-item" data-id="{{product.id}}" onclick="addurl_pur('note', {{product.id}},'{{product.file.url}}')">
+                                <i class="far fa-download fa-flip-horizontal"></i>
+                                </span>
+                                {% endif %}
+                            {% endif %}
                             <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.title}}" class="goto-wrapper wrapper recommended-item" data-recommended-content-id="{{product.id}}" data-recommended-content-type="1" data-recommendation-type="{{product.title}}" data-is-link="true" onclick="changeurllocation('{% url 'product_detail' product.category.slug product.slug %}')">
                             <i class="fas fa-long-arrow-right"></i>
                             </a>
@@ -307,9 +336,9 @@
                                     <div class="popup-content">
                                         <div class="view-product">
                                             <p>Preview {{product.show_pages}} out of {{product.num_pages}} pages</p>
-                                            <a href="{% url "add-to-cart" product_type='note' product_id=products.id %}" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="" data-amp-location=" page (header button)" data-user-status="yes" data-country-seller="214" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
+                                            {% comment %} <a href="{% url "add-to-cart" product_type='note' product_id=products.id %}" class="btn-fill-blue cta-buy cursor-pointer header-buy-btn add-item-to-shoppingcart" data-type="" data-id="" data-upselling-bundle="" data-amp-location=" page (header button)" data-user-status="yes" data-country-seller="214" data-price="${{product.price}}" data-currency="USD" data-language="en" data-downloads="2" data-views="23" data-rating="0.00" data-content-contained-amount="242">
                                             <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
-                                            </a>
+                                            </a> {% endcomment %}
                                             <div class="image-view" id="preview-{{product.id}}">
                                                 {% comment %} ***************************** {% endcomment %}
                                             </div>
@@ -336,7 +365,7 @@
                                             ago
                                             </span>
                                             <p class="text-entry-product">
-                                                {{product.description}}
+                                                {{product.description|safe}}
                                             </p>
                                             <div class="cta-view-product">
                                                 <div class="currencyof-product">
@@ -348,10 +377,10 @@
                                                 Add to cart
                                                 </a>
                                                 <a href="#" class="add-wishlist ajax-add-wishlist button-add-wishlist-{{product.id}} cursor-pointer" data-id="{{product.id}}" data-type="1">
-                                                <i class="far fa-heart"></i>
+                                                <i class="far fa-download"></i>
                                                 </a>
                                                 <a href="#" class="delete-wishlist ajax-delete-wishlist button-delete-wishlist-{{product.id}} cursor-pointer" data-id="{{product.id}}" data-type="1">
-                                                <i class="fas fa-heart"></i>
+                                                <i class="fas fa-download"></i>
                                                 </a>
                                             </div>
                                             <div class="show-more-quickview">
@@ -389,33 +418,7 @@
             </div>
         </section>
     </article>
-    <div class="mob-bar-wrap">
-        <div class="mobile-buy-bar">
-            <div class="mob-buy-left">
-                <div class="mob-buy-price">
-                    <span itemprop="price" content="2707350-document">${{products.price}}</span>
-                    <span class="mob-buy-downloads ">&nbsp;{{products.purchased}}x &nbsp;sold</span>
-                </div>
-                <div class="mob-buy-rating">
-                    <ul class="star-rates">
-                        {% for value in "12345" %}
-                                {% if value|add:"0" <= average_rating %}
-                                <li><i class="star-review star-gold fas fa-star"></i></li>
-                                {% else %}
-                                <li><i class="star-review star-grey fas fa-star"></i></li>
-                                {% endif %}
-                            {% endfor %}
-                        <li><span class="count-rates">({{count_rating}})</span></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mob-buy-right">
-                <span class="btn-fill-yellow mob-cta-buy add-item-to-shoppingcart" data-type="document" data-id="2707350" data-upselling-bundle="" data-amp-location="Document page (mobile bottom bar)" data-user-status="yes" data-country-seller="214" data-price="1100" data-currency="USD" data-language="en" data-downloads="4" data-views="53" data-rating="0.00" data-content-contained-amount="182">
-                <i class="far fa-shopping-cart fa-flip-horizontal buyblock-icon"></i>&nbsp; Add to cart
-                </span>
-            </div>
-        </div>
-    </div>
+    
 </div>
 <script defer="" type="text/javascript" src=" {% static 'statics/js/1d32c2cbb2-app.js' %}"></script>
 <script defer="" type="text/javascript" src="{% static 'statics/js/dd450856ba-contentpages.js' %}"></script>

@@ -3327,7 +3327,7 @@
 						x = F[C].getAttribute("data-period");
 					_ && new S(F[C], JSON.parse(_), x, D, b)
 				}
-			amplitude.getInstance().logEvent("Homepage Viewed")
+			//amplitude.getInstance().logEvent("Homepage Viewed")
 		})
 	},
 	84: function(t, e, i) {

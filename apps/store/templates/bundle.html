@@ -120,7 +120,7 @@ font-size: 1em;
                                 <h3 class="title-infobox">Increase your income by bundling your documents</h3>
                                 <p>A bundle is a collection of documents sold for a single price. By bundling your documents you will help customers to purchase multiple documents in one transaction.</p>
                             </div>
-                            <a href="{% url "create_bundle" %}" class="cta-infobox add-bundle-amp-js"><i class="fa fa-plus"></i>Create a package deal</a>
+                            <a href="{% url "create_bundle" %}" class="cta-infobox add-bundle-amp-js"><i class="fa fa-plus"></i>Create a Set Deal</a>
                         </section>
                         
                         <section class="section-book-lists section-book-lists-wishlist section-item">
@@ -142,7 +142,7 @@ font-size: 1em;
                                             {% comment %} {% url 'product_detail' product.category.slug product.slug %} {% endcomment %}
                                             <h4 class="title-preview"><a href="#">{{product.title}}  </a></h4>
                                             <div class="excerpt-desc">
-                                                <p>{{product.description}}</p>
+                                                <p>{{product.description|safe}}</p>
                                                 <div class="information-item">
                                                     <ul class="details">
                                                         <li class="info-category-price-item"> $ {{product.price}}</li>
@@ -178,6 +178,41 @@ font-size: 1em;
                 </article>
             </div>
         </div>
+        <!-- nav number -->
+<div id="page" class="wrapper content-page" style="">
+    <article class="site-article content-attention " style="justify-content: center;">
+        <div id="content" class="section-results ">
+            <section class="section-content-wrapper section-listing-filters has-overlay">
+
+                
+                <div class="listing-filters-grid" id="main-section">
+                    <nav class="navigation-section">
+                        <ul class="list-navigation">
+                            {% if products.has_previous %}
+                            
+                            <li class="nav-item"><a href="{{ request.path }}?page=1" aria-label="First" class="link-on back-item"><i class="fal fa-angle-left"></i><i class="fal fa-angle-left"></i></a></li>
+                            <li class="nav-item"><a href="{{ request.path }}?page={{ products.previous_page_number }}" aria-label="Previous" class="link-on back-item"><i class="fal fa-angle-left"></i></a></li>
+                            {% endif %}
+                            
+                            {% for page in products.paginator.page_range %}
+                                {% if products.number == page %}
+                                <li class="nav-item"><a href="{{ request.path }}?page={{ page }}" class="current pagination-item" aria-label="Page {{ page }}">{{ page }}</a></li>
+                                {% else %}
+                                <li class="nav-item"><a href="{{ request.path }}?page={{ page }}" class="pagination-item" aria-label="Page {{ page }}">{{ page }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if products.has_next %}
+                            <li class="nav-item"><a href="{{ request.path }}?page={{ products.next_page_number }}" aria-label="Next" class="link-on next-item"><i class="fal fa-angle-right"></i></a></li>
+                            <li class="nav-item"><a href="{{ request.path }}?page={{ products.paginator.num_pages }}" aria-label="Last" class="link-on next-item"><i class="fal fa-angle-right"></i><i class="fal fa-angle-right"></i></a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </section>
+        </div>
+    </article>
+</div>
         <script defer="" type="text/javascript" src=" {% static 'statics/js/1d32c2cbb2-app.js' %}"></script>
         <script defer="" type="text/javascript" src=" {% static 'statics/js/4d94a262ca-wishlistpage.js' %}"></script>
         {% endblock content %}

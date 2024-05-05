@@ -16,6 +16,13 @@
 
         <div id="dashboard-page" class="wrapper content-page  ">
             <article id="content" class="content-wrapper page-dashboard">
+                {% if messages %}
+                <div class="alert-success">
+                        {% for message in messages %}
+                            <div class="success">{{ message }}</div>
+                        {% endfor %}
+                </div>
+                {% endif %}
                 <div id="main-section" class="section-wrapper content-attention">
                     <section class="section-list-dashboard">
                         <div class="dashboard-item dashboard-user-info" data-order-mobile="1" data-order-column="1">
@@ -148,41 +155,65 @@
                                         </p>
                                     </div>
                                     <script>
-                                        function hitUrl(variable) {
-                                            var url = "/remove-from-cart/" + variable + "/";
-                                            window.location.href = url;
-                                        }
+                                       
                                     </script>
                                     {% comment %} <div class="cart-items-wrap"> {% endcomment %}
                                         <div class="entry-dashboarditem">
                                             <ul class="listing-discover-stuvia">
                                                 {% for item in cart %}
+                                                {% if item.note %}
                                                 <li class="listing-item discover-item--large" style=" margin-right: 20px">
                                                     <div class="cart-desc display-flex">
-                                                        <img src="{{item.product.image.url}}" width=50px height=75px>
+                                                        <img src="{{item.note.image.url}}" width=50px height=75px>
                                                         <div style="padding: 5px;">
-                                                        <p>{{item.product.category}}&nbsp; <span class="price-item">${{item.total_price}}</span></p>
+                                                        <p>{{item.note.category}}&nbsp; <span class="price-item">${{item.note.price}}</span></p>
                                                         <h5 class="product-item">
-                                                            <a href="">{{item.product.title}}</a>
+                                                            <a href="">{{item.note.title}}</a>
                                                         </h5></div>
                                                     </div>
             
-                                                    <div class="delete-content-cart-header" onclick="hitUrl('{{item.product.id}}')">
-                                                       <a href="{% url "remove_from_cart" item.product.id %}"> <i class="head-icon-trash far fa-trash-alt"></i></a>
+                                                    <div class="delete-content-cart-header" onclick="hitUrl('{{item.item_type}}','{{item.id}}')">
+                                                       <a href="{% url "remove_from_cart" product_type=item.item_type product_id=item.id %}"> <i class="head-icon-trash far fa-trash-alt"></i></a>
                                                     </div>
                                                 </li>
+                                                {% endif %}
+                                                {% if item.question %}
+                                                <li class="listing-item discover-item--large" style=" margin-right: 20px">
+                                                    <div class="cart-desc display-flex">
+                                                        <img src="{{item.question.product.image.url}}" width=50px height=75px>
+                                                        <div style="padding: 5px;">
+                                                        <p>{{item.question.category}}&nbsp; <span class="price-item">${{item.question.price}}</span></p>
+                                                        <h5 class="product-item">
+                                                            <a href="">{{item.question.title}}</a>
+                                                        </h5></div>
+                                                    </div>
+            
+                                                    <div class="delete-content-cart-header" onclick="hitUrl('{{item.item_type}}','{{item.id}}')">
+                                                       <a href="{% url "remove_from_cart" product_type=item.item_type product_id=item.id %}"> <i class="head-icon-trash far fa-trash-alt"></i></a>
+                                                    </div>
+                                                </li>
+                                                {% endif %}
+                                                {% if item.bundle %}
+                                                <li class="listing-item discover-item--large" style=" margin-right: 20px">
+                                                    <div class="cart-desc display-flex">
+                                                        <img src="{{item.bundle.image.url}}" width=50px height=75px>
+                                                        <div style="padding: 5px;">
+                                                        <p>{{item.bundle.category}}&nbsp; <span class="price-item">${{item.bundle.price}}</span></p>
+                                                        <h5 class="product-item">
+                                                            <a href="">{{item.bundle.title}}</a>
+                                                        </h5></div>
+                                                    </div>
+            
+                                                    <div class="delete-content-cart-header" onclick="hitUrl('{{item.item_type}}','{{item.id}}')">
+                                                       <a href="{% url "remove_from_cart" product_type=item.item_type product_id=item.id %}"> <i class="head-icon-trash far fa-trash-alt"></i></a>
+                                                    </div>
+                                                </li>
+                                                {% endif %}
                                                 {% endfor %}
-                                                {% comment %} <li class="listing-item discover-more-book-li">
-                                                    <a href="/book/international-law/9780198753018" class="discover-wrapper">
-                                                    <img src="https://www.stuvia.com/docpics/books/9200000068208138.jpg">
-                                                    </a>
-                                                </li> {% endcomment %}
+                                                
                                             </ul>
                                             <div class="pvlist-item special-list">
-                                                {% comment %} <div class="special-promo">
-                                                    <h5>Deal: 10% discount</h5>
-                                                    <p>Buy more than 3 items and get a 10% discount</p>
-                                                </div> {% endcomment %}
+                                                
                                                 <a href="{% url "checkout" %}" class="button-green header-cart-link" data-login-message="Logging you in" style="margin-top: 30px;"><i class="far fa-shopping-cart fa-flip-horizontal"></i>&nbsp;Checkout&nbsp;<i class="far fa-angle-right"></i></a>
                                             </div>
                                         </div>
@@ -274,5 +305,56 @@
                 </div>
             </article>
         </div>
+        
+        <script>
+            // Attach event listener to dynamically generated elements
+            document.addEventListener('DOMContentLoaded', function() {
+                // Select all elements with the class 'hit-url'
+                var hitUrlElements = document.querySelectorAll('.hit-url');
+        
+                // Loop through each hitUrlElement
+                hitUrlElements.forEach(function(hitUrlElement) {
+                    // Attach click event listener
+                    hitUrlElement.addEventListener('click', function() {
+                        // Get the data-url attribute value
+                        var url = this.getAttribute('data-url');
+                        // Redirect to the URL
+                        window.location.href = url;
+                    });
+                });
+            });
+        </script>
+        <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var button = document.getElementById("smallsearchbox");
+        button.addEventListener("click", function() {
+            // Toggle the 'active' class on the button
+            button.classList.toggle("active");
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        var button = document.getElementById("navmanubtn");
+        button.addEventListener("click", function() {
+            // Toggle the 'active' class on the button
+            var butt = document.getElementById("sidnavbar");
+            butt.classList.toggle("active");
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        var button = document.getElementById("mobile-header-close-action");
+        button.addEventListener("click", function() {
+            // Toggle the 'active' class on the button
+            var butt = document.getElementById("sidnavbar");
+            butt.classList.toggle("active");
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        var button = document.getElementById("header-cart");
+        button.addEventListener("click", function() {
+            // Toggle the 'active' class on the button
+            button.classList.toggle("active");
+        });
+    });
+    </script>
         {% endblock content %}
         

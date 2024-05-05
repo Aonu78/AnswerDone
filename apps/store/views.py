@@ -1,14 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Product, Category, Institute
+from django.contrib.auth.models import User
 from django.db.models import Q, Sum, Avg
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages as msg
 from django.http import HttpResponseRedirect
 from .models import Product, Institute, Courses
 from .models import Category as store_category, Bundle
-from ..vendor.models import Order, OrderItem,Userprofile,Rating,Rating_QA
-from ..core.models import ChargePrice, ServiceCosts,Withdraw_Type,Withdraw_Request, Question_Answer
+from ..vendor.models import Order, OrderItem,Userprofile,Rating,Rating_QA, Message, Subject, Order
+from ..core.models import ChargePrice, ServiceCosts,Withdraw_Type,Withdraw_Request, Question_Answer,QA_Types
 from .forms import ProductForm
 from .cart import Cart
 from django.utils.text import slugify
@@ -16,8 +17,12 @@ from django.utils import timezone
 from django.http import JsonResponse
 from bs4 import BeautifulSoup
 from django.contrib.contenttypes.models import ContentType
+from django.db import IntegrityError
+from datetime import datetime
+from django.utils import timezone
+from ..core.views import logout_superuser_admin_staff
 
-
+@logout_superuser_admin_staff
 def search(request):
     cart = Cart(request)
     total_cost = 0
@@ -32,7 +37,18 @@ def search(request):
             Q(category__slug=request.GET.get("instellingfilter")) &
         Q(title__icontains=query) |
             Q(institute__title__icontains=query)
-        ).filter(status='ACTIVE')  
+        ).filter(status='ACTIVE')
+    elif request.GET.get("by_type") is not None:
+        Product.objects.filter(file='')
+        if request.GET.get("by_type") == "all":
+            products = Product.objects.filter(Q(title__icontains=query) | Q(institute__title__icontains=query)
+            ).filter(status='ACTIVE')
+        elif request.GET.get("by_type") == "doc":
+            products = Product.objects.filter(Q(title__icontains=query) | Q(institute__title__icontains=query)
+            ).filter(status='ACTIVE',file='') 
+        elif request.GET.get("by_type") == "book":
+            products = Product.objects.filter(Q(title__icontains=query) | Q(institute__title__icontains=query)
+            ).filter(status='ACTIVE').exclude(file='')
     elif request.GET.get("institute") is not None:
         products = Product.objects.filter(
             Q(institute__slug=request.GET.get("institute")) &
@@ -64,7 +80,7 @@ def search(request):
     # bundle = Bundle.objects.all()
     # product = product + bundle
     # print(bundle)
-    print("**********************************************************")
+    # print("**********************************************************")
     # products = list(products) + list(bundle)
     
     # print(product)
@@ -89,7 +105,7 @@ def search(request):
         product.average_rating = average_rating
         try:
             bundle = Bundle.objects.get(product=product)
-            print(bundle.id)
+            # print(bundle.id)
             product.bundle_slug = bundle.slug
             product.bundle = True
         except Bundle.DoesNotExist:
@@ -106,6 +122,7 @@ def search(request):
         'nav_university':nav_university,'nav_products':nav_products,'nav_category':nav_category
     })
 
+@logout_superuser_admin_staff
 def qna(request):
     title = "Question & Answer Search for your given problem"
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
@@ -182,7 +199,8 @@ def dislike_qna(request, pk):
         disliked_qnas.append(pk)
         request.session['disliked_qnas'] = disliked_qnas
         return JsonResponse({'dislike_count': qna.dislike})
-    
+
+@logout_superuser_admin_staff   
 def category_detail(request, slug):
     cart = Cart(request)
     total_cost = 0
@@ -206,12 +224,12 @@ def category_detail(request, slug):
         product.average_rating = average_rating
         try:
             bundle = Bundle.objects.get(product=product)
-            print(bundle.id)
+            # print(bundle.id)
             product.bundle_slug = bundle.slug
             product.bundle = True
         except Bundle.DoesNotExist:
             product.bundle = False
-        print(product.bundle)
+        # print(product.bundle)
     all_category = Category.objects.order_by('title')
     all_university = Institute.objects.order_by('title')
     return render(request, 'store/search.html', {
@@ -222,6 +240,58 @@ def category_detail(request, slug):
         'all_category':all_category,'all_university':all_university,
     })
 
+
+@login_required
+def add_to_purchased(request, product_type, product_id):
+    try:
+        # print('product')
+        product = Product.objects.get(id=product_id)
+        if product:
+            product.purchased += 1
+            product.save()
+        # print(product)
+        # print('order')
+        existing_order_exists = Order.objects.filter(created_by=request.user, is_paid=True, paid_amount=None).exists()
+        if not existing_order_exists:
+            order = Order.objects.create(created_by=request.user, is_paid=True)
+        else:
+            order = Order.objects.get(created_by=request.user, is_paid=True, paid_amount=None)
+        # print(order)
+        model_class = None
+        content_type = None
+        if product_type == 'note':
+            model_class = Product
+            try:
+                model_instance = model_class.objects.get(id=product_id)
+                # print("contact_type or instance")
+                content_type = ContentType.objects.get_for_model(model_instance)
+                # print(content_type)
+            except model_class.DoesNotExist:
+                pass
+        
+        # print("creating start ...")
+        existing_order_item = OrderItem.objects.filter(
+            Q(order=order) &
+            Q(content_type=content_type) &
+            Q(object_id=product_id)
+        ).exists()
+
+        if not existing_order_item:
+            # print("new instance creating ...")
+            OrderItem.objects.create(
+                order=order,
+                content_type=content_type,
+                object_id=product_id,
+                price=0.0,
+                quantity=1
+            )
+        # print("creating done here ....")
+        
+    except IntegrityError as e:
+        print(f"IntegrityError occurred: {e}")
+    
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
 def add_to_cart(request, product_type, product_id):
     cart = Cart(request)
     cart.add(product_type,product_id)  # Add the product to the cart
@@ -229,7 +299,7 @@ def add_to_cart(request, product_type, product_id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def remove_from_cart(request, product_type, product_id):
-    print(product_type,product_id)
+    # print(product_type,product_id)
     cart = Cart(request)
     cart.remove(product_type, product_id)  # Add the product to the cart
     cart.save()  # Save the cart
@@ -265,6 +335,7 @@ def rate_answer(request, product_id):
     else:
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+@logout_superuser_admin_staff
 def product_detail(request,category_slug, slug):
 
     nav_category = Category.objects.order_by('-created_at')[:12]
@@ -273,18 +344,30 @@ def product_detail(request,category_slug, slug):
     products = Product.objects.get(slug=slug)
     products.views += 1  
     products.save() 
+    product_price = float(products.price) if products.price is not None else 0.0
+    # print(type(product_price))
+    # print(product_price)
     title = products.title
     description = products.description or 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
 
-    questions = Question_Answer.objects.filter(product=products).order_by('chapter_no', 'question_type', 'question_no')
+    questions = Question_Answer.objects.filter(product=products).order_by('chapter_no', 'question_type__title', 'question_no')
     chapters = {}
+    qa_types = QA_Types.objects.all()
+
+    # Initialize the dictionary with keys for each QA_Type
+    # for qa_type in qa_types:
+    #     chapters[qa_type.title] = []
+
     for question in questions:
         if question.chapter_no not in chapters:
-            chapters[question.chapter_no] = {'Practice': [], 'Questions': []}
-        if question.question_type == 'Practice':
-            chapters[question.chapter_no]['Practice'].append(question)
-        elif question.question_type == 'Questions':
-            chapters[question.chapter_no]['Questions'].append(question)
+            chapters[question.chapter_no] = {}
+            # Initialize the chapter dictionary with keys for each QA_Type
+            for qa_type in qa_types:
+                chapters[question.chapter_no][qa_type.title] = []
+        
+        # Append the question to the appropriate QA_Type list
+        chapters[question.chapter_no][question.question_type.title].append(question)
+
 
     cart = Cart(request)
     total_cost = 0
@@ -293,16 +376,25 @@ def product_detail(request,category_slug, slug):
 
     category = Category.objects.get(slug=category_slug)
     latest_products = Product.objects.filter(category=category).filter(status='ACTIVE').order_by('-created_at')[:12]
-    if products.user.date_joined:
-        difference = timezone.now() - products.user.date_joined
-        if difference.days < 365:
-            time_since_registration = difference.days
-        else:
-            time_since_registration = difference.days // 365
-    else:
-        time_since_registration = None
+    # if products.user.date_joined:
+    #     difference = timezone.now() - products.user.date_joined
+    #     if difference.days < 365:
+    #         time_since_registration = difference.days
+    #     else:
+    #         time_since_registration = difference.days // 365
+    # else:
+    #     time_since_registration = None
 
     profile = Userprofile.objects.get_or_create(user=products.user)[0] 
+    date_joined = profile.user.date_joined
+    time_difference = timezone.now() - date_joined
+    years = time_difference.days // 365
+    months = (time_difference.days % 365) // 30
+    if years > 0:
+        time_since_registration = f"Member Since {years} year{'s' if years != 1 else ''}"
+    else:
+        time_since_registration = f"Member Since {months} month{'s' if months != 1 else ''}"
+
     count_products = Product.objects.filter(user=products.user).filter(status='ACTIVE').count()
 
     for product in latest_products:
@@ -311,11 +403,12 @@ def product_detail(request,category_slug, slug):
         product.average_rating = average_rating
     ratings = Rating.objects.filter(product=products)
     average_rating = ratings.aggregate(Avg('rating'))['rating__avg'] or 0
-    print(average_rating)
+    # print(average_rating)
     count_rating = ratings.count() or 0
+    
     if products.file:
         return render(request,'store/product_detail.html',{'count_rating':count_rating,
-            'products':products,'time_since_registration':time_since_registration,
+            'products':products,'time_since_registration':time_since_registration,'product_price':product_price,
             'latest_products':latest_products,'count_products':count_products,'chapters':chapters,
             'cart':cart,'cart_product':len(cart),'total_cost':total_cost, 'ratings': ratings, 'average_rating': average_rating,
             'ismain':True,'title':title,'description':description,'profile':profile,
@@ -330,7 +423,7 @@ def product_detail(request,category_slug, slug):
             'nav_university':nav_university,'nav_products':nav_products,'nav_category':nav_category
         })
 
-
+@logout_superuser_admin_staff
 def bundle_detail(request, slug):
     nav_category = Category.objects.order_by('-created_at')[:12]
     nav_products = Product.objects.order_by('-created_at').filter(status='ACTIVE')[:12]
@@ -343,7 +436,7 @@ def bundle_detail(request, slug):
     total_value = 0
     total_item = 0
     for product in bundle.product.all():
-        print(product.price)
+        # print(product.price)
         total_value += product.price
         total_item += 1
         ratings = Rating.objects.filter(product=product)
@@ -353,24 +446,24 @@ def bundle_detail(request, slug):
         'average_rating': average_rating if ratings.exists() else 0
         }
         # here is is working if i print these
-    for product in bundle.product.all():
+    # for product in bundle.product.all():
         # Access ratings information from the dictionary using product IDs
-        print(product_ratings.get(product.id, {}).get('count_rating'))
-        print(product_ratings.get(product.id, {}).get('average_rating'))
-        print("working")
-    print(product_ratings)
+        # print(product_ratings.get(product.id, {}).get('count_rating'))
+        # print(product_ratings.get(product.id, {}).get('average_rating'))
+        # print("working")
+    # print(product_ratings)
     # for i in product_ratings:
     #     print(i['count_rating'])
-    print(total_value)
+    # print(total_value)
 
     title = products.title
     description = products.description or 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
 
-    print("#################################################################")
+    # print("#################################################################")
     cart = Cart(request)
-    for i in cart:
-        print(i)
-    print(cart)
+    # for i in cart:
+    #     print(i)
+    # print(cart)
     total_cost = 0
     for item in cart:
         total_cost += item['total_price']
@@ -392,7 +485,7 @@ def bundle_detail(request, slug):
         'nav_university':nav_university,'nav_products':nav_products,'nav_category':nav_category
     })
     
-
+@logout_superuser_admin_staff
 def question_detail(request,category_slug, slug):
     title = "Buy and sell quality study notes and resources"
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
@@ -406,8 +499,8 @@ def question_detail(request,category_slug, slug):
     cart = Cart(request)
     # for i in cart:
     #     print(i)
-    print("********************************************8")
-    print(cart)
+    # print("********************************************8")
+    # print(cart)
     total_cost = 0
     for item in cart:
         total_cost += item['total_price']
@@ -452,7 +545,7 @@ def question_detail(request,category_slug, slug):
         'nav_university':nav_university,'nav_products':nav_products,'nav_category':nav_category
     })
 
-
+@logout_superuser_admin_staff
 def question_purchased(request,category_slug, slug):
     title = "Buy and sell quality study notes and resources"
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
@@ -466,8 +559,8 @@ def question_purchased(request,category_slug, slug):
     cart = Cart(request)
     # for i in cart:
     #     print(i)
-    print("********************************************8")
-    print(cart)
+    # print("********************************************8")
+    # print(cart)
     total_cost = 0
     for item in cart:
         total_cost += item['total_price']
@@ -515,6 +608,7 @@ def question_purchased(request,category_slug, slug):
     
 
 @login_required
+@logout_superuser_admin_staff
 def purchased_product(request,category_slug, slug):
     nav_category = Category.objects.order_by('-created_at')[:12]
     nav_products = Product.objects.order_by('-created_at').filter(status='ACTIVE')[:12]
@@ -526,25 +620,34 @@ def purchased_product(request,category_slug, slug):
     description = products.description or 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
 
     cart = Cart(request)
-    for i in cart:
-        print(i)
-    print(cart)
+    # for i in cart:
+    #     print(i)
+    # print(cart)
     total_cost = 0
     for item in cart:
         total_cost += item['total_price']
 
     category = Category.objects.get(slug=category_slug)
     latest_products = Product.objects.filter(category=category).filter(status='ACTIVE').order_by('-created_at')[:12]
-    if products.user.date_joined:
-        difference = timezone.now() - products.user.date_joined
-        if difference.days < 365:
-            time_since_registration = difference.days
-        else:
-            time_since_registration = difference.days // 365
-    else:
-        time_since_registration = None
+    # if products.user.date_joined:
+    #     difference = timezone.now() - products.user.date_joined
+    #     if difference.days < 365:
+    #         time_since_registration = difference.days
+    #     else:
+    #         time_since_registration = difference.days // 365
+    # else:
+    #     time_since_registration = None
 
     profile = Userprofile.objects.get_or_create(user=products.user)[0] 
+    date_joined = profile.user.date_joined
+    time_difference = timezone.now() - date_joined
+    years = time_difference.days // 365
+    months = (time_difference.days % 365) // 30
+    if years > 0:
+        time_since_registration = f"Member Since {years} year{'s' if years != 1 else ''}"
+    else:
+        time_since_registration = f"Member Since {months} month{'s' if months != 1 else ''}"
+
     count_products = Product.objects.filter(user=products.user).filter(status='ACTIVE').count()
 
     for product in latest_products:
@@ -564,6 +667,7 @@ def purchased_product(request,category_slug, slug):
             'nav_university':nav_university,'nav_products':nav_products,'nav_category':nav_category
         })
 
+@logout_superuser_admin_staff
 def school_detail(request, slug):
     title = "Buy and sell quality study notes and resources"
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
@@ -597,12 +701,12 @@ def school_detail(request, slug):
         product.average_rating = average_rating
         try:
             bundle = Bundle.objects.get(product=product)
-            print(bundle.id)
+            # print(bundle.id)
             product.bundle_slug = bundle.slug
             product.bundle = True
         except Bundle.DoesNotExist:
             product.bundle = False
-        print(product.bundle)
+        # print(product.bundle)
     all_category = Category.objects.order_by('title')
     all_university = Institute.objects.order_by('title')
     return render(request, 'store/search.html', {
@@ -614,6 +718,7 @@ def school_detail(request, slug):
     })
 
 @login_required
+@logout_superuser_admin_staff
 def dashboard(request):
     title = "Buy and sell quality study notes and resources"
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
@@ -636,7 +741,7 @@ def dashboard(request):
     withdraw = Withdraw_Request.objects.filter(user=request.user).exclude(status='Failed').aggregate(total_amount=Sum('amount_withdraw'))['total_amount']
     if withdraw is None:
         withdraw = 0
-    print(withdraw)
+    # print(withdraw)
     servicecost = ServiceCosts.objects.first()
     if order_earn_result['total_price'] is not None:
         order_earn = order_earn_result['total_price'] - servicecost.service_costs 
@@ -659,6 +764,7 @@ def dashboard(request):
                    })
 
 @login_required
+@logout_superuser_admin_staff
 def courses(request):
     cart = Cart(request)
     total_cost = 0
@@ -667,6 +773,7 @@ def courses(request):
     return render(request, 'courses.html',{'cart':cart,'cart_product':len(cart),'total_cost':total_cost})
 
 @login_required
+@logout_superuser_admin_staff
 def uploads(request):
     category = store_category.objects.all()
     institute = Institute.objects.all()
@@ -674,8 +781,8 @@ def uploads(request):
     chargeprice = ChargePrice.objects.first()
     if request.method == 'POST':
         form = ProductForm(request.POST,request.FILES)
-        print(request.POST.dict())
-        print(form)
+        # print(request.POST.dict())
+        # print(form)
         if form.is_valid():
             product = form.save()
             msg.success(request, 'Product uploaded successfully!')
@@ -686,6 +793,7 @@ def uploads(request):
     return render(request, 'upload.html', {'form': form,'category':category,'institute':institute,'chargeprice':chargeprice,'course':course})
 
 @login_required
+@logout_superuser_admin_staff
 def Edit_uploads(request,pk):
     product = Product.objects.filter(user=request.user).get(pk=pk)
     if request.method == 'POST':
@@ -701,6 +809,7 @@ def Edit_uploads(request,pk):
 
 
 @login_required
+@logout_superuser_admin_staff
 def delete_uploads(request, pk):
     try:
         product = Product.objects.filter(user=request.user).get(pk=pk)
@@ -725,6 +834,16 @@ def add_institute(request):
     #     msg.error(request, 'Please check the form.')
     return render(request, 'add-institute.html',{})
 
+@login_required
+def add_category(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        slug = slugify(title)  
+        institute = Category.objects.create(title=title, slug=slug)
+        institute.save()  
+        msg.success(request, 'Category Added successfully!')
+        return redirect('add_course')
+    return render(request, 'add_category.html',{})
 
 @login_required
 def add_course(request):
@@ -735,12 +854,11 @@ def add_course(request):
         institute.save()  
         msg.success(request, 'Course Added successfully!')
         return redirect('add_course')
-    # else:
-    #     msg.error(request, 'Please check the form.')
     return render(request, 'add_course.html',{})
 
 
 @login_required
+@logout_superuser_admin_staff
 def downloads(request):
 
     title = "Buy and sell quality study notes and resources"
@@ -755,7 +873,7 @@ def downloads(request):
 
     for order_item in order_items:
         content_type = ContentType.objects.get_for_model(order_item.content_object)
-        print(content_type.model_class())
+        # print(content_type.model_class())
         if content_type.model_class() == Product:
             order_item.doc_type = "product"
             ratings = Rating.objects.filter(product=order_item.content_object.id)
@@ -770,7 +888,7 @@ def downloads(request):
                 average_rating = 0  
             # average_rating = round(ratings.aggregate(Avg('rating'))['rating__avg'], 1)
             order_item.average_rating = average_rating
-            print(committed)
+            # print(committed)
             
         elif content_type.model_class() == Question_Answer:
             order_item.doc_type = "question_answer"
@@ -825,6 +943,7 @@ def downloads(request):
     })
 
 @login_required
+@logout_superuser_admin_staff
 def user_uploads(request):
     title = "Buy and sell quality study notes and resources"
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
@@ -836,9 +955,19 @@ def user_uploads(request):
     for item in cart:
         total_cost += item['total_price']
     
-    products = Product.objects.filter(user=request.user)
+    products = Product.objects.filter(user=request.user, status="ACTIVE")
     total_active = products.filter(status="ACTIVE").count()
-    return render(request, 'user_uploads.html', {'products':products,
+    products_per_page = 20
+    paginator = Paginator(products, products_per_page)
+    page_number = request.GET.get('page', 1)
+    try:
+        paginated_products = paginator.page(page_number)
+    except PageNotAnInteger:
+        paginated_products = paginator.page(1)
+    except EmptyPage:
+        paginated_products = paginator.page(paginator.num_pages)
+
+    return render(request, 'user_uploads.html', {'products':paginated_products,
             'cart':cart,'cart_product':len(cart),'total_cost':total_cost,
             'title':title,'description':description,'total_active':total_active,
         'nav_university':nav_university,'nav_products':nav_products,'nav_category':nav_category
@@ -847,6 +976,7 @@ def user_uploads(request):
 
 
 @login_required
+@logout_superuser_admin_staff
 def bundles(request):
     title = "Buy and sell quality study notes and resources"
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
@@ -861,7 +991,17 @@ def bundles(request):
     products = Bundle.objects.filter(created_by=request.user)
    
     total_active = products.count()
-    return render(request, 'bundle.html', {'products':products,
+    products_per_page = 20
+    paginator = Paginator(products, products_per_page)
+    page_number = request.GET.get('page', 1)
+    try:
+        paginated_products = paginator.page(page_number)
+    except PageNotAnInteger:
+        paginated_products = paginator.page(1)
+    except EmptyPage:
+        paginated_products = paginator.page(paginator.num_pages)
+
+    return render(request, 'bundle.html', {'products':paginated_products,
             'cart':cart,'cart_product':len(cart),'total_cost':total_cost,
             'title':title,'description':description,'total_active':total_active,
         'nav_university':nav_university,'nav_products':nav_products,'nav_category':nav_category
@@ -871,6 +1011,7 @@ def bundles(request):
 
 
 @login_required
+@logout_superuser_admin_staff
 def create_bundle(request):
     title = "Buy and sell quality study notes and resources"
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
@@ -886,7 +1027,7 @@ def create_bundle(request):
     for product in products:
         if product.price is not None:
             product.price = int(product.price * 100)
-            print(product.price)
+            # print(product.price)
     return render(request, 'create-bundle.html', {'products':products,
             'cart':cart,'cart_product':len(cart),'total_cost':total_cost,
             'title':title,'description':description,'charge_earn':chargeprice,
@@ -895,6 +1036,7 @@ def create_bundle(request):
     })
 
 @login_required
+@logout_superuser_admin_staff
 def remove_bundle(request, product_id):
     bundle = get_object_or_404(Bundle, id=product_id)
     bundle.delete()
@@ -902,6 +1044,7 @@ def remove_bundle(request, product_id):
 
 
 @login_required
+@logout_superuser_admin_staff
 def wallet(request):
     if request.method == 'POST':
         Withdraw_Request.objects.create(user=request.user,username=request.POST.get('username'),email=request.POST.get('email'),acc_type=request.POST.get('acc_type'),amount_withdraw=request.POST.get('amount_withdraw'))    
@@ -916,7 +1059,7 @@ def wallet(request):
     order_earn_result = Order.objects.filter(created_by=request.user).aggregate(total_price=Sum('paid_amount'))
     
     withdraw = Withdraw_Request.objects.filter(user=request.user).exclude(status='Failed').aggregate(total_amount=Sum('amount_withdraw'))['total_amount']
-    print(withdraw)
+    # print(withdraw)
     if withdraw is None:
         withdraw = 0
     servicecost = ServiceCosts.objects.first()
@@ -927,11 +1070,42 @@ def wallet(request):
     order_earn = round((order_earn - (order_earn * (chargeprice.charge_percentage / 100)) - withdraw), 2)
 
     withdraw_table = Withdraw_Request.objects.filter(user=request.user)
-    return render(request, 'wallet.html', {
+
+    user_products = Product.objects.filter(user=request.user)
+    user_bundles = Bundle.objects.filter(created_by=request.user)
+
+    order_items = OrderItem.objects.filter(
+        price__gt=0.0,
+        content_type__in=[ContentType.objects.get_for_model(Product), ContentType.objects.get_for_model(Bundle)],
+        object_id__in=user_products.values_list('pk', flat=True).union(user_bundles.values_list('pk', flat=True))
+    ).order_by('-created_at')
+    products_per_page = 20
+    paginator = Paginator(order_items, products_per_page)
+    page_number = request.GET.get('page', 1)
+    try:
+        paginated_products = paginator.page(page_number)
+    except PageNotAnInteger:
+        paginated_products = paginator.page(1)
+    except EmptyPage:
+        paginated_products = paginator.page(paginator.num_pages)
+
+    # for order_item in order_items:
+    #     content_type = order_item.content_type
+    #     if content_type.model_class() == Product:
+    #         user = order_item.content_object.user
+    #         print("User for Product:", user)
+    #     elif content_type.model_class() == Bundle:
+    #         created_by = order_item.content_object.created_by
+    #         print("User for Bundle:", created_by)
+
+        #     order_item.doc_type = "product"
+
+    return render(request, 'wallet.html', {'order_items':paginated_products,
         'cart':cart,'cart_product':len(cart),'total_cost':total_cost,'order_earn':order_earn,'withdraw_type':withdraw_type,'withdraw_table':withdraw_table})
 
 
 @login_required
+@logout_superuser_admin_staff
 def reviews(request):
     title = "Reviews: Buy and sell quality study notes and resources"
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
@@ -957,9 +1131,9 @@ def reviews(request):
             average_rating = 0  
         # average_rating = round(ratings.aggregate(Avg('rating'))['rating__avg'], 1)
         order_item.average_rating = average_rating
-        print(committed)
+        # print(committed)
         content_type = ContentType.objects.get_for_model(order_item.content_object)
-        print(content_type.model_class())
+        # print(content_type.model_class())
         if content_type.model_class() == Product:
             order_item.doc_type = "product"
         elif content_type.model_class() == Question_Answer:
@@ -980,15 +1154,90 @@ def reviews(request):
         'nav_university':nav_university,'nav_products':nav_products,'nav_category':nav_category
     })
 
-@login_required
-def messages(request):
-    return render(request, 'messages.html',{})
+from collections import defaultdict
 
 @login_required
+@logout_superuser_admin_staff
+def messages(request):
+    title = "Messages"
+    description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
+    nav_category = Category.objects.order_by('-created_at')[:12]
+    nav_products = Product.objects.order_by('-created_at').filter(status='ACTIVE')[:12]
+    nav_university = Institute.objects.order_by('-created_at')[:12]
+    cart = Cart(request)
+    total_cost = 0
+    for item in cart:
+        total_cost += item['total_price']
+
+    all_messages = Message.objects.filter(Q(sender=request.user) | Q(receiver=request.user)).order_by('timestamp')
+    main_msg = {}
+
+    for msg in all_messages:
+        if msg.subject not in main_msg:
+            main_msg[msg.subject] = []
+        main_msg[msg.subject].append(msg)
+    
+    count = Message.objects.filter(receiver=request.user, is_read=False).count()
+    return render(request, 'messages.html',{
+        'cart':cart,'cart_product':len(cart),'total_cost':total_cost,"main_msg":main_msg,
+        'title':title,'description':description,'count':count,
+        'nav_university':nav_university,'nav_products':nav_products,'nav_category':nav_category
+
+    })
+
+@login_required
+@logout_superuser_admin_staff
 def wishlist(request):
     return render(request, 'wishlist.html',{})
 
+
+def user_profile(request, id):
+    title = id
+    description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
+    nav_category = Category.objects.order_by('-created_at')[:12]
+    nav_products = Product.objects.order_by('-created_at').filter(status='ACTIVE')[:12]
+    nav_university = Institute.objects.order_by('-created_at')[:12]
+    # profile = Userprofile.objects.get_or_create(user=id)[0] 
+    profile = Userprofile.objects.filter(user__username=id).first()
+    # sold = Order.objects.filter(created_by__username=id).count() or 0
+    cart = Cart(request)
+    total_cost = 0
+    for item in cart:
+        total_cost += item['total_price']
+    # products = Product.objects.filter(user=id)
+    products = Product.objects.filter(user__username=id)
+    total_active = products.filter(status="ACTIVE").count() or 0
+    current_sale = products.filter(purchased__gte = 1)
+    total_purchased = current_sale.aggregate(total_purchased=Sum('purchased'))['total_purchased'] or 0
+    latest_sale = current_sale.order_by('-updated_at').first()
+    products_per_page = 20
+    paginator = Paginator(products, products_per_page)
+    page_number = request.GET.get('page', 1)
+    try:
+        paginated_products = paginator.page(page_number)
+    except PageNotAnInteger:
+        paginated_products = paginator.page(1)
+    except EmptyPage:
+        paginated_products = paginator.page(paginator.num_pages)
+
+    date_joined = profile.user.date_joined
+    time_difference = timezone.now() - date_joined
+    years = time_difference.days // 365
+    months = (time_difference.days % 365) // 30
+    if years > 0:
+        output = f"Member Since {years} year{'s' if years != 1 else ''}"
+    else:
+        output = f"Member Since {months} month{'s' if months != 1 else ''}"
+
+    return render(request, 'user.html',{'products':paginated_products,'output':output,'total_active':total_active,
+        'cart':cart,'cart_product':len(cart),'total_cost':total_cost,'latest_sale':latest_sale,
+            'title':title,'description':description,'profile':profile,'total_purchased':total_purchased,
+        'nav_university':nav_university,'nav_products':nav_products,'nav_category':nav_category
+
+    })
+
 @login_required
+@logout_superuser_admin_staff
 def profile(request):
     title = request.user
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
@@ -1009,38 +1258,36 @@ def profile(request):
     })
 
 @login_required
+@logout_superuser_admin_staff
 def settings_profile(request):
     if request.method == 'POST':
-        print(request.POST)
         user = Userprofile.objects.get_or_create(user=request.user)[0] 
-
         if request.FILES:
-            user.image = request.FILES['image'] 
-        if request.POST.get('firstname'):
-            user.firstname = request.POST.get('firstname')
-        if request.POST.get('lastname'):
-            user.lastname = request.POST.get('lastname')
-        if request.POST.get('usertype'):
-            user.usertype = request.POST.get('usertype')
+            user.image = request.FILES['image']
+            user.save(update_fields=[
+            'image'
+            ])
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        user.firstname = request.POST.get('firstname', None)
+        user.lastname = request.POST.get('lastname', None)
+        user.dob = request.POST.get('dob', None)
+        user.country = request.POST.get('country', None)
+        user.education = request.POST.get('education', None)
+        user.institution = request.POST.get('institution', None)
+        user.academicyear = request.POST.get('academicyear', None)
+        user.shoptitle = request.POST.get('shoptitle', None)
+        user.shopdescription = request.POST.get('shopdescription', None)
         if request.POST.get('dob'):
             user.dob = request.POST.get('dob')
-        if request.POST.get('Address'):
-            user.Address = request.POST.get('Address')
-        if request.POST.get('city'):
-            user.city = request.POST.get('city')
-        if request.POST.get('zipcode'):
-            user.zipcode = request.POST.get('zipcode')
-        if request.POST.get('state'):
-            user.state = request.POST.get('state')
-        if request.POST.get('country'):
-            user.country = request.POST.get('country')
-        if request.POST.get('education'):
-            user.education = request.POST.get('education')
-        if request.POST.get('academicyear'):
-            user.academicyear = request.POST.get('academicyear')
-        if request.POST.get('shoptitle'):
-            user.shoptitle = request.POST.get('shoptitle')
-        if request.POST.get('shopdescription'):
-            user.shopdescription = request.POST.get('shopdescription')
-        user.save()
+            user.save(update_fields=[
+            'firstname', 'lastname', 'dob','country', 'education',
+            'institution', 'academicyear', 'shoptitle', 'shopdescription'
+            ])
+        else:
+            user.save(update_fields=[
+            'firstname', 'lastname', 'country', 'education',
+            'institution', 'academicyear', 'shoptitle', 'shopdescription'
+            ])
+            
+        print(request.POST.dict())
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

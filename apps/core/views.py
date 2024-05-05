@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
 from django.contrib.auth.models import User
@@ -9,7 +10,7 @@ from ..store.cart import Cart
 from .models import ServiceCosts, ChargePrice,Copyright_Request
 from ..vendor.forms import OrderForm
 from ..vendor.models import OrderItem, Order
-from ..store.models import Institute, Category, Bundle
+from ..store.models import Institute, Category, Bundle, Courses
 from django.contrib import sitemaps
 from django.utils.text import slugify
 from django.conf import settings
@@ -17,8 +18,16 @@ from django.http import JsonResponse
 from django.contrib import messages
 import os
 from django.contrib.auth.decorators import user_passes_test
-from .models import Question_Answer
+from .models import Question_Answer, Qna_Price, QA_Types
 import json
+from functools import wraps
+from django.contrib.auth import logout
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from ..vendor.api import call_message
+
+def custom_404_view(request, exception=None):
+    return render(request, '404.html', status=404)
 
 def super_admin_required(function):
     actual_decorator = user_passes_test(
@@ -26,15 +35,56 @@ def super_admin_required(function):
         login_url='/admin/', 
     )
     return actual_decorator(function)
+def logout_superuser_admin_staff(view_func):
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        # Check if the user is a superuser, admin, or staff member
+        if request.user.is_authenticated:
+            user = request.user
+            if user.is_superuser or user.is_staff:
+                logout(request)  # Logout the user
+                return HttpResponseRedirect(reverse('logout'))  # Redirect to logout page
 
-@super_admin_required
+        return view_func(request, *args, **kwargs)
+
+    return wrapper
+
+@staff_member_required
 def question_answer(request):
-    product = Product.objects.filter(status='ACTIVE')
+    product = Product.objects.filter(status='ACTIVE',user=request.user)
     print(product)
-    numbers = range(100) 
+    numbers = range(50) 
+    qnaprice = Qna_Price.objects.first()
+    qa_types = QA_Types.objects.all()
     return render(request, 'core/question_answer.html', {
-        'product':product,'numbers':numbers
+        'product':product,'numbers':numbers,'qnaprice':qnaprice,"qa_types":qa_types
         })
+
+@staff_member_required
+def product_add_admin(request):
+    if request.POST:
+        print(request.POST.dict())
+        title = request.POST.get('title')
+        # category = request.POST.get('category')
+        # course = request.POST.get('course')
+        author = request.POST.get('author')
+        publisher = request.POST.get('publisher')
+        isbn = request.POST.get('isbn')
+        edition = request.POST.get('edition')
+        description = request.POST.get('description')
+        category = Category.objects.filter(id=request.POST.get('category')).first()
+        course = Courses.objects.filter(id=request.POST.get('course')).first()
+        image_file = request.FILES.get('image')
+        product = Product.objects.create(user=request.user,title=title,category=category,course=course,author=author,publisher=publisher,isbn=isbn,edition=edition,description=description,image=image_file)
+        if image_file:
+            product.image = image_file
+            product.save()
+        messages.success(request, 'Books Uploaded Successfuly!')
+    category = Category.objects.all()
+    institute = Institute.objects.all()
+    course = Courses.objects.all()
+    chargeprice = ChargePrice.objects.first()
+    return render(request, 'core/product_add_admin.html', {'category':category,'institute':institute,'course':course,'chargeprice':chargeprice})
 
 
 def question_answer_add(request):
@@ -42,6 +92,7 @@ def question_answer_add(request):
     print()
     if request.method == 'POST':
         try:
+            print(request.POST.dict())
             title = request.POST.get('title')
             product_id = request.POST.get('product')
             question_type = request.POST.get('question_type')
@@ -50,16 +101,17 @@ def question_answer_add(request):
             short_answer = request.POST.get('short_answer')
             answer = request.POST.get('answer')
             chapter_no = request.POST.get('chapter_no')
-            price = request.POST.get('price')
+            price = request.POST.get('qa_price')
             
             prod = Product.objects.get(id=product_id)
+            quest_type = QA_Types.objects.get(id=question_type)
             
             question_answer = Question_Answer.objects.create(
                 user=request.user,
                 title=title,
                 product=prod,
                 chapter_no=chapter_no,
-                question_type=question_type,
+                question_type=quest_type,
                 question_no=question_no,
                 question=question,
                 short_answer=short_answer,
@@ -102,13 +154,36 @@ def upload_image(request):
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 # Create your views here.
+@logout_superuser_admin_staff
 def index(request):
     cart = Cart(request)
     total_cost = 0
     for item in cart:
         total_cost += item['total_price']
+    # print("***********************")
+    # print(Product.objects.filter(file='').count())
+    # print("***********************")
+    # print()
+    books = []
+    docu = []
+    counter1 = 0
+    counter2 = 0
+    products = Product.objects.filter(status='ACTIVE')
+    for product in products:
+        if counter1 + counter2 >= 24:
+            break
+        if product.file and counter1 <= 12:
+            books.append(product)
+            counter1 += 1
+        else:
+            if counter2 <= 12:
+                docu.append(product)
+                counter2 += 1
+    # print(len(books))
+    # print(len(docu))
+    # print("***********************")
 
-    products = Product.objects.filter(status='ACTIVE').order_by('-created_at')[:13]
+    products = Product.objects.filter(status='ACTIVE', file__isnull=False).order_by('-created_at')[:13]
     nav_category = Category.objects.order_by('-created_at')[:12]
     nav_products = products
     nav_university = Institute.objects.order_by('-created_at')[:12]
@@ -120,13 +195,14 @@ def index(request):
     title = "Buy and sell quality study notes and resources"
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
     return render(request, 'core/index.html',{
-        'products':products,'ismain':True,
-        'cart':cart,'cart_product':len(cart),'total_cost':total_cost,
+        'products':docu,'ismain':True,
+        'cart':cart,'cart_product':len(cart),'total_cost':total_cost,'books':books,
         'answer_count':answer_count,'product_count':product_count,'earn_count':earn_count,'university_count':university_count,
         'title':title,'description':description,
         'nav_university':nav_university,'nav_products':nav_products,'nav_category':nav_category
     })
 
+@logout_superuser_admin_staff
 def conatactpage(request):
     cart = Cart(request)
     total_cost = 0
@@ -134,7 +210,7 @@ def conatactpage(request):
         total_cost += item['total_price']
     return render(request, 'core/contact.html',{'cart':cart,'cart_product':len(cart),'total_cost':total_cost})
 
-
+@logout_superuser_admin_staff
 def sell_study_notes(request):
     title = "Sale Study Notes: Buy and sell quality study notes and resources"
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
@@ -154,6 +230,7 @@ def sell_study_notes(request):
 
     })
 
+@logout_superuser_admin_staff
 def faq(request):
     title = "FAQ: Buy and sell quality study notes and resources"
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
@@ -173,7 +250,7 @@ def faq(request):
 
     })
 
-
+@logout_superuser_admin_staff
 def all_school(request):
     title = "List of School, College, University: Buy and sell quality study notes and resources"
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
@@ -194,7 +271,7 @@ def all_school(request):
 
     })
 
-
+@logout_superuser_admin_staff
 def copyright(request):
     title = "CopyRight: Buy and sell quality study notes and resources"
     description = 'Get assignments, textbook Answers, Beat exams, Win grades,and say thanks to Answerdone.'
@@ -222,7 +299,7 @@ def copyright(request):
 
 @login_required
 def checkout(request):
-    print(request.POST.get('tr_payid'))
+    # print(request.POST.get('tr_payid'))
     form = OrderForm()
     shop = ServiceCosts.objects.first()
     cart = Cart(request)
@@ -246,16 +323,20 @@ def checkout(request):
             order.tr_merchant_id = request.POST.get('tr_merchant_id')
             order.is_paid = True
             order.save()
-            
+
             for item in cart:
                 item_type = item['item_type']
                 item_id = item['item_id']
                 content_type = None
                 
-                # Determine the model class based on the item type
                 model_class = None
                 if item_type == 'note':
                     model_class = Product
+                    product = Product.objects.get(id=item_id)
+                    recipient_email = product.user.email
+                    message_text = "Dear Answer Done User, Your document has been sold. You can check your balance by logging in to answerdone.com."
+                    call_message("Document Sold", recipient_email, message_text)
+
                 elif item_type == 'bundle':
                     model_class = Bundle
                 elif item_type == 'question':
@@ -271,7 +352,7 @@ def checkout(request):
                     price=item['total_price'],
                     quantity=item['quantity']
                 )
-
+                
             cart.clear()
 
             return redirect('index')
@@ -280,17 +361,18 @@ def checkout(request):
 
     return render(request, 'core/shoppingcart.html',{'cart':cart,'form':form,'cart_product':len(cart),'total_cost':total_cost,'shop':shop})
 
-
+@logout_superuser_admin_staff
 def termsofuse(request):
     return render(request, 'core/termsofuse.html',{})
-
+@logout_superuser_admin_staff
 def privacy_policy(request):
     return render(request, 'core/privacy-policy.html',{})
-
+@logout_superuser_admin_staff
 def aboutus(request):
     return render(request, 'core/aboutus.html',{})
 
 @login_required
+@logout_superuser_admin_staff
 def delete_profile(request):
     user = request.user
     user.delete()

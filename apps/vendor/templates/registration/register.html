@@ -34,7 +34,7 @@
             <div class="modal-dialog modal-register-form">
                 <div class="modal-header">
                     <h2 class="title-modal">Create a free account</h2>
-                    <p>Start your exams prepared! Create a profile on AnswerDone.</p>
+                    {% comment %} <p>Start your exams prepared! Create a profile on AnswerDone.</p> {% endcomment %}
                 </div>
                 <div class="modal-content">
 {% if messages %}
@@ -57,42 +57,43 @@
 {% endif %}
 
 
-                    {% comment %} <div class="group-button third-party-login-btns">
-                        <a href="#" class="btn-fblogin" target="_top">
-                        <i class="fab fa-facebook-square fb-login-icon"></i>
-                        Login with Facebook
-                        </a>
-                        <a href="#" class="btn-googlelogin" id="google-sign-in" data-redirect="">
-                        <img src="{% static "statics/img/google.png" %}"> Login with Google
-                        </a>
-                        <span id="googleButtonReplace"></span>
-                    </div> {% endcomment %}
-                    <span class="line-heading">e-mail</span>
+                    
+                    {% comment %} <span class="line-heading">e-mail</span> {% endcomment %}
                     <form action="{% url "register" %}" method="post" class="form-register" id="register-form" validate="" novalidate="novalidate">
+                        {{ form.non_field_errors }}
                         <div class="input-field">
-                            <input type="text" placeholder="Username" name="username" id="username" autocomplete="username" maxlength="50">
+                            <input type="text" placeholder="Username" name="username" id="username" autocomplete="username" maxlength="50" value="{{ form.data.username }}">
                             <label class="valid-icon">
                             <i class="far fa-check"></i>
                             <i class="far fa-times"></i>
                             </label>
+                            {% if form.errors.username %}
+                            <small class="text-danger">{{ form.errors.username }}</small>
+                            {% endif %}
                         </div>
                         <div class="input-field">
-                            <input type="email" placeholder="E-mail address" name="email" id="email" autocomplete="email" maxlength="50">
+                            <input type="email" placeholder="E-mail address" name="email" id="email" autocomplete="email" maxlength="50" value="{{ form.data.email }}">
                             <label class="valid-icon">
                             <i class="far fa-check"></i>
                             <i class="far fa-times"></i>
                             </label>
+                            {% if form.errors.email %}
+                            <small class="text-danger">{{ form.errors.email }}</small>
+                        {% endif %}
                         </div>
                         <div class="input-field">
-                            <input type="password" placeholder="Password" name="password1" id="id_password1" minlength="6" maxlength="50" autocomplete="new-password">
+                            <input type="password" placeholder="Password" name="password1" id="id_password1" minlength="6" maxlength="50" autocomplete="new-password" value="{{ form.data.password1 }}">
                             <label for="password" id="label-password">At least 8 characters</label>
                             <label class="valid-icon">
                             <i class="far fa-check"></i>
                             <i class="far fa-times"></i>
                             </label>
+                            {% if form.errors.password %}
+                            <small class="text-danger">{{ form.errors.password }}</small>
+                        {% endif %}
                         </div>
                         <div class="input-field">
-                            <input type="password" placeholder="Password" name="password2" id="id_password2" minlength="6" maxlength="50" autocomplete="new-password">
+                            <input type="password" placeholder="Password" name="password2" id="id_password2" minlength="6" maxlength="50" autocomplete="new-password" value="{{ old.password2 }}">
                             <label for="password" id="label-password">Conform Password</label>
                             <label class="valid-icon">
                             <i class="far fa-check"></i>
@@ -111,9 +112,9 @@
                             <button type="submit" class="cta-submit btn-register-step">Create my profile<i class="far fa-angle-right"></i></button>
                             <p class="switch-login-register">Already have an account? <a href="{% url "login" %}">Login</a></p>
                         </div>
-                        <div class="register-ps">
+                        {% comment %} <div class="register-ps">
                             By clicking "Create my profile" or logging in with Email, I agree to the <a href="/termsofuse" target="_blank">Terms and Conditions</a> and <a href="/privacystatement" target="_blank">Privacy Statement</a>.
-                        </div>
+                        </div> {% endcomment %}
                     </form>
                 </div>
             </div>

@@ -1,7 +1,40 @@
 {% load static %}
 <html lang="en"><head>
-    <title> </title>
+    <title>User Doc Uploads | AnswerDone </title>
     <meta charset="utf-8">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'statics/img/apple-touch-icon.png' %}">
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'statics/img/favicon-32x32.png' %}">
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'statics/img/favicon-16x16.png' %}">
+<link rel="manifest" href="{% static 'statics/img/site.webmanifest' %}">
+<link rel="mask-icon" href="{% static 'statics/img/safari-pinned-tab.svg' %}" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
+<link rel="canonical" href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}" />
+<link rel="alternate" href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}" hreflang="x-default"/>
+
+<meta name="description" content="{{description}}">
+<meta property="fb:app_id" content="">
+<meta property="og:site_name" content="AnswerDone">
+<meta property="og:title" content="{{title}}">
+<meta property="og:type" content="website">
+<meta property="og:description" content="{{description}}">
+<meta property="og:image" content="{% static 'statics/img/favicon.png' %}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+<meta name="twitter:widgets:csp" content="on">
+<meta name="twitter:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ request.path }}">
+<meta name="twitter:description" content="{{description}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{title}}">
+<meta name="twitter:site" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}">
+<meta name="twitter:image" content="{% static 'statics/img/favicon.png' %}">
+<meta name="apple-mobile-web-app-title" content="AnswerDone">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="csrf-token" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
@@ -152,14 +185,15 @@
 
                     <form action="{% url "uploads" %}" method="post" class="form-basisgegevens" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <div class="input-field search-field" id="studyEducation-container">
-                            <label for="studyEducation" class="title-field"> Title*
-                            </label>
-                            <input type="text" autocomplete="off" name="title" id="title" required class="input-search init-field-trigger  make-drop-pane" placeholder="" >
-                        </div>
+                        
                         <div class="input-field search-field" style="width: -webkit-fill-available;">
-                            <label for="course" class="title-field"> Type*
-                            </label>
+                            <div style="display:flex;">
+                                <label for="type" class="title-field"> Category*
+                                </label>
+                                <div id="back-button" style="display:block;">
+                                    <a href="{% url "add_category" %}" style="width: max-content;"><i class="fa fa-long-arrow-right"></i>If Not Then Add</a>
+                                </div>
+                                </div>
                             <select required class="select2-dropdown-link js-states form-control select2-hidden-accessible" name="category" id="category">
                                 <option value="" disabled selected></option>
                                 {% for cat in category %}
@@ -169,7 +203,7 @@
                         </div>
                         <div class="input-field search-field" style="width: -webkit-fill-available;">
                             <div style="display:flex;">
-                            <label for="course" class="title-field"> Course Code*
+                            <label for="course" class="title-field"> Subject *
                             </label>
                             <div id="back-button" style="display:block;">
                                 <a href="{% url "add_course" %}" style="width: max-content;"><i class="fa fa-long-arrow-right"></i>If Not Then Add</a>
@@ -186,7 +220,7 @@
                         
                         <div class="input-field search-field">
                             <div style="display:flex;">
-                            <label for="institute" class="title-field">School, Collage or University
+                            <label for="institute" class="title-field">School, College or University
                             </label>
                             <div id="back-button" style="display:block;">
                                 <a href="{% url "add-institute" %}" style="width: max-content;"><i class="fa fa-long-arrow-right"></i>If Not Then Add</a>
@@ -199,15 +233,20 @@
                                 {% endfor %}
                               </select>                         
                             </div> 
-                            <div class="input-field search-field" id="studyEducation-container">
+                            {% comment %} <div class="input-field search-field" id="studyEducation-container">
                                 <label for="isbn" class="title-field"> ISBN
                                 </label>
                                 <input type="text" autocomplete="off" name="isbn" id="isbn" class="input-search init-field-trigger  make-drop-pane" placeholder="" >
-                            </div>
-                            <div class="input-field search-field" id="studyEducation-container">
+                            </div> {% endcomment %}
+                            {% comment %} <div class="input-field search-field" id="studyEducation-container">
                                 <label for="Edition" class="title-field"> Edition
                                 </label>
                                 <input type="text" autocomplete="off" name="edition" id="edition"  class="input-search init-field-trigger  make-drop-pane" placeholder="" >
+                            </div> {% endcomment %}
+                            <div class="input-field search-field" id="studyEducation-container">
+                                <label for="studyEducation" class="title-field"> Title*
+                                </label>
+                                <input type="text" autocomplete="off" name="title" id="title" required class="input-search init-field-trigger  make-drop-pane" placeholder="" >
                             </div>
                         <div class="input-field search-field" >
                             <label for="description" class="title-field">Description*
@@ -217,7 +256,7 @@
                         <div class="input-field search-field" >
                             <label for="image" class="title-field">Featured Image
                             </label>
-                            <input type="file" name="image" class="input-search init-field-trigger  make-drop-pane" required style="width: -webkit-fill-available;" accept="image/*"/>
+                            <input type="file" name="image" class="input-search init-field-trigger  make-drop-pane" style="width: -webkit-fill-available;" accept="image/*"/>
                         </div>
                         <div class="input-field search-field" >
                             <label for="image" class="title-field">PDF file*
@@ -234,7 +273,19 @@
                         <div class="input-field search-field" >
                             <label for="show_pages" class="title-field">Number of Pages to Show as Free
                             </label>
-                            <input type="number" name="show_pages" class="input-search init-field-trigger  make-drop-pane" style="width: -webkit-fill-available;" value=2 />
+                            <select id="institute" name="show_pages" class="select2-dropdown-link js-states form-control">
+                                <option value="1" selected>1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                
+                              </select>
                         </div>
    
                         <input type="hidden" id="charge_earn" value='{{ chargeprice.charge_percentage }}'>
@@ -247,7 +298,7 @@
                                 <label for="price" class="title-field">Price*</label>
                                 <div class="input-number">
                                     <button type="button" class="decrease-number" data-step-size="0.10" data-min-price="0.00" aria-label="Decrease Number"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                                    <input name="price" id="your-price" type="number" data-dot-or-comma="dot" value="5.0" >
+                                    <input name="price" id="your-price" type="number" step="any" data-dot-or-comma="dot" value="5.0" >
                                     <button type="button" class="increase-number" data-step-size="0.50" data-min-price="0.00" aria-label="Increase Number"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                 </div>
                             </div>
@@ -255,7 +306,7 @@
                                 <span class="title-field">Earnings per Sale</span>
                                 <span class="value-earningsale">
                                 $
-                                    <span id="user-earning">4.01</span>
+                                    <span id="user-earning"></span>
                                 
                                 </span>
                             </div>
@@ -270,7 +321,7 @@
                                     <strong>Please be advised:</strong> Make sure you only upload your own work and don’t upload any material of which the copyright is owned by Any User.
                                 </label>
                             </div>                            
-                            <button type="submit" class="cta-submit-form">Upload Documents<i class="fa fa-chevron-right"></i></button>
+                            <button id="start-upload" type="submit" class="cta-submit-form">Upload Documents<i class="fa fa-chevron-right"></i></button>
                         </div>
                     </form>
                 </div>
@@ -278,7 +329,16 @@
         </div>
     </article>
 
-
+    <script>
+        $(document).ready(function() {
+            $('.cta-submit-form').click(function() {
+                // Replace text with spinner icon
+                $(this).html('<i class="fa fa-spinner fa-spin" style="font-size: larger;margin: 0;"></i>');
+                // Disable button
+                $(this).addClass("disable");
+            });
+        });
+        </script>
     <script>
         $(document).ready(function() {
             // Function to update the earnings per sale value
@@ -289,7 +349,7 @@
                 var earnings = price - (price * (charge_earn / 100));
                 $('#user-earning').text(earnings.toFixed(2));
             }
-    
+
             // Increase button click event
             $('.increase-number').click(function() {
                 var currentValue = parseFloat($('#your-price').val());

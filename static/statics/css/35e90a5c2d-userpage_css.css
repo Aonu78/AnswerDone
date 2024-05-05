@@ -3,7 +3,7 @@
     font-style: normal;
     font-weight: 100;
     font-display: swap;
-    src: local("Alegreya Sans Thin"), local("AlegreyaSans-Thin"), url(/statics/webfonts/alegreya-sans-stuvia-100.woff2) format("woff2"), url(/statics/webfonts/alegreya-sans-stuvia-100.woff) format("woff")
+    src: local("Alegreya Sans Thin"), local("AlegreyaSans-Thin"), url(/static/webfonts/alegreya-sans-stuvia-100.woff2) format("woff2"), url(/static/webfonts/alegreya-sans-stuvia-100.woff) format("woff")
 }
 
 @font-face {
@@ -11,7 +11,7 @@
     font-style: normal;
     font-weight: 300;
     font-display: swap;
-    src: local("Alegreya Sans Light"), local("AlegreyaSans-Light"), url(/statics/webfonts/alegreya-sans-stuvia-300.woff2) format("woff2"), url(/statics/webfonts/alegreya-sans-stuvia-300.woff) format("woff")
+    src: local("Alegreya Sans Light"), local("AlegreyaSans-Light"), url(/static/webfonts/alegreya-sans-stuvia-300.woff2) format("woff2"), url(/static/webfonts/alegreya-sans-stuvia-300.woff) format("woff")
 }
 
 @font-face {
@@ -19,7 +19,7 @@
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: local("Alegreya Sans Regular"), local("AlegreyaSans-Regular"), url(/statics/webfonts/alegreya-sans-stuvia-regular.woff2) format("woff2"), url(/statics/webfonts/alegreya-sans-stuvia-regular.woff) format("woff")
+    src: local("Alegreya Sans Regular"), local("AlegreyaSans-Regular"), url(/static/webfonts/alegreya-sans-stuvia-regular.woff2) format("woff2"), url(/static/webfonts/alegreya-sans-stuvia-regular.woff) format("woff")
 }
 
 @font-face {
@@ -27,7 +27,7 @@
     font-style: normal;
     font-weight: 500;
     font-display: swap;
-    src: local("Alegreya Sans Medium"), local("AlegreyaSans-Medium"), url(/statics/webfonts/alegreya-sans-stuvia-500.woff2) format("woff2"), url(/statics/webfonts/alegreya-sans-stuvia-500.woff) format("woff")
+    src: local("Alegreya Sans Medium"), local("AlegreyaSans-Medium"), url(/static/webfonts/alegreya-sans-stuvia-500.woff2) format("woff2"), url(/static/webfonts/alegreya-sans-stuvia-500.woff) format("woff")
 }
 
 @font-face {
@@ -35,7 +35,7 @@
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: local(""), url(/statics/webfonts/faustina-stuvia-regular.woff2) format("woff2"), url(/statics/webfonts/faustina-stuvia-regular.woff) format("woff")
+    src: local(""), url(/static/webfonts/faustina-stuvia-regular.woff2) format("woff2"), url(/static/webfonts/faustina-stuvia-regular.woff) format("woff")
 }
 
 @font-face {
@@ -43,7 +43,7 @@
     font-style: normal;
     font-weight: 500;
     font-display: swap;
-    src: local(""), url(/statics/webfonts/faustina-stuvia-500.woff2) format("woff2"), url(/statics/webfonts/faustina-stuvia-500.woff) format("woff")
+    src: local(""), url(/static/webfonts/faustina-stuvia-500.woff2) format("woff2"), url(/static/webfonts/faustina-stuvia-500.woff) format("woff")
 }
 
 @font-face {
@@ -51,7 +51,7 @@
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: local(""), url(/statics/webfonts/faustina-stuvia-600.woff2) format("woff2"), url(/statics/webfonts/faustina-stuvia-600.woff) format("woff")
+    src: local(""), url(/static/webfonts/faustina-stuvia-600.woff2) format("woff2"), url(/static/webfonts/faustina-stuvia-600.woff) format("woff")
 }
 
 @font-face {
@@ -59,7 +59,7 @@
     font-style: normal;
     font-weight: 700;
     font-display: swap;
-    src: local(""), url(/statics/webfonts/faustina-stuvia-700.woff2) format("woff2"), url(/statics/webfonts/faustina-stuvia-700.woff) format("woff")
+    src: local(""), url(/static/webfonts/faustina-stuvia-700.woff2) format("woff2"), url(/static/webfonts/faustina-stuvia-700.woff) format("woff")
 }
 
 /*!
@@ -71,7 +71,7 @@
     font-style: normal;
     font-weight: 900;
     font-display: swap;
-    src: url(/statics/webfonts/fa-stuvia-solid-900.woff2) format("woff2"), url(/statics/webfonts/fa-stuvia-solid-900.woff) format("woff")
+    src: url(/static/webfonts/fa-stuvia-solid-900.woff2) format("woff2"), url(/static/webfonts/fa-stuvia-solid-900.woff) format("woff")
 }
 
 .fa,
@@ -88,7 +88,7 @@
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url(/statics/webfonts/fa-stuvia-regular-400.woff2) format("woff2"), url(/statics/webfonts/fa-stuvia-regular-400.woff) format("woff")
+    src: url(/static/webfonts/fa-stuvia-regular-400.woff2) format("woff2"), url(/static/webfonts/fa-stuvia-regular-400.woff) format("woff")
 }
 
 .fa,
@@ -110,7 +110,7 @@
     font-style: normal;
     font-weight: 300;
     font-display: swap;
-    src: url(/statics/webfonts/fa-stuvia-light-300.woff2) format("woff2"), url(/statics/webfonts/fa-stuvia-light-300.woff) format("woff")
+    src: url(/static/webfonts/fa-stuvia-light-300.woff2) format("woff2"), url(/static/webfonts/fa-stuvia-light-300.woff) format("woff")
 }
 
 .fal {
@@ -127,8 +127,8 @@
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url(/statics/webfonts/fa-brands-400.eot);
-    src: url(/statics/webfonts/fa-brands-400.eot?#iefix) format("embedded-opentype"), url(/statics/webfonts/fa-stuvia-brands-400.woff2) format("woff2"), url(/statics/webfonts/fa-stuvia-brands-400.woff) format("woff")
+    src: url(/static/webfonts/fa-brands-400.eot);
+    src: url(/static/webfonts/fa-brands-400.eot?#iefix) format("embedded-opentype"), url(/static/webfonts/fa-stuvia-brands-400.woff2) format("woff2"), url(/static/webfonts/fa-stuvia-brands-400.woff) format("woff")
 }
 
 .fab {

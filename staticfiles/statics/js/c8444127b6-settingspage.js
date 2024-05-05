@@ -103,8 +103,11 @@
         }
 
         function n(u, t) {
+            
             var e, n = u.attr("data-action");
-            "modify" !== n && !t || (t = u.parent(), e = $("#" + t.attr("data-form")), u.removeClass("cta-action-active"), u.siblings().addClass("cta-action-active"), t.toggleClass("cta-action--active"), "modify" !== n) || (e.addClass("form-data--active"), e.find("input, textarea").removeAttr("readonly"), setTimeout(function() {
+            "modify" !== n && !t || (t = u.parent(), e = $("#" + t.attr("data-form")), u.removeClass("cta-action-active"), u.siblings().addClass("cta-action-active"), 
+            // t.toggleClass("cta-action--active"), 
+            "modify" !== n) || (e.addClass("form-data--active"), e.find("input, textarea").removeAttr("readonly"), setTimeout(function() {
                 e.find("input, textarea").first().focus()
             }, 300))
         }
@@ -158,20 +161,35 @@
                     var userId = $("#user_id").val();
                     var apiUrl = '/api/users/' + userId + '/update-username/';
                     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
-                    $.ajax({
-                        url: apiUrl,
-                        type: 'PUT',
-                        headers: { "X-CSRFToken": csrfToken },
-                        data: {
+                    fetch(apiUrl, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrfToken
+                        },
+                        body: JSON.stringify({
                             csrfmiddlewaretoken: csrfToken,
                             username: newUsername
-                        },
-                        success: function(response) {
-                            console.log('Username updated successfully:', response);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error updating username:', error);
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
                         }
+                        return response.json();
+                    })
+                    .then(data => {
+                        document.getElementById("change-username").classList.add('cta-action-active')
+                        // document.getElementById("work-button").classList.add('cta-action--active')
+                        document.getElementById("save-username").classList.remove('cta-action-active')
+                        document.getElementById("input_username").setAttribute("readonly", true);
+                        document.getElementById("input_username-error").style.display = 'none';
+                        // console.log('Username updated successfully:', data);
+                    })
+                    .catch(error => {
+                        document.getElementById("input_username-error").style.display = 'block';
+                        // document.getElementById("work-button").classList.add('cta-action--active')
+                        console.error('Error updating username:', error);
                     });
                 });
             })

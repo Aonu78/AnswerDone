@@ -11644,7 +11644,8 @@ i.star-review {
     display: flex;
     align-items: flex-start;
     flex-flow: row wrap;
-    justify-content: space-between
+    justify-content: space-between;
+    z-index: 2;
 }
 
 .message-guide {
@@ -12224,6 +12225,10 @@ a.cta-cart-mob {
 }
 
 .preview-product .caption-preview-product {
+    margin: 0 auto 0px;
+    z-index: 2343;
+    position: relative;
+    background: aliceblue;
     width: calc(100% - 70px);
     padding: 20px 35px;
     margin: 0 auto 40px;
@@ -12348,7 +12353,8 @@ a.cta-cart-mob {
     box-sizing: border-box;
     width: 100%;
     border: 0;
-    height: 750px
+    height: 750px;
+    margin-top: -100px;
 }
 
 .bg-highlight,

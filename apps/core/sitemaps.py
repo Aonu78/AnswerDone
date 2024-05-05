@@ -1,4 +1,6 @@
 from django.contrib.sitemaps import Sitemap
+
+from .models import Question_Answer
 from ..vendor.models import Product
 from django.urls import reverse
 
@@ -12,6 +14,16 @@ class DynamicSitemap(Sitemap):
     def lastmod(self, obj):
         return obj.updated_at
     
+class DynamicSitemap_MCQ(Sitemap):
+    changefreq = "daily"
+    priority = 0.9
+
+    def items(self):
+        return Question_Answer.objects.filter(status='Active')
+    
+    def lastmod(self, obj):
+        return obj.created_at
+    
 class StaticSitemap(Sitemap):
     changefreq = "weekly"
     priority = 0.8
@@ -19,7 +31,7 @@ class StaticSitemap(Sitemap):
     def items(self):
         return ['index','qna','sell-study-notes','all-school','termsofuse','privacy-policy','aboutus',
                 'copyright','faq','dashboard','uploads','user_uploads','downloads','wallet',
-                'profile','settings_profile','register','login','forgot_password','logout']  # Add other static page URLs here
+                'profile','register','login','forgot_password','logout']  # Add other static page URLs here
     
     def location(self, item):
         return reverse(item)  # Assuming your static pages are defined in URLs with their names
