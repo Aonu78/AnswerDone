@@ -38,6 +38,7 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from rest_framework import generics
 from .serializers import LatestArticlesSerializer
+
 class EmailThread(threading.Thread):
     def __init__(self, email_message):
         self.email_message = email_message
@@ -45,13 +46,13 @@ class EmailThread(threading.Thread):
 
     def run(self):
         with smtplib.SMTP(email_logins.SERVER, 587) as server:
-            # print("Enter Email")
+            print("Enter Email")
             server.starttls()
-            # print("Enter starlit")
+            print("Enter starlit")
             server.login(email_logins.EMAIL, email_logins.PASS)
-            # print("Enter login")
+            print("Enter login")
             server.sendmail('support@answerdone.com', self.email_message['To'], self.email_message.as_string())
-            # print("Email sended to User")
+            print("Email sended to User")
 
 
 class ActivateAccount(View):
@@ -141,22 +142,24 @@ class RegistrationView(View):
                         "token":generate_token.make_token(user),
                         
                     })
-                    # print(html_content)
-
-                    email_message = MIMEMultipart()
+                    email_message = EmailMessage()
+                    print("EmailMessage...")
+                    email_message.set_content(html_content)
+                    email_message.add_alternative(html_content, subtype='html')
                     email_message["From"] = "support@answerdone.com"
                     email_message["To"] = email
-                    email_message["Subject"] = "Activate your store account"
-                    html_part = MIMEText(html_content, "html")
-                    email_message.attach(html_part)
-                    # print("Creating Email Attaching")
-                    email_thread = EmailThread(email_message)
-                    email_thread.start()
-                    # with smtplib.SMTP(email_logins.SERVER, 587) as server:
-                    #     server.starttls()
-                    #     server.login(email_logins.EMAIL, email_logins.PASS)
-                    #     server.sendmail('support@answerdone.com', email, email_message.as_string())
-                    # print("Activate your account by clicking the link in your mailbox")
+                    email_message["Subject"] = "Activate your AnswerDone account"
+                    
+                    with smtplib.SMTP(email_logins.SERVER, 587) as server:
+                        print("Entering...")
+                        server.starttls()
+                        print("starttls...")
+                        server.login(email_logins.EMAIL, email_logins.PASS)
+                        print("login...")
+                        server.send_message(email_message)
+                        # server.sendmail('support@answerdone.com', email, email_message)
+                        print("sendmail...")
+                    print("Activate your account by clicking the link in your mailbox")
                     msg.success(request, "Activate your account by clicking the link in your mailbox")
                     return redirect("register")
         else:

@@ -55,8 +55,23 @@ STATUS_CHOICES = (
 ('ACTIVE', 'Active'),
 ('DELETED', 'Deleted'),
 )
-class Product(models.Model):
+
+from django.core.exceptions import ValidationError
+from django.core.files.storage import FileSystemStorage
+def validate_file_extension(value):
+    if not value.name.endswith('.pdf'):
+        raise ValidationError("Only PDF files are allowed.")
+
+class MaxLengthFileSystemStorage(FileSystemStorage):
+    def get_valid_name(self, name):
+        # Split filename and extension
+        root, ext = os.path.splitext(name)
+        # Truncate filename to 100 characters
+        truncated_name = root[:100] + ext
+        return super().get_valid_name(truncated_name)
     
+
+class Product(models.Model):
     user = models.ForeignKey(User, related_name='products', on_delete=models.CASCADE)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.SET_NULL,blank=True, null=True)
     title = models.CharField(max_length=255)
@@ -71,7 +86,8 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     price = models.FloatField(blank=True, null=True)
     image = models.ImageField(upload_to='uploads/product_images/', blank=True, null=True)
-    file = models.FileField(upload_to='uploads/product_files/', blank=True, null=True)
+    file = models.FileField(upload_to='uploads/product_files/', storage=MaxLengthFileSystemStorage(), validators=[validate_file_extension], blank=True, null=True)
+
     show_pages = models.IntegerField(default=3)
     purchased = models.IntegerField(default=0)
     dummy_file = models.FileField(upload_to='uploads/dummy_product_files/', blank=True, null=True)

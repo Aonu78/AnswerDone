@@ -40,6 +40,31 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="csrf-token" content="">
+<!-- Document solutions -->
+<meta name="keywords" content="document management, document automation, document workflow, digital document solutions, paperless solutions, electronic document management, document scanning, document archiving, document storage, document retrieval">
+
+<!-- Textbook solutions -->
+<meta name="keywords" content="textbook solutions, educational resources, textbook answer keys, study guides, textbook solutions manual, homework solutions, study materials, test bank, course materials, learning resources">
+
+<!-- Sales-related -->
+<meta name="keywords" content="sales solutions, sales tools, sales software, sales automation, sales optimization, sales effectiveness, sales performance, sales strategies, sales techniques, sales training">
+
+<!-- Educational -->
+<meta name="keywords" content="education solutions, learning management, educational technology, online learning, distance education, e-learning, educational resources, learning materials, course content, academic support">
+
+<!-- Industry-specific -->
+<meta name="keywords" content="business textbooks, accounting solutions, finance textbooks, marketing solutions, management textbooks, economics solutions, engineering textbooks, science solutions, math textbooks, computer science solutions">
+{% block extra_head %}{% endblock extra_head %}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "AnswerDone",
+    "url": "{{ request.scheme }}://{{ request.META.HTTP_HOST }}",
+    "logo": "https://answerdone.com/static/statics/img/logo_blue.png",
+    'description': "{{description}}"",
+  }
+  </script>
 <script>
   function hitUrl(base,variable) {
       var url = "/remove-from-cart/" + base + "/"+ variable + "/";

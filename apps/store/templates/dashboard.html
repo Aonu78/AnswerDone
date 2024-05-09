@@ -1,6 +1,6 @@
 {% extends "core/base.html" %}
 {% load static %}
-{% block content %}
+{% block extra_head %}
 <style>
     .modal{
         display:none;
@@ -13,7 +13,8 @@
         <link rel="preload " href="{% static 'statics/js/389710fa65-dashboard.js' %}" as="script">
         <script defer="" type="text/javascript" src="{% static 'statics/js/c38bfd2f53-app.js' %}"></script>
         <script defer="" type="text/javascript" src="{% static 'statics/js/389710fa65-dashboard.js' %}"></script>
-
+        {% endblock extra_head %}
+        {% block content %}
         <div id="dashboard-page" class="wrapper content-page  ">
             <article id="content" class="content-wrapper page-dashboard">
                 {% if messages %}

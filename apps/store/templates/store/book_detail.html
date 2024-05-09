@@ -1,6 +1,6 @@
 {% extends "core/base.html" %}
 {% load static %}
-{% block content %}
+{% block extra_head %}
 <style>
     .mega-menu{
         height:auto !important;
@@ -179,8 +179,8 @@
 </script>
 
         <link rel="stylesheet" href="{% static 'statics/css/c7854cfb58-bookpage_css.css' %}">
-        
-
+        {% endblock extra_head %}
+        {% block content %}
     </head>
     <body class="site" data-token="YjZlNThlYmVlMTk5ZGQyZWM5YjcyZTI2MjBmMTZjMzE1YzRjZjM3NA==" data-country="214" data-language="en" data-logged-in="1" data-country-language-path="">
         <script defer="" type="text/javascript" src=" {% static 'statics/js/cbfd8adf36-analytics.js' %} "></script>

@@ -352,7 +352,7 @@
     <nav class="nav-cart has-preview qna-box" style="right: 1px;position: absolute;margin-right: 12px;">
         <span class="cart-now qna-cart" style="border: none;
         background: #199be9;">
-            <img src="{% static 'statics/img/qna.png' %}" style="width: 25px;
+            <img src="{% static 'statics/img/qna.png' %}" alt="qna img" style="width: 25px;
             margin-right: 17px;">
         <label>
             <span class="desktop" style="    color: white;">TextBook Solutions</span>
@@ -433,7 +433,7 @@
                                         {% endif %}
                                         <p>
                                             <span class="one-line-text-header">{{nav_prod.title}}</span>
-                                            <label class="book-header">{{ nav_prod.description|truncatechars:25 }}
+                                            <label class="book-header">{{ nav_prod.description|safe|truncatechars:25 }}
                                             </label>
                                         </p>
                                     </a>

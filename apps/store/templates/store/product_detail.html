@@ -1,6 +1,6 @@
 {% extends "core/base.html" %}
 {% load static %}
-{% block content %}
+{% block extra_head %}
 <script>
     function changeurllocation(variable) {
         window.location.href = variable;
@@ -189,6 +189,9 @@
 <link rel="preload " href="{% static 'statics/js/dd450856ba-contentpages.js' %}" as="script">
 <link rel="stylesheet" href="{% static 'statics/css/style.css' %}">
 <link rel="stylesheet" href="{% static 'statics/css/2417dbe620-contentpages_css.css' %}">
+{% endblock extra_head %}
+{% block content %}
+
 <div id="page" class="wrapper single-product contentpage-page " data-psp-trigger="" data-seller-id="958079" data-content-type="1" data-content-id="2707350" data-trigger-leave-page="1">
     <article id="content" class="content-wrapper">
         <div id="main-section" class="section-entry-product">
