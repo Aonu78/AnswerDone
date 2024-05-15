@@ -21,6 +21,7 @@ from django.db import IntegrityError
 from datetime import datetime
 from django.utils import timezone
 from ..core.views import logout_superuser_admin_staff
+from django.core.exceptions import ObjectDoesNotExist
 
 @logout_superuser_admin_staff
 def search(request):
@@ -104,14 +105,16 @@ def search(request):
         average_rating = ratings.aggregate(Avg('rating'))['rating__avg']
         product.average_rating = average_rating
         try:
-            bundle = Bundle.objects.get(product=product)
-            # print(bundle.id)
-            product.bundle_slug = bundle.slug
-            product.bundle = True
-        except Bundle.DoesNotExist:
+            bundles = Bundle.objects.filter(product=product)
+            if bundles.exists():
+                bundle = bundles.first()
+                product.bundle_slug = bundle.slug
+                product.bundle = True
+            else:
+                product.bundle = False
+        except ObjectDoesNotExist:
+            # If no bundle exists, set bundle flag to False
             product.bundle = False
-        print(product.bundle)
-
 
     return render(request, 'store/search.html', {
         'query': query,

@@ -86,7 +86,7 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     price = models.FloatField(blank=True, null=True)
     image = models.ImageField(upload_to='uploads/product_images/', blank=True, null=True)
-    file = models.FileField(upload_to='uploads/product_files/', storage=MaxLengthFileSystemStorage(), validators=[validate_file_extension], blank=True, null=True)
+    file = models.FileField(upload_to='uploads/product_files/',max_length=255, blank=True, null=True)
 
     show_pages = models.IntegerField(default=3)
     purchased = models.IntegerField(default=0)
@@ -107,6 +107,15 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('product_detail', args=[str(self.category.slug),str(self.slug)])
 
+    def save(self, *args, **kwargs):
+        # Truncate the file name if it exceeds 100 characters
+        if self.file:
+            file_name = os.path.basename(self.file.name)
+            name, ext = os.path.splitext(file_name)
+            if len(name) > 100:
+                truncated_name = name[:100] + ext
+                self.file.name = os.path.join('uploads/product_files/', truncated_name)
+        super().save(*args, **kwargs)
 
 @receiver(post_save, sender=Product)
 def generate_dummy_file(sender, instance, created, **kwargs):

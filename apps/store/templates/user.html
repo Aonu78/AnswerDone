@@ -1,9 +1,11 @@
 {% extends "core/base.html" %}
 {% load static %}
 
-{% block content %}
+{% block extra_head %}
 
         <link rel="stylesheet" href="{% static 'statics/css/35e90a5c2d-userpage_css.css'%}">
+        {% endblock extra_head %}
+        {% block content %}
         <div id="app" data-country="214" class="">
             <div id="page" class="wrapper profile-page" data-userid="1937696">
                 <article id="content" class="content-wrapper">

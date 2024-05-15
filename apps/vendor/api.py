@@ -89,8 +89,19 @@ def create_bundle(request):
             return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
         
         data = request.data.copy()  
-        product_ids = [key.split('_')[1] for key in data.pop('keys[]', []) if '_' in key]
-        
+        print(data)
+        print("***************")
+        product_ids = []
+        for key in data.get('keys', []):
+            if '_' in key:
+                product_id = key.split('_')[1]
+                product_ids.append(product_id) 
+                print("Product ID:", product_id)
+            else:
+                print("Invalid key format:", key)
+
+        # product_ids = [key.split('_')[1] for key in data.pop('keys[]', []) if '_' in key]
+        print(product_ids)
         title = data.get('title', '')
         slug = slugify(title)
         data['slug'] = slug
